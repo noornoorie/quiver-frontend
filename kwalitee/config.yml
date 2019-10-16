@@ -1,0 +1,18 @@
+# Base dir to clone repos to
+repodir: /data/monorepo
+# repos to clone and process
+repolist:
+    - https://github.com/OCR-D/ocrd_calamari
+    - https://github.com/OCR-D/ocrd_im6convert
+    - https://github.com/OCR-D/ocrd_keraslm
+    - https://github.com/OCR-D/ocrd_kraken
+    - https://github.com/OCR-D/ocrd_ocropy
+    - https://github.com/OCR-D/ocrd_olena
+    - https://github.com/OCR-D/ocrd_segment
+    - https://github.com/OCR-D/ocrd_tesserocr
+    - https://github.com/mjenckel/LAYoutERkennung
+    - https://github.com/ocr-d-modul-2-segmentierung/segmentation-runner
+    - https://github.com/ASVLeipzig/cor-asv-fst
+    - https://github.com/ASVLeipzig/cor-asv-ann
+    - https://github.com/cisocrgroup/ocrd-postcorrection
+    - https://github.com/seuretm/ocrd_typegroups_classifier

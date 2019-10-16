@@ -13,17 +13,17 @@ setup(
     long_description_content_type='text/markdown',
     author='Konstantin Baierer',
     author_email='unixprog@gmail.com',
-    url='https://github.com/OCR-D/core',
+    url='https://github.com/OCR-D/kwalitee',
     license='Apache License 2.0',
     packages=find_packages(exclude=('tests', 'docs')),
     include_package_data=True,
     install_requires=install_requires,
     package_data={
-        '': ['*.json', '*.yml', '*.yaml', '*.bash', '*.xml'],
+        '': ['*.json', '*.yml', '*.yaml', '*.list', '*.xml'],
     },
     entry_points={
         'console_scripts': [
-            'ocrd=ocrd.cli:cli',
+            'ocrd-kwalitee=kwalitee.cli:cli',
         ]
     },
 )
