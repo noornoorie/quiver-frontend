@@ -2,6 +2,7 @@ import click
 from ocrd.decorators import ocrd_loglevel
 from ocrd_utils import getLogger
 from yaml import safe_load
+import json
 from pkg_resources import resource_filename
 
 from .repo import Repo
@@ -22,15 +23,24 @@ pass_ctx = click.make_pass_decorator(CliCtx)
 def cli(ctx, config_file, **kwargs): # pylint: disable=unused-argument
     ctx.obj = CliCtx(config_file)
 
-@cli.command('generate-json', help='''
+@cli.command('json', help='''
 
     Generate JSON
 
 ''')
 @pass_ctx
-def generate_json(ctx):
+@click.option('-a', '--full', help="Set all flags", is_flag=True, default=False)
+@click.option('-g', '--git', help="Git stats", is_flag=True, default=False)
+@click.option('-p', '--python', help="Python stats", is_flag=True, default=False)
+@click.option('-f', '--files', help="Files", is_flag=True, default=False)
+def generate_json(ctx, full, **kwargs):
+    ret = []
+    if full:
+        for k in kwargs:
+            kwargs[k] = True
     for repo in ctx.repos:
-        print("# %s" % repo.name)
-        print("\thas_ocrd_tool_json: %s" % repo.has_ocrd_tool_json())
-        #  print('%s %s -> %s' % (repo.path.is_dir(), repo.url, repo.path))
+        LOG.info("# Assessing %s" % repo.name)
         repo.clone()
+        ret.append(repo.to_json(**kwargs))
+        #  print('%s %s -> %s' % (repo.path.is_dir(), repo.url, repo.path))
+    print(json.dumps(ret))
