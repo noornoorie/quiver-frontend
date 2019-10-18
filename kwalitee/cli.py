@@ -43,4 +43,4 @@ def generate_json(ctx, full, **kwargs):
         repo.clone()
         ret.append(repo.to_json(**kwargs))
         #  print('%s %s -> %s' % (repo.path.is_dir(), repo.url, repo.path))
-    print(json.dumps(ret))
+    print(json.dumps(ret, indent=4, sort_keys=True))
