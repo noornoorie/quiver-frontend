@@ -1410,18 +1410,21 @@
         "files": {
             "Dockerfile": null,
             "README.md": "dinglehopper\n============\n\ndinglehopper is an OCR evaluation tool and reads [ALTO](https://github.com/altoxml), [PAGE](https://github.com/PRImA-Research-Lab/PAGE-XML) and text files.\n\n[![Build Status](https://travis-ci.org/qurator-spk/dinglehopper.svg?branch=master)](https://travis-ci.org/qurator-spk/dinglehopper)\n\nGoals\n-----\n* Useful\n  * As an UI tool\n  * For an automated evaluation\n  * As a library\n* Unicode support\n\nUsage\n-----\n~~~\ndinglehopper some-document.gt.page.xml some-document.ocr.alto.xml\n~~~\nThis generates `report.html` and `report.json`.\n\n\nAs a OCR-D processor:\n~~~\nocrd-dinglehopper -m mets.xml -I OCR-D-GT-PAGE,OCR-D-OCR-TESS -O OCR-D-OCR-TESS-EVAL\n~~~\nThis generates HTML and JSON reports in the `OCR-D-OCR-TESS-EVAL` filegroup.\n\n\n![dinglehopper displaying metrics and character differences](.screenshots/dinglehopper.png?raw=true)\n",
-            "ocrd-tool.json": "{\n  \"git_url\": \"https://github.com/qurator-spk/dinglehopper\",\n  \"tools\": {\n    \"ocrd-dinglehopper\": {\n      \"executable\": \"ocrd-dinglehopper\",\n      \"description\": \"Evaluate OCR text against ground truth with dinglehopper\",\n      \"input_file_grp\": [\n        \"OCR-D-GT-PAGE\",\n        \"OCR-D-OCR\"\n      ],\n      \"output_file_grp\": [\n        \"OCR-D-OCR-EVAL\"\n      ],\n      \"steps\": [\n        \"recognition/text-recognition\"\n      ]\n    }\n  }\n}\n",
+            "ocrd-tool.json": "{\n  \"git_url\": \"https://github.com/qurator-spk/dinglehopper\",\n  \"tools\": {\n    \"ocrd-dinglehopper\": {\n      \"executable\": \"ocrd-dinglehopper\",\n      \"description\": \"Evaluate OCR text against ground truth with dinglehopper\",\n      \"input_file_grp\": [\n        \"OCR-D-GT-PAGE\",\n        \"OCR-D-OCR\"\n      ],\n      \"output_file_grp\": [\n        \"OCR-D-OCR-EVAL\"\n      ],\n      \"categories\": [\n        \"Quality assurance\"\n      ],\n      \"steps\": [\n        \"recognition/text-recognition\"\n      ]\n    }\n  }\n}\n",
             "setup.py": "from io import open\nfrom setuptools import find_packages, setup\n\nwith open('requirements.txt') as fp:\n    install_requires = fp.read()\n\nsetup(\n    name='dinglehopper',\n    author='Mike Gerber, The QURATOR SPK Team',\n    author_email='mike.gerber@sbb.spk-berlin.de, qurator@sbb.spk-berlin.de',\n    description='The OCR evaluation tool',\n    long_description=open('README.md', 'r', encoding='utf-8').read(),\n    long_description_content_type='text/markdown',\n    keywords='qurator ocr',\n    license='Apache',\n    namespace_packages=['qurator'],\n    packages=find_packages(exclude=['*.tests', '*.tests.*', 'tests.*', 'tests']),\n    install_requires=install_requires,\n    package_data={\n        '': ['*.json', 'templates/*'],\n    },\n    entry_points={\n      'console_scripts': [\n        'dinglehopper=qurator.dinglehopper.cli:main',\n        'ocrd-dinglehopper=qurator.dinglehopper.ocrd_cli:ocrd_dinglehopper',\n      ]\n    }\n)\n"
         },
         "git": {
-            "last_commit": "Tue Oct 1 13:18:12 2019 +0200",
-            "number_of_commits": "1"
+            "last_commit": "Fri Oct 18 16:38:44 2019 +0200",
+            "number_of_commits": "2"
         },
         "name": "dinglehopper",
         "ocrd_tool": {
             "git_url": "https://github.com/qurator-spk/dinglehopper",
             "tools": {
                 "ocrd-dinglehopper": {
+                    "categories": [
+                        "Quality assurance"
+                    ],
                     "description": "Evaluate OCR text against ground truth with dinglehopper",
                     "executable": "ocrd-dinglehopper",
                     "input_file_grp": [
