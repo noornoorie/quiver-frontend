@@ -59,7 +59,13 @@ class Repo():
         desc['name'] = self.name
         if files:
             desc['files'] = self.get_file_contents()
-            desc['ocrd_tool'] = json.loads(desc['files']['ocrd-tool.json']) if desc['files']['ocrd-tool.json'] else None
+            if desc['files']['ocrd-tool.json']:
+                desc['ocrd_tool'] = json.loads(desc['files']['ocrd-tool.json'])
+                with pushd_popd(self.path):
+                    desc['ocrd_tool_validate'] = self._run('ocrd ocrd-tool ocrd-tool.json validate').stdout
+            else:
+                desc['ocrd_tool'] = ''
+                desc['ocrd_tool_validate'] = 'NO ocrd-tool.json'
         if git:
             desc['git'] = self.get_git_stats()
         if python:
