@@ -2,133 +2,23 @@
 <html>
 <head>
   <title>ocrd kwalitee</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <!-- <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"> -->
 
 	<!-- Load required Bootstrap and BootstrapVue CSS -->
-	<link type="text/css" rel="stylesheet" href="//unpkg.com/bootstrap/dist/css/bootstrap.min.css" />
-	<link type="text/css" rel="stylesheet" href="//unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.min.css" />
+	<!-- <link type="text/css" rel="stylesheet" href="//unpkg.com/bootstrap/dist/css/bootstrap.min.css" /> -->
+	<!-- <link type="text/css" rel="stylesheet" href="//unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.min.css" /> -->
 
 	<!-- Load polyfills to support older browsers -->
-	<script src="//polyfill.io/v3/polyfill.min.js?features=es2015%2CIntersectionObserver" crossorigin="anonymous"></script>
+	<!-- <script src="//polyfill.io/v3/polyfill.min.js?features=es2015%2CIntersectionObserver" crossorigin="anonymous"></script> -->
 
 	<!-- Load Vue followed by BootstrapVue -->
-	<script src="//unpkg.com/vue@latest/dist/vue.min.js"></script>
-	<script src="//unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.min.js"></script>
+	<!-- <script src="//unpkg.com/vue@latest/dist/vue.min.js"></script> -->
+	<!-- <script src="//unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.min.js"></script> -->
 </head>
 <body>
-  <div id="app">
-    <b-container fluid>
-
-      <b-tabs>
-
-        <b-tab title="Processors">
-          <b-row>
-            Filter by category:
-            <b-badge
-              v-for="category in categories"
-              :variant="category_filter.indexOf(category) != -1 ? 'primary' : 'secondary'"
-              @click="category_filter.indexOf(category) != -1 ? category_filter.splice(category_filter.indexOf(category), 1) : category_filter.push(category)"
-              >
-              {{ category }}
-            </b-badge>
-          </b-row>
-          <b-row>
-            Filter by step:
-            <b-badge
-              v-for="step in steps"
-              :variant="step_filter.indexOf(step) != -1 ? 'primary' : 'secondary'"
-              @click="step_filter.indexOf(step) != -1 ? step_filter.splice(step_filter.indexOf(step), 1) : step_filter.push(step)"
-              >
-              {{ step }}
-            </b-badge>
-          </b-row>
-          <b-row>
-            <b-card
-              v-for="processor in processors"
-              :title="processor.executable.replace('ocrd-', '')"
-              tag="article"
-              style="max-width: 20rem;"
-              class="mb-2"
-              >
-              <b-card-text>
-
-                <b-tabs>
-                <b-tabs>
-                  <b-tab title="Description">
-                    <blockquote>
-                      {{ processor.description }}
-                      <b-badge variant="info" v-for="step in processor.steps">{{ step }}</b-badge>
-                      <b-badge variant="success" v-for="category in processor.categories">{{ category }}</b-badge>
-                    </blockquote>
-                    <p>
-                      Part of <a href="">{{ processor.part_of }}</a>
-                    </p>
-                    <p>
-                      <a href="">Read the Documentation!</a>
-                    </p>
-                  </b-tab>
-
-                  <b-tab title="Parameters">
-                    <ul>
-                      <li v-for="param, name in processor.parameters">
-                        <strong>{{ name }}</strong> {{ param }}
-                      </li>
-                    </ul>
-                  </b-tab>
-
-                </b-tabs>
-
-              </b-card-text>
-            </b-card>
-          </b-row>
-        </b-tab>
-
-        <b-tab title="Projects">
-          <b-row>
-            <button @click="fetchRepoData">Fetch!</button>
-          </b-row>
-          <b-row>
-            <b-card
-              v-for="repo in repos"
-              :title="repo.org_plus_name"
-              tag="article"
-              style="max-width: 20rem;"
-              class="mb-2"
-              >
-              <b-tabs card>
-                <b-tab title="Git">
-                  <b-card-text>
-                    <p>
-                      <a href="`https://pypi.org/project/${ repo.python.name }/`">             <img :src="`https://img.shields.io/pypi/v/${ repo.python.name }.svg`"                                     /> </a>
-                      <!-- <a href="`https://travis-ci.org/${ repo.org_plus_name }`">               <img :src="`https://travis-ci.org/${ repo.org_plus_name }.svg?branch=master`"                             /> </a> -->
-                      <!-- <a href="`https://circleci.com/gh/${ repo.org_plus_name }`">             <img :src="`https://circleci.com/gh/${ repo.org_plus_name }.svg?style=svg`"                               /> </a> -->
-                      <!-- <a href="`https://hub.docker.com/r/ocrd/core/tags/`">                     <img :src="`https://img.shields.io/docker/automated/ocrd/core.svg`"                                        /> </a> -->
-                      <!-- <a href="`https://codecov.io/gh/${ repo.org_plus_name }`">               <img :src="`https://codecov.io/gh/${ repo.org_plus_name }/branch/master/graph/badge.svg`"                 /> </a> -->
-                      <!-- <a href="`https://scrutinizer-ci.com/g/${ repo.org_plus_name }`">        <img :src="`https://scrutinizer-ci.com/g/${ repo.org_plus_name }/badges/quality-score.png?b=master`"      /> </a> -->
-                      <!-- <a href="`https://lgtm.com/projects/g/${ repo.org_plus_name }/alerts/`"> <img :src="`https://img.shields.io/lgtm/alerts/g/${ repo.org_plus_name }.svg?logo=lgtm&amp;logoWidth=18`" /> </a> -->
-                    </p>
-                    <b-table v-if="repo.git" :items="[repo.git]"></b-table>
-                  </b-card-text>
-                </b-tab>
-                <b-tab title="Tools">
-                  <b-card-text>
-                    <b-table v-if="repo.ocrd_tool" :items="[repo.ocrd_tool]"></b-table>
-                  </b-card-text>
-                </b-tab>
-                <b-tab title="Python">
-                  <b-card-text>
-                    <b-table v-if="repo.python" :items="[repo.python]"></b-table>
-                  </b-card-text>
-                </b-tab>
-              </b-tabs>
-            </b-card>
-          </b-row>
-        </b-tab>
-      </b-tabs>
-
-    </b-container>
+  <div id="ocrd-kwalitee">
   </div>
 
-  <script src="script.js"></script>
+  <script src="webapp/dist/build.js"></script>
 </body>
 </html>

@@ -1,10 +1,41 @@
-/* global Vue */
-window.app = new Vue({
-  el: '#app',
-  data: {
-    repos_raw: [],
-    category_filter: [],
-    step_filter: [],
+<template>
+  <b-container fluid>
+    <b-row>
+      <button @click="fetchRepoData">Fetch!</button>
+    </b-row>
+    <b-tabs>
+      <b-tab title="Processors">
+        <ocrd-processor-list
+          :processors="processors"
+          :steps="steps"
+          :step_filter="step_filter"
+          :categories="categories"
+          :category_filter="category_filter"
+          ></ocrd-processor-list>
+      </b-tab>
+      <b-tab title="Projects">
+        <ocrd-project-list
+          :repos="repos"
+          ></ocrd-project-list>
+      </b-tab>
+    </b-tabs>
+  </b-container>
+</template>
+
+<script>
+import OcrdProcessorList from './OcrdProcessorList.vue'
+import OcrdProjectList from './OcrdProjectList.vue'
+export default {
+  components: {
+    OcrdProcessorList,
+    OcrdProjectList
+  },
+  data() {
+    return {
+      repos_raw: [],
+      category_filter: [],
+      step_filter: [],
+    }
   },
   computed: {
     repos() {
@@ -47,11 +78,15 @@ window.app = new Vue({
     }
   },
   mounted() {
-    this.fetchRepoData()
+      this.fetchRepoData()
   },
   methods: {
     fetchRepoData() {
-      fetch('repos.json').then(resp => resp.json()).then(repos => this.repos.push(...repos))
+      fetch('../repos.json').then(resp => resp.json()).then(repos => {
+          this.repos_raw.splice(0, this.repos_raw.length)
+          this.repos_raw.push(...repos)
+        }
+      )
     },
     toggleStepFilter(v) {
       if (v in this.step_filter) {
@@ -61,5 +96,8 @@ window.app = new Vue({
       }
     }
   }
-})
+}
+</script>
 
+<style>
+</style>
