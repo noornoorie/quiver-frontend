@@ -82,7 +82,7 @@ export default {
   },
   methods: {
     fetchRepoData() {
-      fetch('../repos.json').then(resp => resp.json()).then(repos => {
+      fetch('repos.json').then(resp => resp.json()).then(repos => {
           this.repos_raw.splice(0, this.repos_raw.length)
           this.repos_raw.push(...repos)
         }
