@@ -67,5 +67,7 @@ export default {
 
 .ocrd-project-list-item {
   max-width: 30rem;
+  max-height: 30rem;
+  overflow: auto;
 }
 </style>
