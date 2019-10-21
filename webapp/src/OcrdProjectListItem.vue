@@ -25,16 +25,19 @@
           <b-table v-if="repo.git" :items="[repo.git]"></b-table>
         </b-card-text>
       </b-tab>
-      <b-tab title="Tools">
+
+      <b-tab title="ocrd-tool validation">
         <b-card-text>
-          <b-table v-if="repo.ocrd_tool" :items="[repo.ocrd_tool]"></b-table>
+          <vue-code-highlight>{{ repo.ocrd_tool_validate || '# NO validation data' }}</vue-code-highlight>
         </b-card-text>
       </b-tab>
+
       <b-tab title="Python">
         <b-card-text>
           <b-table v-if="repo.python" :items="[repo.python]"></b-table>
         </b-card-text>
       </b-tab>
+
     </b-tabs>
   </b-card>
 </template>
