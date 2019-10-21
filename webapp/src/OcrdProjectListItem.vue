@@ -8,6 +8,9 @@
       <b-tab title="README">
         <div v-html="compiledReadme"></div>
       </b-tab>
+      <b-tab title="Dockerfile">
+        <vue-code-highlight>{{ repo.files.Dockerfile || '# NO DOCKERFILE' }}</vue-code-highlight>
+      </b-tab>
       <b-tab title="Git">
         <b-card-text>
           <p>
@@ -38,7 +41,12 @@
 
 <script>
 import marked from 'marked'
+import { component as VueCodeHighlight } from 'vue-code-highlight'
+
 export default {
+  components: {
+    VueCodeHighlight
+  },
   props: {
     repo: {required: true},
   },
@@ -48,7 +56,7 @@ export default {
     },
     compiledReadme() {
       let src = this.repo.files['README.md']
-      if (!src) src = '# NO README'
+      if (!src) src = '`# NO README`'
       return marked(src)
     }
   }
@@ -58,6 +66,6 @@ export default {
 <style>
 
 .ocrd-project-list-item {
-  max-width: 50%;
+  max-width: 30rem;
 }
 </style>

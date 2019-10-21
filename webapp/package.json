@@ -13,7 +13,8 @@
   "dependencies": {
     "bootstrap-vue": "^2.0.4",
     "marked": "^0.7.0",
-    "vue": "^2.5.11"
+    "vue": "^2.5.11",
+    "vue-code-highlight": "^0.7.2"
   },
   "browserslist": [
     "> 1%",
