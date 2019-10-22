@@ -7,8 +7,8 @@
             "setup.py": "# -*- coding: utf-8 -*-\nimport codecs\n\nfrom setuptools import setup, find_packages\n\nsetup(\n    name='ocrd_calamari',\n    version='0.0.1',\n    description='Calamari bindings',\n    long_description=codecs.open('README.md', encoding='utf-8').read(),\n    author='Konstantin Baierer, Mike Gerber',\n    author_email='unixprog@gmail.com, mike.gerber@sbb.spk-berlin.de',\n    url='https://github.com/kba/ocrd_calamari',\n    license='Apache License 2.0',\n    packages=find_packages(exclude=('tests', 'docs')),\n    install_requires=open('requirements.txt').read().split('\\n'),\n    package_data={\n        '': ['*.json', '*.yml', '*.yaml'],\n    },\n    entry_points={\n        'console_scripts': [\n            'ocrd-calamari-recognize=ocrd_calamari.cli:ocrd_calamari_recognize',\n        ]\n    },\n)\n"
         },
         "git": {
-            "last_commit": "Thu Aug 22 14:03:59 2019 +0200",
-            "number_of_commits": "29"
+            "last_commit": "Tue Oct 22 11:00:05 2019 +0200",
+            "number_of_commits": "26"
         },
         "name": "ocrd_calamari",
         "ocrd_tool": {
