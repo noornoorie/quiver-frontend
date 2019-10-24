@@ -4,7 +4,7 @@
     tag="article"
     class="mb-5 ocrd-project-list-item"
     >
-    <b-tabs>
+    <b-tabs v-model="tabIndex">
       <b-tab title="README">
         <div v-html="compiledReadme"></div>
       </b-tab>
@@ -50,8 +50,14 @@ export default {
   components: {
     VueCodeHighlight
   },
+  //  data() {
+  //    return {
+  //      tabIndex: 0
+  //    }
+  //  },
   props: {
     repo: {required: true},
+    tabIndex: {default: 0},
   },
   computed: {
     cleanId() {

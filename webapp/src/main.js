@@ -17,7 +17,7 @@ import 'vue-code-highlight/themes/prism-coy.css'
 // import 'vue-code-highlight/themes/prism-twilight.css'
 // import 'vue-code-highlight/themes/window.css'
 
-new Vue({
+window.kwalitee_app = new Vue({
   el: '#ocrd-kwalitee',
   render: h => h(App)
 })
