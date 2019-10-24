@@ -9,6 +9,14 @@ from .repo import Repo
 
 LOG = getLogger('kwalitee.cli')
 
+def _check_cloned(ctx):
+    uncloned = []
+    for repo in ctx.repos:
+        if not repo.is_cloned():
+            uncloned.append(repo)
+    if uncloned:
+        raise Exception("Some repos not yet cloned: %s" % [str(r) for r in uncloned])
+
 class CliCtx():
     def __init__(self, config_file):
         with open(config_file, 'r') as f_config_file:
@@ -22,6 +30,31 @@ pass_ctx = click.make_pass_decorator(CliCtx)
 @click.pass_context
 def cli(ctx, config_file, **kwargs): # pylint: disable=unused-argument
     ctx.obj = CliCtx(config_file)
+
+@cli.command('clone', help='''
+
+        Clone all repos
+''')
+@pass_ctx
+def clone_all(ctx):
+    for repo in ctx.repos:
+        if repo.is_cloned():
+            LOG.info("Already cloned %s" % repo)
+        else:
+            LOG.info("Cloning %s" % repo)
+            repo.clone()
+
+@cli.command('pull', help='''
+
+        Pull all repos
+''')
+@pass_ctx
+def pull_all(ctx):
+    _check_cloned(ctx)
+    for repo in ctx.repos:
+        LOG.info("Pulling %s" % repo)
+        repo.pull()
+
 
 @cli.command('json', help='''
 
@@ -38,6 +71,7 @@ def generate_json(ctx, full, **kwargs):
     if full:
         for k in kwargs:
             kwargs[k] = True
+    _check_cloned(ctx)
     for repo in ctx.repos:
         LOG.info("# Assessing %s" % repo.name)
         repo.clone()

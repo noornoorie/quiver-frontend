@@ -15,8 +15,18 @@ class Repo():
         self.name = Path(url).name
         self.path = Path(self.config['repodir'], self.name)
 
+    def __str__(self):
+        return '<Repo %s @ %s>' % (self.url, self.path)
+
+    def is_cloned(self):
+        return self.path.is_dir()
+
+    def pull(self):
+        with pushd_popd(self.path):
+            self._run('git pull origin master')
+
     def clone(self):
-        if self.path.is_dir():
+        if self.is_cloned():
             LOG.debug("Already cloned: %s" % self.path)
             return
         with pushd_popd(self.config['repodir']):
