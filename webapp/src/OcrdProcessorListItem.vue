@@ -11,8 +11,8 @@
           <blockquote>
             {{ processor.description }}
           </blockquote>
-          <b-badge variant="info" v-for="step in processor.steps">{{ step }}</b-badge>
-  <b-badge variant="success" v-for="category in processor.categories">{{ category }}</b-badge>
+          <b-badge variant="info" v-for="step in processor.steps" :key="step">{{ step }}</b-badge>
+  <b-badge variant="success" v-for="category in processor.categories" :key="category">{{ category }}</b-badge>
           <p>
             Part of <a href="">{{ processor.part_of }}</a>
           </p>
@@ -23,7 +23,7 @@
 
         <b-tab title="Parameters">
           <ul>
-            <li v-for="param, name in processor.parameters">
+            <li v-for="param, name in processor.parameters" :key="name">
               <strong>{{ name }}</strong> {{ param }}
             </li>
           </ul>

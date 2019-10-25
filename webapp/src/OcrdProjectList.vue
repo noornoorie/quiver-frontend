@@ -5,7 +5,7 @@
       <b-collapse id="project-controls">
         <b-container>
           <b-row>
-            Filter by name: <input type="text" v-model="name_filter"/> (Showing {{ filtered_repos.length }} of {{ repos.length}} repos)
+            Filter by name: <input type="text" v-model="name_filter"/> (Showing {{ filtered_projects.length }} of {{ projects.length}} projects)
           </b-row>
           <b-row>
             Tabs: <b-button @click="tabIndex -= 1">&lt;</b-button> <b-button @click="tabIndex += 1">&gt;</b-button>
@@ -13,16 +13,29 @@
         </b-container>
       </b-collapse>
     </b-row>
-    <b-row>
+    <b-row class="list">
       <ocrd-project-list-item
-        v-for="repo, idx in filtered_repos"
-        :key="repo.org_plus_name"
-        :repo="repo"
+        v-for="project,idx in filtered_projects"
+        :key="project.org_plus_name"
+        :project="project"
         :tabIndex="tabIndex"
+        :projectIndex="idx"
       >
       </ocrd-project-list-item>
     </b-row>
 
+    <b-modal id="project-modal"
+             size="xl"
+             :hide-header="true"
+             :hide-footer="true"
+      >
+      <ocrd-project-list-item
+        :project="projects[$root.modalProjectIndex]"
+        :projectIndex="$root.modalProjectIndex"
+        :modal="true"
+        >
+      </ocrd-project-list-item>
+    </b-modal>
   </div>
 </template>
 
@@ -36,15 +49,15 @@ export default {
     }
   },
   computed: {
-    filtered_repos() {
-      return this.repos.filter(repo => repo.name.toLowerCase().includes(this.name_filter.toLowerCase()))
+    filtered_projects() {
+      return this.projects.filter(project => project.name.toLowerCase().includes(this.name_filter.toLowerCase()))
     }
   },
   components: {
     OcrdProjectListItem
   },
   props: {
-    repos: {required: true}
+    projects: {required: true}
   },
   methods: {
     switchTab(delta) {
@@ -55,5 +68,11 @@ export default {
 </script>
 
 <style>
+
+.list .ocrd-project-list-item {
+  max-width: 30rem;
+  max-height: 30rem;
+  overflow: auto;
+}
 
 </style>

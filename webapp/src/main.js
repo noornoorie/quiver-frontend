@@ -19,5 +19,33 @@ import 'vue-code-highlight/themes/prism-coy.css'
 
 window.kwalitee_app = new Vue({
   el: '#ocrd-kwalitee',
-  render: h => h(App)
+  render: h => h(App),
+  data() {
+    return {
+      projects: [],
+      modalProjectIndex: 0,
+      modalProcessorIndex: 0,
+      modalProjectVisible: false,
+      modalProcessorVisible: false,
+    }
+  },
+  methods: {
+    fetchprojectData() {
+      fetch('repos.json').then(resp => resp.json()).then(projects => {
+          projects.map((project, idx) => project.idx = idx)
+          this.projects.splice(0, this.projects.length)
+          this.projects.push(...projects)
+        }
+      )
+    },
+    showModal(projectOrProcessor, idx) {
+      if (projectOrProcessor === 'processor') {
+        console.log("Not implemented")
+        this.$bvModal.show('processor-modal')
+      } else {
+        this.modalProjectIndex = idx
+        this.$bvModal.show('project-modal')
+      }
+    },
+  }
 })
