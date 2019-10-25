@@ -62,19 +62,12 @@ def pull_all(ctx):
 
 ''')
 @pass_ctx
-@click.option('-a', '--full', help="Set all flags", is_flag=True, default=False)
-@click.option('-g', '--git', help="Git stats", is_flag=True, default=False)
-@click.option('-p', '--python', help="Python stats", is_flag=True, default=False)
-@click.option('-f', '--files', help="Files", is_flag=True, default=False)
-def generate_json(ctx, full, **kwargs):
+def generate_json(ctx):
     ret = []
-    if full:
-        for k in kwargs:
-            kwargs[k] = True
     _check_cloned(ctx)
     for repo in ctx.repos:
         LOG.info("# Assessing %s" % repo.name)
         repo.clone()
-        ret.append(repo.to_json(**kwargs))
+        ret.append(repo.to_json())
         #  print('%s %s -> %s' % (repo.path.is_dir(), repo.url, repo.path))
     print(json.dumps(ret, indent=4, sort_keys=True))
