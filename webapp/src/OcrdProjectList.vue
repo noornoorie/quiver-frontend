@@ -5,6 +5,11 @@
       <b-collapse id="project-controls">
         <b-container>
           <b-row>
+            <b-form-checkbox v-model="show_unofficial" name="check-button" switch>
+            Unofficial projects <b>({{ checked ? "Show" : "hide" }})</b>
+            </b-form-checkbox>
+          </b-row>
+          <b-row>
             Filter by name: <input type="text" v-model="name_filter"/> (Showing {{ filtered_projects.length }} of {{ projects.length}} projects)
           </b-row>
           <b-row>
@@ -45,12 +50,18 @@ export default {
   data() {
     return {
       name_filter: '',
+      show_unofficial: true,
       tabIndex: 0,
     }
   },
   computed: {
     filtered_projects() {
-      return this.projects.filter(project => project.name.toLowerCase().includes(this.name_filter.toLowerCase()))
+      return this.projects.filter(project => {
+        if (!(this.show_unofficial || project.official)) {
+          return false
+        }
+        return project.name.toLowerCase().includes(this.name_filter.toLowerCase())
+      })
     }
   },
   components: {

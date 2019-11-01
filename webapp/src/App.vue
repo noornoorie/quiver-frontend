@@ -47,6 +47,7 @@ export default {
           all.push(...Object.values(project.ocrd_tool.tools).map(tool => {
             tool.idx = tool_idx++
             tool.part_of = project.org_plus_name
+            tool.official = project.official
             return tool
           }))
         return all

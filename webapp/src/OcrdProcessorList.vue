@@ -5,6 +5,11 @@
       <b-collapse id="processor-controls">
         <b-container>
           <b-row>
+            <b-form-checkbox v-model="show_unofficial" name="check-button" switch>
+            Unofficial processors <b>({{ checked ? "Show" : "hide" }})</b>
+            </b-form-checkbox>
+          </b-row>
+          <b-row>
             Filter by category:
             <b-badge
               v-for="category in categories"
@@ -48,6 +53,7 @@ export default {
   data() {
     return {
       step_filter: [],
+      show_unofficial: true,
       category_filter: {require: true},
       category_filter: [],
     }
@@ -65,6 +71,9 @@ export default {
         for (let category_filter of this.category_filter) {
           if (tool.categories.indexOf(category_filter) == -1)
             return false
+        }
+        if (!(this.show_unofficial || tool.official)) {
+          return false
         }
         return true
       })
