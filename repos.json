@@ -2234,83 +2234,21 @@
     },
     {
         "files": {
-            "Dockerfile": null,
-            "README.md": "![build status](https://travis-ci.org/cisocrgroup/cis-ocrd-py.svg?branch=dev)\n# cis-ocrd-py\n\n[CIS](http://www.cis.lmu.de) [OCR-D](http://ocr-d.de) command line tools\n\n## General usage\n\n### Essential system packages\n\n```sh\nsudo apt-get install \\\n  git \\\n  build-essential \\\n  python3 python3-pip \\\n  libxml2-dev \\\n  default-jdk\n```\n\n\n\n### Virtualenv\n\nUse `virtualenv` to install dependencies:\n* `virtualenv -p python3.6 env`\n* `source env/bin/activate`\n* `pip install -e path/to/dir/containing/setup.py`\n\nUse `deactivate` to deactivate the virtualenv again.\n\n### OCR-D workspace\n\n* Create a new (empty) workspace: `ocrd workspace init workspace-dir`\n* cd into `workspace-dir`\n* Add new file to workspace: `ocrd workspace add file -G group -i id\n  -m mimetype`\n\n### Tests\n\nIssue `make test` to run the automated test suite. The tests depend on\nthe following tools:\n\n* [wget](https://www.gnu.org/software/wget/)\n* [envsubst](https://linux.die.net/man/1/envsubst)\n\nYou can run individual testcases using the `run_*_test.bash` scripts in\nthe tests directory. Use the `--persistent` or `-p` flag to keep\ntemporary directories.\n\nYou can override the temporary directory by setting the `TMP_DIR` environment\nvariable.\n\n## Tools\n\n### ocrd-cis-align\n\nThe alignment tool line-aligns multiple file groups. It can be used to\nalign the results of multiple OCRs with their respective ground-truth.\n\nThe tool expects a comma-separated list of input file groups, the\naccording output file group and the url of the configuration file:\n\n```sh\nocrd-cis-align \\\n  --input-file-grp 'ocr1,ocr2,gt' \\\n  --output-file-grp 'ocr1+ocr2+gt' \\\n  --mets mets.xml \\\n  --parameter file:///path/to/config.json\n```\n\n\n### ocrd-cis-ocropy-train\nThe ocropy-train tool can be used to train LSTM models.\nIt takes ground truth from the workspace and saves (image+text) snippets from the corresponding pages.\nThen a model is trained on all snippets for 1 million (or the given number of) randomized iterations from the parameter file.\n```sh\nocrd-cis-ocropy-train \\\n  --input-file-grp OCR-D-GT-SEG-LINE \\\n  --mets mets.xml\n  --parameter file:///path/to/config.json\n```\n\n### ocrd-cis-ocropy-clip\nThe ocropy-clip tool can be used to remove intrusions of neighbouring segments in regions / lines of a workspace.\nIt runs a (ad-hoc binarization and) connected component analysis on every text region / line of every PAGE in the input file group, as well as its overlapping neighbours, and for each binary object of conflict, determines whether it belongs to the neighbour, and can therefore be clipped to white. It references the resulting segment image files in the output PAGE (as AlternativeImage).\n```sh\nocrd-cis-ocropy-clip \\\n  --input-file-grp OCR-D-SEG-LINE \\\n  --output-file-grp OCR-D-SEG-LINE-CLIP \\\n  --mets mets.xml\n  --parameter file:///path/to/config.json\n```\n\n### ocrd-cis-ocropy-resegment\nThe ocropy-resegment tool can be used to remove overlap between lines of a workspace.\nIt runs a (ad-hoc binarization and) line segmentation on every text region of every PAGE in the input file group, and for each line already annotated, determines the label of largest extent within the original coordinates (polygon outline) in that line, and annotates the resulting coordinates in the output PAGE.\n```sh\nocrd-cis-ocropy-resegment \\\n  --input-file-grp OCR-D-SEG-LINE \\\n  --output-file-grp OCR-D-SEG-LINE-RES \\\n  --mets mets.xml\n  --parameter file:///path/to/config.json\n```\n\n### ocrd-cis-ocropy-segment\nThe ocropy-segment tool can be used to segment regions into lines.\nIt runs a (ad-hoc binarization and) line segmentation on every text region of every PAGE in the input file group, and adds a TextLine element with the resulting polygon outline to the annotation of the output PAGE.\n```sh\nocrd-cis-ocropy-segment \\\n  --input-file-grp OCR-D-SEG-BLOCK \\\n  --output-file-grp OCR-D-SEG-LINE \\\n  --mets mets.xml\n  --parameter file:///path/to/config.json\n```\n\n### ocrd-cis-ocropy-deskew\nThe ocropy-deskew tool can be used to deskew pages / regions of a workspace.\nIt runs the Ocropy thresholding and deskewing estimation on every segment of every PAGE in the input file group and annotates the orientation angle in the output PAGE.\n```sh\nocrd-cis-ocropy-deskew \\\n  --input-file-grp OCR-D-SEG-LINE \\\n  --output-file-grp OCR-D-SEG-LINE-DES \\\n  --mets mets.xml\n  --parameter file:///path/to/config.json\n```\n\n### ocrd-cis-ocropy-denoise\nThe ocropy-denoise tool can be used to despeckle pages / regions / lines of a workspace.\nIt runs the Ocropy \"nlbin\" denoising on every segment of every PAGE in the input file group and references the resulting segment image files in the output PAGE (as AlternativeImage). \n```sh\nocrd-cis-ocropy-denoise \\\n  --input-file-grp OCR-D-SEG-LINE-DES \\\n  --output-file-grp OCR-D-SEG-LINE-DEN \\\n  --mets mets.xml\n  --parameter file:///path/to/config.json\n```\n\n### ocrd-cis-ocropy-binarize\nThe ocropy-binarize tool can be used to binarize, denoise and deskew pages / regions / lines of a workspace.\nIt runs the Ocropy \"nlbin\" adaptive thresholding, deskewing estimation and denoising on every segment of every PAGE in the input file group and references the resulting segment image files in the output PAGE (as AlternativeImage). (If a deskewing angle has already been annotated in a region, the tool respects that and rotates accordingly.) Images can also be produced grayscale-normalized.\n```sh\nocrd-cis-ocropy-binarize \\\n  --input-file-grp OCR-D-SEG-LINE-DES \\\n  --output-file-grp OCR-D-SEG-LINE-BIN \\\n  --mets mets.xml\n  --parameter file:///path/to/config.json\n```\n\n### ocrd-cis-ocropy-dewarp\nThe ocropy-dewarp tool can be used to dewarp text lines of a workspace.\nIt runs the Ocropy baseline estimation and dewarping on every line in every text region of every PAGE in the input file group and references the resulting line image files in the output PAGE (as AlternativeImage).\n```sh\nocrd-cis-ocropy-dewarp \\\n  --input-file-grp OCR-D-SEG-LINE-BIN \\\n  --output-file-grp OCR-D-SEG-LINE-DEW \\\n  --mets mets.xml\n  --parameter file:///path/to/config.json\n```\n\n### ocrd-cis-ocropy-recognize\nThe ocropy-recognize tool can be used to recognize lines / words / glyphs from pages of a workspace.\nIt runs the Ocropy optical character recognition on every line in every text region of every PAGE in the input file group and adds the resulting text annotation in the output PAGE.\n```sh\nocrd-cis-ocropy-recognize \\\n  --input-file-grp OCR-D-SEG-LINE-DEW \\\n  --output-file-grp OCR-D-OCR-OCRO \\\n  --mets mets.xml\n  --parameter file:///path/to/config.json\n```\n\n## All in One Tool\nFor the all in One Tool install all above tools and Tesserocr as explained below.\nThen use it like:\n```sh\nocrd-cis-aio --parameter file:///path/to/config.json\n```\n\n\n### Tesserocr\nInstall essential system packages for Tesserocr\n```sh\nsudo apt-get install python3-tk \\\n  tesseract-ocr libtesseract-dev libleptonica-dev \\\n  libimage-exiftool-perl libxml2-utils\n```\n\nThen install Tesserocr from: https://github.com/OCR-D/ocrd_tesserocr\n```sh\npip install -r requirements.txt\npip install .\n```\n\nDownload and move tesseract models from:\nhttps://github.com/tesseract-ocr/tesseract/wiki/Data-Files\nor use your own models\nplace them into: /usr/share/tesseract-ocr/4.00/tessdata\n\nTesserocr v2.4.0 seems broken for tesseract 4.0.0-beta. Install\nVersion v2.3.1 instead: `pip install tesseract==2.3.1`.\n\n## Workflow configuration\n\nA decent pipeline might look like this:\n\n1. page-level cropping\n2. page-level binarization\n3. page-level deskewing\n4. page-level dewarping\n5. region segmentation\n6. region-level clipping\n7. region-level deskewing\n8. line segmentation\n9. line-level clipping or resegmentation\n10. line-level dewarping\n11. line-level recognition\n12. line-level alignment\n\nIf GT is used, steps 1, 5 and 8 can be omitted. Else if a segmentation is used in 5 and 8 which does not produce overlapping sections, steps 6 and 9 can be omitted.\n\n## OCR-D links\n\n- [OCR-D](https://ocr-d.github.io)\n- [Github](https://github.com/OCR-D)\n- [Project-page](http://www.ocr-d.de/)\n- [Ground-truth](http://www.ocr-d.de/sites/all/GTDaten/IndexGT.html)\n",
-            "ocrd-tool.json": "{\n\t\"git_url\": \"https://github.com/cisocrgroup/cis-ocrd-py\",\n\t\"version\": \"0.0.1\",\n\t\"tools\": {\n\t\t\"ocrd-cis-aio\": {\n\t\t\t\"executable\": \"ocrd-cis-aio\",\n\t\t\t\"categories\": [\n\t\t\t\t\"Text recognition and optimization\"\n\t\t\t],\n\t\t\t\"steps\": [\n\t\t\t\t\"postprocessing/alignment/recognition\"\n\t\t\t],\n\t\t\t\"description\": \"All in One Tool\",\n\t\t\t\"parameters\": {\n\t\t\t\t\"tesserparampath\": {\n\t\t\t\t\t\"type\": \"string\",\n\t\t\t\t\t\"required\": true\n\t\t\t\t},\n\t\t\t\t\"ocropyparampath1\": {\n\t\t\t\t\t\"type\": \"string\",\n\t\t\t\t\t\"required\": true\n\t\t\t\t},\n\t\t\t\t\"ocropyparampath2\": {\n\t\t\t\t\t\"type\": \"string\",\n\t\t\t\t\t\"required\": true\n\t\t\t\t},\n\t\t\t\t\"alignparampath\": {\n\t\t\t\t\t\"type\": \"string\",\n\t\t\t\t\t\"required\": true\n\t\t\t\t}\n\t\t\t}\n\t\t},\n\t\t\"ocrd-cis-align\": {\n\t\t\t\"executable\": \"ocrd-cis-align\",\n\t\t\t\"categories\": [\n\t\t\t\t\"Text recognition and optimization\"\n\t\t\t],\n\t\t\t\"steps\": [\n\t\t\t\t\"postprocessing/alignment\"\n\t\t\t],\n\t\t\t\"description\": \"Align multiple OCRs and/or GTs\"\n\t\t},\n\t\t\"ocrd-cis-ocropy-binarize\": {\n\t\t\t\"executable\": \"ocrd-cis-ocropy-binarize\",\n\t\t\t\"categories\": [\n\t\t\t\t\"Image preprocessing\"\n\t\t\t],\n\t\t\t\"steps\": [\n\t\t\t\t\"preprocessing/optimization/binarization\",\n\t\t\t\t\"preprocessing/optimization/grayscale_normalization\",\n\t\t\t\t\"preprocessing/optimization/deskewing\"\n\t\t\t],\n\t\t\t\"input_file_grp\": [\n\t\t\t\t\"OCR-D-IMG\",\n\t\t\t\t\"OCR-D-SEG-BLOCK\",\n\t\t\t\t\"OCR-D-SEG-LINE\"\n\t\t\t],\n\t\t\t\"output_file_grp\": [\n\t\t\t\t\"OCR-D-IMG-BIN\",\n\t\t\t\t\"OCR-D-SEG-BLOCK\",\n\t\t\t\t\"OCR-D-SEG-LINE\"\n\t\t\t],\n\t\t\t\"description\": \"Binarize (and optionally deskew/despeckle) pages / regions / lines with ocropy\",\n\t\t\t\"parameters\": {\n\t\t\t\t\"method\": {\n\t\t\t\t\t\"type\": \"string\",\n\t\t\t\t\t\"enum\": [\"none\", \"global\", \"otsu\", \"gauss-otsu\", \"ocropy\"],\n\t\t\t\t\t\"description\": \"binarization method to use (only ocropy will include deskewing)\",\n\t\t\t\t\t\"default\": \"ocropy\"\n\t\t\t\t},\n\t\t\t\t\"grayscale\": {\n\t\t\t\t\t\"type\": \"boolean\",\n\t\t\t\t\t\"description\": \"for the ocropy method, produce grayscale-normalized instead of thresholded image\",\n\t\t\t\t\t\"default\": false\n\t\t\t\t},\n\t\t\t\t\"maxskew\": {\n\t\t\t\t\t\"type\": \"number\",\n\t\t\t\t\t\"description\": \"modulus of maximum skewing angle to detect (larger will be slower, 0 will deactivate deskewing)\",\n\t\t\t\t\t\"default\": 0.0\n\t\t\t\t},\n\t\t\t\t\"noise_maxsize\": {\n\t\t\t\t\t\"type\": \"number\",\n\t\t\t\t\t\"description\": \"maximum pixel number for connected components to regard as noise (0 will deactivate denoising)\",\n\t\t\t\t\t\"default\": 0\n\t\t\t\t},\n\t\t\t\t\"level-of-operation\": {\n\t\t\t\t\t\"type\": \"string\",\n\t\t\t\t\t\"enum\": [\"page\", \"region\", \"line\"],\n\t\t\t\t\t\"description\": \"PAGE XML hierarchy level granularity to annotate images for\",\n\t\t\t\t\t\"default\": \"page\"\n\t\t\t\t}\n\t\t\t}\n\t\t},\n\t\t\"ocrd-cis-ocropy-deskew\": {\n\t\t\t\"executable\": \"ocrd-cis-ocropy-deskew\",\n\t\t\t\"categories\": [\n\t\t\t\t\"Image preprocessing\"\n\t\t\t],\n\t\t\t\"steps\": [\n\t\t\t\t\"preprocessing/optimization/deskewing\"\n\t\t\t],\n\t\t\t\"input_file_grp\": [\n\t\t\t\t\"OCR-D-SEG-BLOCK\",\n\t\t\t\t\"OCR-D-SEG-LINE\"\n\t\t\t],\n\t\t\t\"output_file_grp\": [\n\t\t\t\t\"OCR-D-SEG-BLOCK\",\n\t\t\t\t\"OCR-D-SEG-LINE\"\n\t\t\t],\n\t\t\t\"description\": \"Deskew regions with ocropy (by annotating orientation angle and adding AlternativeImage)\",\n\t\t\t\"parameters\": {\n\t\t\t\t\"maxskew\": {\n\t\t\t\t\t\"type\": \"number\",\n\t\t\t\t\t\"description\": \"modulus of maximum skewing angle to detect (larger will be slower, 0 will deactivate deskewing)\",\n\t\t\t\t\t\"default\": 5.0\n\t\t\t\t},\n\t\t\t\t\"level-of-operation\": {\n\t\t\t\t\t\"type\": \"string\",\n\t\t\t\t\t\"enum\": [\"page\", \"region\"],\n\t\t\t\t\t\"description\": \"PAGE XML hierarchy level granularity to annotate images for\",\n\t\t\t\t\t\"default\": \"region\"\n\t\t\t\t}\n\t\t\t}\n\t\t},\n\t\t\"ocrd-cis-ocropy-denoise\": {\n\t\t\t\"executable\": \"ocrd-cis-ocropy-denoise\",\n\t\t\t\"categories\": [\n\t\t\t\t\"Image preprocessing\"\n\t\t\t],\n\t\t\t\"steps\": [\n\t\t\t\t\"preprocessing/optimization/despeckling\"\n\t\t\t],\n\t\t\t\"input_file_grp\": [\n\t\t\t\t\"OCR-D-IMG\",\n\t\t\t\t\"OCR-D-SEG-BLOCK\",\n\t\t\t\t\"OCR-D-SEG-LINE\"\n\t\t\t],\n\t\t\t\"output_file_grp\": [\n\t\t\t\t\"OCR-D-IMG-DESPECK\",\n\t\t\t\t\"OCR-D-SEG-BLOCK\",\n\t\t\t\t\"OCR-D-SEG-LINE\"\n\t\t\t],\n\t\t\t\"description\": \"Despeckle pages / regions / lines with ocropy\",\n\t\t\t\"parameters\": {\n\t\t\t\t\"noise_maxsize\": {\n\t\t\t\t\t\"type\": \"number\",\n\t\t\t\t\t\"description\": \"maximum pixel number for connected components to regard as noise (0 will deactivate denoising)\",\n\t\t\t\t\t\"default\": 2\n\t\t\t\t},\n\t\t\t\t\"level-of-operation\": {\n\t\t\t\t\t\"type\": \"string\",\n\t\t\t\t\t\"enum\": [\"page\", \"region\", \"line\"],\n\t\t\t\t\t\"description\": \"PAGE XML hierarchy level granularity to annotate images for\",\n\t\t\t\t\t\"default\": \"page\"\n\t\t\t\t}\n\t\t\t}\n\t\t},\n\t\t\"ocrd-cis-ocropy-clip\": {\n\t\t\t\"executable\": \"ocrd-cis-ocropy-clip\",\n\t\t\t\"categories\": [\n\t\t\t\t\"Layout analysis\"\n\t\t\t],\n\t\t\t\"steps\": [\n\t\t\t\t\"layout/segmentation/region\",\n\t\t\t\t\"layout/segmentation/line\"\n\t\t\t],\n\t\t\t\"input_file_grp\": [\n\t\t\t\t\"OCR-D-SEG-BLOCK\",\n\t\t\t\t\"OCR-D-SEG-LINE\"\n\t\t\t],\n\t\t\t\"output_file_grp\": [\n\t\t\t\t\"OCR-D-SEG-BLOCK\",\n\t\t\t\t\"OCR-D-SEG-LINE\"\n\t\t\t],\n\t\t\t\"description\": \"Clip text regions / lines at intersections with neighbours\",\n\t\t\t\"parameters\": {\n\t\t\t\t\"level-of-operation\": {\n\t\t\t\t\t\"type\": \"string\",\n\t\t\t\t\t\"enum\": [\"region\", \"line\"],\n\t\t\t\t\t\"description\": \"PAGE XML hierarchy level granularity to annotate images for\",\n\t\t\t\t\t\"default\": \"region\"\n\t\t\t\t},\n\t\t\t\t\"min_fraction\": {\n\t\t\t\t\t\"type\": \"number\",\n\t\t\t\t\t\"format\": \"float\",\n\t\t\t\t\t\"description\": \"share of foreground pixels that must be retained by the largest label\",\n\t\t\t\t\t\"default\": 0.7\n\t\t\t\t}\n\t\t\t}\n\t\t},\n\t\t\"ocrd-cis-ocropy-resegment\": {\n\t\t\t\"executable\": \"ocrd-cis-ocropy-resegment\",\n\t\t\t\"categories\": [\n\t\t\t\t\"Layout analysis\"\n\t\t\t],\n\t\t\t\"steps\": [\n\t\t\t\t\"layout/segmentation/line\"\n\t\t\t],\n\t\t\t\"input_file_grp\": [\n\t\t\t\t\"OCR-D-SEG-LINE\"\n\t\t\t],\n\t\t\t\"output_file_grp\": [\n\t\t\t\t\"OCR-D-SEG-LINE\"\n\t\t\t],\n\t\t\t\"description\": \"Resegment lines with ocropy (by shrinking annotated polygons)\",\n\t\t\t\"parameters\": {\n\t\t\t\t\"min_fraction\": {\n\t\t\t\t\t\"type\": \"number\",\n\t\t\t\t\t\"format\": \"float\",\n\t\t\t\t\t\"description\": \"share of foreground pixels that must be retained by the largest label\",\n\t\t\t\t\t\"default\": 0.8\n\t\t\t\t},\n\t\t\t\t\"extend_margins\": {\n\t\t\t\t\t\"type\": \"number\",\n\t\t\t\t\t\"format\": \"integer\",\n\t\t\t\t\t\"description\": \"number of pixels to extend the input polygons horizontally and vertically before intersecting\",\n\t\t\t\t\t\"default\": 3\n\t\t\t\t}\n\t\t\t}\n\t\t},\n\t\t\"ocrd-cis-ocropy-dewarp\": {\n\t\t\t\"executable\": \"ocrd-cis-ocropy-dewarp\",\n\t\t\t\"categories\": [\n\t\t\t\t\"Image preprocessing\"\n\t\t\t],\n\t\t\t\"steps\": [\n\t\t\t\t\"preprocessing/optimization/dewarping\"\n\t\t\t],\n\t\t\t\"description\": \"Dewarp line images with ocropy\",\n\t\t\t\"input_file_grp\": [\n\t\t\t\t\"OCR-D-SEG-LINE\"\n\t\t\t],\n\t\t\t\"output_file_grp\": [\n\t\t\t\t\"OCR-D-SEG-LINE\"\n\t\t\t],\n\t\t\t\"parameters\": {\n\t\t\t\t\"range\": {\n\t\t\t\t\t\"type\": \"number\",\n\t\t\t\t\t\"description\": \"maximum vertical disposition or maximum margin (will be multiplied by mean centerline deltas to yield pixels)\",\n\t\t\t\t\t\"default\": 4\n\t\t\t\t}\n\t\t\t}\n\t\t},\n\t\t\"ocrd-cis-ocropy-recognize\": {\n\t\t\t\"executable\": \"ocrd-cis-ocropy-recognize\",\n\t\t\t\"categories\": [\n\t\t\t\t\"Text recognition and optimization\"\n\t\t\t],\n\t\t\t\"steps\": [\n\t\t\t\t\"recognition/text-recognition\"\n\t\t\t],\n\t\t\t\"description\": \"Recognize text in (binarized+deskewed+dewarped) lines with ocropy\",\n\t\t\t\"input_file_grp\": [\n\t\t\t\t\"OCR-D-SEG-LINE\",\n\t\t\t\t\"OCR-D-SEG-WORD\",\n\t\t\t\t\"OCR-D-SEG-GLYPH\"\n\t\t\t],\n\t\t\t\"output_file_grp\": [\n\t\t\t\t\"OCR-D-OCR-OCRO\"\n\t\t\t],\n\t\t\t\"parameters\": {\n\t\t\t\t\"textequiv_level\": {\n\t\t\t\t\t\"type\": \"string\",\n\t\t\t\t\t\"enum\": [\"line\", \"word\", \"glyph\"],\n\t\t\t\t\t\"description\": \"PAGE XML hierarchy level granularity to add the TextEquiv results to\",\n\t\t\t\t\t\"default\": \"line\"\n\t\t\t\t},\n\t\t\t\t\"model\": {\n\t\t\t\t\t\"type\": \"string\",\n\t\t\t\t\t\"description\": \"ocropy model to apply (e.g. fraktur.pyrnn)\"\n\t\t\t\t}\n\t\t\t}\n\t\t},\n\t\t\"ocrd-cis-ocropy-rec\": {\n\t\t\t\"executable\": \"ocrd-cis-ocropy-rec\",\n\t\t\t\"categories\": [\n\t\t\t\t\"Text recognition and optimization\"\n\t\t\t],\n\t\t\t\"steps\": [\n\t\t\t\t\"recognition/text-recognition\"\n\t\t\t],\n\t\t\t\"description\": \"Recognize text snippets\",\n\t\t\t\"parameters\": {\n\t\t\t\t\"model\": {\n\t\t\t\t\t\"type\": \"string\",\n\t\t\t\t\t\"description\": \"ocropy model to apply (e.g. fraktur.pyrnn)\"\n\t\t\t\t}\n\t\t\t}\n\t\t},\n\t\t\"ocrd-cis-ocropy-segment\": {\n\t\t\t\"executable\": \"ocrd-cis-ocropy-segment\",\n\t\t\t\"categories\": [\n\t\t\t\t\"Layout analysis\"\n\t\t\t],\n\t\t\t\"steps\": [\n\t\t\t\t\"layout/segmentation/region\",\n\t\t\t\t\"layout/segmentation/line\"\n\t\t\t],\n\t\t\t\"input_file_grp\": [\n\t\t\t\t\"OCR-D-GT-SEG-BLOCK\",\n\t\t\t\t\"OCR-D-SEG-BLOCK\"\n\t\t\t],\n\t\t\t\"output_file_grp\": [\n\t\t\t\t\"OCR-D-SEG-LINE\"\n\t\t\t],\n\t\t\t\"description\": \"Segment pages into regions or regions into lines with ocropy\",\n\t\t\t\"parameters\": {\n\t\t\t\t\"level-of-operation\": {\n\t\t\t\t\t\"type\": \"string\",\n\t\t\t\t\t\"enum\": [\"page\", \"region\"],\n\t\t\t\t\t\"description\": \"PAGE XML hierarchy level to read images from\",\n\t\t\t\t\t\"default\": \"region\"\n\t\t\t\t},\n\t\t\t\t\"maxcolseps\": {\n\t\t\t\t\t\"type\": \"number\",\n\t\t\t\t\t\"format\": \"integer\",\n\t\t\t\t\t\"default\": 2,\n\t\t\t\t\t\"description\": \"number of white/background column separators to try (when operating on the page level)\"\n\t\t\t\t},\n\t\t\t\t\"maxseps\": {\n\t\t\t\t\t\"type\": \"number\",\n\t\t\t\t\t\"format\": \"integer\",\n\t\t\t\t\t\"default\": 5,\n\t\t\t\t\t\"description\": \"number of black/foreground column separators to try, counted individually as lines (when operating on the page level)\"\n\t\t\t\t},\n\t\t\t\t\"overwrite_regions\": {\n\t\t\t\t\t\"type\": \"boolean\",\n\t\t\t\t\t\"default\": true,\n\t\t\t\t\t\"description\": \"remove any existing TextRegion elements (when operating on the page level)\"\n\t\t\t\t},\n\t\t\t\t\"overwrite_lines\": {\n\t\t\t\t\t\"type\": \"boolean\",\n\t\t\t\t\t\"default\": true,\n\t\t\t\t\t\"description\": \"remove any existing TextLine elements (when operating on the region level)\"\n\t\t\t\t},\n\t\t\t\t\"spread\": {\n\t\t\t\t\t\"type\": \"number\",\n\t\t\t\t\t\"format\": \"float\",\n\t\t\t\t\t\"default\": 2.4,\n\t\t\t\t\t\"description\": \"distance in points (pt) from the foreground to project text line (or text region) labels into the background\"\n\t\t\t\t}\n\t\t\t}\n\t\t},\n\t\t\"cis-ocrd-ocropy-train\": {\n\t\t\t\"executable\": \"ocrd-cis-ocropy-train\",\n\t\t\t\"categories\": [\n\t\t\t\t\"lstm ocropy model training\"\n\t\t\t],\n\t\t\t\"steps\": [\n\t\t\t\t\"training\"\n\t\t\t],\n\t\t\t\"description\": \"train model with ground truth from mets data\",\n\t\t\t\"parameters\": {\n\t\t\t\t\"textequiv_level\": {\n\t\t\t\t\t\"type\": \"string\",\n\t\t\t\t\t\"enum\": [\"line\", \"word\", \"glyph\"],\n\t\t\t\t\t\"default\": \"line\"\n\t\t\t\t},\n\t\t\t\t\"model\": {\n\t\t\t\t\t\"type\": \"string\",\n\t\t\t\t\t\"description\": \"load model or crate new one (e.g. fraktur.pyrnn)\"\n\t\t\t\t},\n\t\t\t\t\"ntrain\": {\n\t\t\t\t\t\"type\": \"integer\",\n\t\t\t\t\t\"description\": \"lines to train before stopping\",\n\t\t\t\t\t\"default\": 1000000\n\t\t\t\t},\n\t\t\t\t\"outputpath\": {\n\t\t\t\t\t\"type\": \"string\",\n\t\t\t\t\t\"description\": \"(existing) path for the trained model\"\n\t\t\t\t}\n\t\t\t}\n\t\t},\n\t\t\"ocrd-cis-profile\": {\n\t\t\t\"executable\": \"ocrd-cis-profile\",\n\t\t\t\"categories\": [\n\t\t\t\t\"Text recognition and optimization\"\n\t\t\t],\n\t\t\t\"steps\": [\n\t\t\t\t\"postprocessing/alignment\"\n\t\t\t],\n\t\t\t\"description\": \"Add a correction suggestions and suspicious tokens (profile)\",\n\t\t\t\"parameters\": {\n\t\t\t\t\"executable\": {\n\t\t\t\t\t\"type\": \"string\",\n\t\t\t\t\t\"required\": true\n\t\t\t\t},\n\t\t\t\t\"backend\": {\n\t\t\t\t\t\"type\": \"string\",\n\t\t\t\t\t\"required\": true\n\t\t\t\t},\n\t\t\t\t\"language\": {\n\t\t\t\t    \"type\": \"string\",\n\t\t\t\t\t\"required\": false,\n\t\t\t\t\t\"default\": \"german\"\n\t\t\t\t},\n\t\t\t\t\"additionalLexicon\": {\n\t\t\t\t\t\"type\": \"string\",\n\t\t\t\t\t\"required\": false,\n\t\t\t\t\t\"default\": \"\"\n\t\t\t\t}\n\t\t\t}\n\t\t},\n\t\t\"ocrd-cis-train\": {\n\t\t\t\"executable\": \"ocrd-cis-train\",\n\t\t\t\"categories\": [\n\t\t\t\t\"Text recognition and optimization\"\n\t\t\t],\n\t\t\t\"steps\": [\n\t\t\t\t\"postprocessing/alignment\"\n\t\t\t],\n\t\t\t\"description\": \"Train post correction model\",\n\t\t\t\"parameters\": {\n\t\t\t\t\"jar\": {\n\t\t\t\t\t\"type\": \"string\",\n\t\t\t\t\t\"required\": true\n\t\t\t\t}\n\t\t\t}\n\t\t},\n\t\t\"ocrd-cis-stats\": {\n\t\t\t\"executable\": \"ocrd-cis-stats\",\n\t\t\t\"categories\": [\n\t\t\t\t\"Text recognition and optimization\"\n\t\t\t],\n\t\t\t\"steps\": [\n\t\t\t\t\"postprocessing/alignment\"\n\t\t\t],\n\t\t\t\"description\": \"Get Precision of aligned ocrs\",\n\t\t\t\"parameters\": {\n\t\t\t\t\"none\": {\n\t\t\t\t\t\"type\": \"string\"\n\t\t\t\t}\n\t\t\t}\n\t\t},\n\t\t\"ocrd-cis-lang\": {\n\t\t\t\"executable\": \"ocrd-cis-lang\",\n\t\t\t\"categories\": [\n\t\t\t\t\"Text recognition and optimization\"\n\t\t\t],\n\t\t\t\"steps\": [\n\t\t\t\t\"postprocessing/alignment\"\n\t\t\t],\n\t\t\t\"description\": \"Get language and font of input-file-group\",\n\t\t\t\"parameters\": {\n\t\t\t\t\"none\": {\n\t\t\t\t\t\"type\": \"string\"\n\t\t\t\t}\n\t\t\t}\n\t\t},\n\t\t\"ocrd-cis-importer\": {\n\t\t\t\"executable\": \"ocrd-cis-importer\",\n\t\t\t\"categories\": [\n\t\t\t\t\"Text recognition and optimization\"\n\t\t\t],\n\t\t\t\"steps\": [\n\t\t\t\t\"postprocessing\"\n\t\t\t],\n\t\t\t\"description\": \"different ocropy tool\",\n\t\t\t\"parameters\": {\n\t\t\t\t\"none\": {\n\t\t\t\t\t\"type\": \"string\"\n\t\t\t\t}\n\t\t\t}\n\t\t},\n\t\t\"ocrd-cis-cutter\": {\n\t\t\t\"executable\": \"ocrd-cis-cutter\",\n\t\t\t\"categories\": [\n\t\t\t\t\"Text recognition and optimization\"\n\t\t\t],\n\t\t\t\"steps\": [\n\t\t\t\t\"postprocessing\"\n\t\t\t],\n\t\t\t\"description\": \"cut lines from input-file-groups\",\n\t\t\t\"parameters\": {\n\t\t\t\t\"gtdir\": {\n\t\t\t\t\t\"type\": \"string\"\n\t\t\t\t}\n\t\t\t}\n\t\t},\n\t\t\"ocrd-cis-clean\": {\n\t\t\t\"executable\": \"ocrd-cis-clean\",\n\t\t\t\"categories\": [\n\t\t\t\t\"Text recognition and optimization\"\n\t\t\t],\n\t\t\t\"steps\": [\n\t\t\t\t\"postprocessing\"\n\t\t\t],\n\t\t\t\"description\": \"clean-up-tool\",\n\t\t\t\"parameters\": {\n\t\t\t\t\"mainLevel\": {\n\t\t\t\t\t\"type\": \"string\",\n\t\t\t\t\t\"enum\": [\"line\", \"word\", \"glyph\"],\n\t\t\t\t\t\"default\": \"line\"\n\t\t\t\t},\n\t\t\t\t\"mainIndex\": {\n\t\t\t\t\t\"type\": \"integer\",\n\t\t\t\t\t\"description\": \"model index\"\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t}\n}\n",
-            "setup.py": "\"\"\"\nInstalls:\n    - ocrd-cis-align\n    - ocrd-cis-profile\n    - ocrd-cis-ocropy-clip\n    - ocrd-cis-ocropy-denoise\n    - ocrd-cis-ocropy-deskew\n    - ocrd-cis-ocropy-binarize\n    - ocrd-cis-ocropy-resegment\n    - ocrd-cis-ocropy-segment\n    - ocrd-cis-ocropy-dewarp\n    - ocrd-cis-ocropy-recognize\n    - ocrd-cis-ocropy-train\n    - ocrd-cis-aio\n    - ocrd-cis-stats\n    - ocrd-cis-lang\n    - ocrd-cis-clean\n    - ocrd-cis-cutter\n    - ocrd-cis-importer\n\"\"\"\n\nfrom setuptools import setup\nfrom setuptools import find_packages\n\nsetup(\n    include_package_data = True,\n    name='cis-ocrd',\n    version='0.0.4',\n    description='description',\n    long_description='long description',\n    author='Florian Fink, Tobias Englmeier, Christoph Weber',\n    author_email='finkf@cis.lmu.de, englmeier@cis.lmu.de, web_chris@msn.com',\n    url='https://github.com/cisocrgroup/cis-ocrd-py',\n    license='MIT',\n    packages=find_packages(),\n    install_requires=[\n        'ocrd>=1.0.0b19',\n        'click',\n        'scipy',\n        'numpy>=1.17.0',\n        'pillow==5.4.1',\n        'matplotlib>3.0.0',\n        'python-Levenshtein',\n        'calamari_ocr'\n    ],\n    package_data={\n        '': ['*.json', '*.yml', '*.yaml'],\n        'ocrd_cis': ['ocrd_cis/jar/ocrd-cis.jar'],\n    },\n    entry_points={\n        'console_scripts': [\n            'ocrd-cis-align=ocrd_cis.align.cli:cis_ocrd_align',\n            'ocrd-cis-profile=ocrd_cis.profile.cli:cis_ocrd_profile',\n            'ocrd-cis-ocropy-binarize=ocrd_cis.ocropy.cli:cis_ocrd_ocropy_binarize',\n            'ocrd-cis-ocropy-clip=ocrd_cis.ocropy.cli:cis_ocrd_ocropy_clip',\n            'ocrd-cis-ocropy-denoise=ocrd_cis.ocropy.cli:cis_ocrd_ocropy_denoise',\n            'ocrd-cis-ocropy-deskew=ocrd_cis.ocropy.cli:cis_ocrd_ocropy_deskew',\n            'ocrd-cis-ocropy-dewarp=ocrd_cis.ocropy.cli:cis_ocrd_ocropy_dewarp',\n            'ocrd-cis-ocropy-recognize=ocrd_cis.ocropy.cli:cis_ocrd_ocropy_recognize',\n            'ocrd-cis-ocropy-rec=ocrd_cis.ocropy.cli:cis_ocrd_ocropy_rec',\n            'ocrd-cis-ocropy-resegment=ocrd_cis.ocropy.cli:cis_ocrd_ocropy_resegment',\n            'ocrd-cis-ocropy-segment=ocrd_cis.ocropy.cli:cis_ocrd_ocropy_segment',\n            'ocrd-cis-ocropy-train=ocrd_cis.ocropy.cli:cis_ocrd_ocropy_train',\n            'ocrd-cis-aio=ocrd_cis.aio.cli:cis_ocrd_aio',\n            'ocrd-cis-stats=ocrd_cis.div.cli:cis_ocrd_stats',\n            'ocrd-cis-lang=ocrd_cis.div.cli:cis_ocrd_lang',\n            'ocrd-cis-clean=ocrd_cis.div.cli:cis_ocrd_clean',\n            'ocrd-cis-importer=ocrd_cis.div.cli:cis_ocrd_importer',\n            'ocrd-cis-cutter=ocrd_cis.div.cli:cis_ocrd_cutter',\n        ]\n    },\n)\n"
+            "Dockerfile": "FROM ocrd/core:latest\nENV VERSION=\"Mi 9. Okt 13:26:16 CEST 2019\"\nENV GITURL=\"https://github.com/cisocrgroup\"\nENV DOWNLOAD_URL=\"http://cis.lmu.de/~finkf\"\nENV DATA=\"/apps/ocrd-cis-post-correction\"\n\n# deps\nCOPY data/docker/deps.txt ${DATA}/deps.txt\nRUN apt-get update \\\n\t&& apt-get -y install --no-install-recommends $(cat ${DATA}/deps.txt)\n\n# locales\nRUN sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen \\\n    && dpkg-reconfigure --frontend=noninteractive locales \\\n    && update-locale LANG=en_US.UTF-8\n\n# install the profiler\nRUN\tgit clone ${GITURL}/Profiler --branch devel --single-branch /tmp/profiler \\\n\t&& cd /tmp/profiler \\\n\t&& mkdir build \\\n\t&& cd build \\\n\t&& cmake -DCMAKE_BUILD_TYPE=release .. \\\n\t&& make compileFBDic trainFrequencyList profiler \\\n\t&& cp bin/compileFBDic bin/trainFrequencyList bin/profiler /apps/ \\\n\t&& cd / \\\n    && rm -rf /tmp/profiler\n\n# install the profiler's language backend\nRUN\tgit clone ${GITURL}/Resources --branch master --single-branch /tmp/resources \\\n\t&& cd /tmp/resources/lexica \\\n\t&& make FBDIC=/apps/compileFBDic TRAIN=/apps/trainFrequencyList \\\n\t&& mkdir -p /${DATA}/languages \\\n\t&& cp -r german latin greek german.ini latin.ini greek.ini /${DATA}/languages \\\n\t&& cd / \\\n\t&& rm -rf /tmp/resources\n\n# install ocrd_cis (python)\nCOPY Manifest.in Makefile setup.py ocrd-tool.json /tmp/build/\nCOPY ocrd_cis/ /tmp/build/ocrd_cis/\nCOPY bashlib/ /tmp/build/bashlib/\n# COPY . /tmp/ocrd_cis\nRUN cd /tmp/build \\\n\t&& make install \\\n\t&& cd / \\\n\t&& rm -rf /tmp/build\n\n# download ocr models and pre-trainded post-correction model\nRUN mkdir /apps/models \\\n\t&& cd /apps/models \\\n\t&& wget ${DOWNLOAD_URL}/model.zip >/dev/null 2>&1 \\\n\t&& wget ${DOWNLOAD_URL}/fraktur1-00085000.pyrnn.gz >/dev/null 2>&1 \\\n\t&& wget ${DOWNLOAD_URL}/fraktur2-00062000.pyrnn.gz >/dev/null 2>&1\n\nVOLUME [\"/data\"]\nENTRYPOINT [\"/bin/sh\", \"-c\"]\n",
+            "README.md": "![build status](https://travis-ci.org/cisocrgroup/ocrd_cis.svg?branch=dev)\n# ocrd_cis\n\n[CIS](http://www.cis.lmu.de) [OCR-D](http://ocr-d.de) command line\ntools for the automatic post-correction of OCR-results.\n\n## Introduction\n`ocrd_cis` contains different tools for the automatic post correction\nof OCR-results.  It contains tools for the training, evaluation and\nexecution of the post correction.  Most of the tools are following the\n[OCR-D cli conventions](https://ocr-d.github.io/cli).\n\nThere is a helper tool to align multiple OCR results as well as a\nversion of ocropy that works with python3.\n\n## Installation\nThere are multiple ways to install the `ocrd_cis` tools:\n * `make install` uses `pip` to install `ocrd_cis` (see below).\n * `make install-devel` uses `pip -e` to install `ocrd_cis` (see\n   below).\n * `pip install --upgrade pip ocrd_cis_dir`\n * `pip install -e --upgrade pip ocrd_cis_dir`\n\nIt is possible to install `ocrd_cis` in a custom directory using\n`virtualenv`:\n```sh\n python3 -m venv venv-dir\n source venv-dir/bin/activate\n make install # or any other command to install ocrd_cis (see above)\n # use ocrd_cis\n deactivate\n```\n\n## Usage\nMost tools follow the [OCR-D cli\nconventions](https://ocr-d.github.io/cli).  They accept the\n`--input-file-grp`, `--output-file-grp`, `--parameter`, `--mets`,\n`--log-level` command line arguments (short and long).  For some tools\n(most notably the alignment tool) expect a comma seperated list of\nmultiple input file groups.\n\nThe [ocrd-tool.json](ocrd_cis/ocrd-tool.json) contains a schema\ndescription of the parameter config file for the different tools that\naccept the `--parameter` argument.\n\n### ocrd-cis-post-correct.sh\nThis bash script runs the post correction using a pre-trained\n[model](http://cis.lmu.de/~finkf/model.zip).  If additional support\nOCRs should be used, models for these OCR steps are required and must\nbe configured in an according configuration file (see ocrd-tool.json).\n\nArguments:\n * `--parameter` path to configuration file\n * `--input-file-grp` name of the master-OCR file group\n * `--output-file-grp` name of the post-correction file group\n * `--log-level` set log level\n * `--mets` path to METS file in workspace\n\n### ocrd-cis-align\nAligns tokens of multiple input file groups to one output file group.\nThis tool is used to align the master OCR with any additional support\nOCRs.  It accepts a comma-separated list of input file groups, which\nit aligns in order.\n\nArguments:\n * `--parameter` path to configuration file\n * `--input-file-grp` comma seperated list of the input file groups;\n   first input file group is the master OCR\n * `--output-file-grp` name of the file group for the aligned result\n * `--log-level` set log level\n * `--mets` path to METS file in workspace\n\n### ocrd-cis-train.sh\nScript to train a model from a list of ground-truth archives (see\nocrd-tool.json) for the post correction.  The tool somewhat mimics the\nbehaviour of other ocrd tools:\n * `--mets` for the workspace\n * `--log-level` is passed to other tools\n * `--parameter` is used as configuration\n * `--output-file-grp` defines the output file group for the model\n\n### ocrd-cis-data\nHelper tool to get the path of the installed data files. Usage:\n`ocrd-cis-data [-jar|-3gs]` to get the path of the jar library or the\npath to th default 3-grams language model file.\n\n### ocrd-cis-wer\nHelper tool to calculate the word error rate aligned ocr files.  It\nwrites a simple JSON-formated stats file to the given output file group.\n\nArguments:\n * `--input-file-grp` input file group of aligned ocr results with\n   their respective ground truth.\n * `--output-file-grp` name of the file group for the stats file\n * `--log-level` set log level\n * `--mets` path to METS file in workspace\n\n### ocrd-cis-profile\nRun the profiler over the given files of the according the given input\nfile grp and adds a gzipped JSON-formatted profile to the output file\ngroup of the workspace.  This tools requires an installed [language\nprofiler](https://github.com/cisocrgroup/Profiler).\n\nArguments:\n * `--parameter` path to configuration file\n * `--input-file-grp` name of the input file group to profile\n * `--output-file-grp` name of the output file group where the profile\n   is stored\n * `--log-level` set log level\n * `--mets` path to METS file in the workspace\n\n### ocrd-cis-ocropy-train\nThe ocropy-train tool can be used to train LSTM models.\nIt takes ground truth from the workspace and saves (image+text) snippets from the corresponding pages.\nThen a model is trained on all snippets for 1 million (or the given number of) randomized iterations from the parameter file.\n```sh\nocrd-cis-ocropy-train \\\n  --input-file-grp OCR-D-GT-SEG-LINE \\\n  --mets mets.xml\n  --parameter file:///path/to/config.json\n```\n\n### ocrd-cis-ocropy-clip\nThe ocropy-clip tool can be used to remove intrusions of neighbouring segments in regions / lines of a workspace.\nIt runs a (ad-hoc binarization and) connected component analysis on every text region / line of every PAGE in the input file group, as well as its overlapping neighbours, and for each binary object of conflict, determines whether it belongs to the neighbour, and can therefore be clipped to white. It references the resulting segment image files in the output PAGE (as AlternativeImage).\n```sh\nocrd-cis-ocropy-clip \\\n  --input-file-grp OCR-D-SEG-LINE \\\n  --output-file-grp OCR-D-SEG-LINE-CLIP \\\n  --mets mets.xml\n  --parameter file:///path/to/config.json\n```\n\n### ocrd-cis-ocropy-resegment\nThe ocropy-resegment tool can be used to remove overlap between lines of a workspace.\nIt runs a (ad-hoc binarization and) line segmentation on every text region of every PAGE in the input file group, and for each line already annotated, determines the label of largest extent within the original coordinates (polygon outline) in that line, and annotates the resulting coordinates in the output PAGE.\n```sh\nocrd-cis-ocropy-resegment \\\n  --input-file-grp OCR-D-SEG-LINE \\\n  --output-file-grp OCR-D-SEG-LINE-RES \\\n  --mets mets.xml\n  --parameter file:///path/to/config.json\n```\n\n### ocrd-cis-ocropy-segment\nThe ocropy-segment tool can be used to segment regions into lines.\nIt runs a (ad-hoc binarization and) line segmentation on every text region of every PAGE in the input file group, and adds a TextLine element with the resulting polygon outline to the annotation of the output PAGE.\n```sh\nocrd-cis-ocropy-segment \\\n  --input-file-grp OCR-D-SEG-BLOCK \\\n  --output-file-grp OCR-D-SEG-LINE \\\n  --mets mets.xml\n  --parameter file:///path/to/config.json\n```\n\n### ocrd-cis-ocropy-deskew\nThe ocropy-deskew tool can be used to deskew pages / regions of a workspace.\nIt runs the Ocropy thresholding and deskewing estimation on every segment of every PAGE in the input file group and annotates the orientation angle in the output PAGE.\n```sh\nocrd-cis-ocropy-deskew \\\n  --input-file-grp OCR-D-SEG-LINE \\\n  --output-file-grp OCR-D-SEG-LINE-DES \\\n  --mets mets.xml\n  --parameter file:///path/to/config.json\n```\n\n### ocrd-cis-ocropy-denoise\nThe ocropy-denoise tool can be used to despeckle pages / regions / lines of a workspace.\nIt runs the Ocropy \"nlbin\" denoising on every segment of every PAGE in the input file group and references the resulting segment image files in the output PAGE (as AlternativeImage).\n```sh\nocrd-cis-ocropy-denoise \\\n  --input-file-grp OCR-D-SEG-LINE-DES \\\n  --output-file-grp OCR-D-SEG-LINE-DEN \\\n  --mets mets.xml\n  --parameter file:///path/to/config.json\n```\n\n### ocrd-cis-ocropy-binarize\nThe ocropy-binarize tool can be used to binarize, denoise and deskew pages / regions / lines of a workspace.\nIt runs the Ocropy \"nlbin\" adaptive thresholding, deskewing estimation and denoising on every segment of every PAGE in the input file group and references the resulting segment image files in the output PAGE (as AlternativeImage). (If a deskewing angle has already been annotated in a region, the tool respects that and rotates accordingly.) Images can also be produced grayscale-normalized.\n```sh\nocrd-cis-ocropy-binarize \\\n  --input-file-grp OCR-D-SEG-LINE-DES \\\n  --output-file-grp OCR-D-SEG-LINE-BIN \\\n  --mets mets.xml\n  --parameter file:///path/to/config.json\n```\n\n### ocrd-cis-ocropy-dewarp\nThe ocropy-dewarp tool can be used to dewarp text lines of a workspace.\nIt runs the Ocropy baseline estimation and dewarping on every line in every text region of every PAGE in the input file group and references the resulting line image files in the output PAGE (as AlternativeImage).\n```sh\nocrd-cis-ocropy-dewarp \\\n  --input-file-grp OCR-D-SEG-LINE-BIN \\\n  --output-file-grp OCR-D-SEG-LINE-DEW \\\n  --mets mets.xml\n  --parameter file:///path/to/config.json\n```\n\n### ocrd-cis-ocropy-recognize\nThe ocropy-recognize tool can be used to recognize lines / words / glyphs from pages of a workspace.\nIt runs the Ocropy optical character recognition on every line in every text region of every PAGE in the input file group and adds the resulting text annotation in the output PAGE.\n```sh\nocrd-cis-ocropy-recognize \\\n  --input-file-grp OCR-D-SEG-LINE-DEW \\\n  --output-file-grp OCR-D-OCR-OCRO \\\n  --mets mets.xml\n  --parameter file:///path/to/config.json\n```\n\n### Tesserocr\nInstall essential system packages for Tesserocr\n```sh\nsudo apt-get install python3-tk \\\n  tesseract-ocr libtesseract-dev libleptonica-dev \\\n  libimage-exiftool-perl libxml2-utils\n```\n\nThen install Tesserocr from: https://github.com/OCR-D/ocrd_tesserocr\n```sh\npip install -r requirements.txt\npip install .\n```\n\nDownload and move tesseract models from:\nhttps://github.com/tesseract-ocr/tesseract/wiki/Data-Files\nor use your own models\nplace them into: /usr/share/tesseract-ocr/4.00/tessdata\n\nTesserocr v2.4.0 seems broken for tesseract 4.0.0-beta. Install\nVersion v2.3.1 instead: `pip install tesseract==2.3.1`.\n\n## Workflow configuration\n\nA decent pipeline might look like this:\n\n1. page-level cropping\n2. page-level binarization\n3. page-level deskewing\n4. page-level dewarping\n5. region segmentation\n6. region-level clipping\n7. region-level deskewing\n8. line segmentation\n9. line-level clipping or resegmentation\n10. line-level dewarping\n11. line-level recognition\n12. line-level alignment\n\nIf GT is used, steps 1, 5 and 8 can be omitted. Else if a segmentation is used in 5 and 8 which does not produce overlapping sections, steps 6 and 9 can be omitted.\n\n## Testing\nTo run a view basic test type `make test` (`ocrd_cis` has to be\ninstalled in order to run any tests).\n\n## OCR-D workspace\n\n* Create a new (empty) workspace: `ocrd workspace init workspace-dir`\n* cd into `workspace-dir`\n* Add new file to workspace: `ocrd workspace add file -G group -i id\n  -m mimetype`\n\n## OCR-D links\n\n- [OCR-D](https://ocr-d.github.io)\n- [Github](https://github.com/OCR-D)\n- [Project-page](http://www.ocr-d.de/)\n- [Ground-truth](http://www.ocr-d.de/sites/all/GTDaten/IndexGT.html)\n",
+            "ocrd-tool.json": "{\n\t\"git_url\": \"https://github.com/cisocrgroup/ocrd_cis\",\n\t\"version\": \"0.0.2\",\n\t\"tools\": {\n\t\t\"ocrd-cis-ocropy-binarize\": {\n\t\t\t\"executable\": \"ocrd-cis-ocropy-binarize\",\n\t\t\t\"categories\": [\n\t\t\t\t\"Image preprocessing\"\n\t\t\t],\n\t\t\t\"steps\": [\n\t\t\t\t\"preprocessing/optimization/binarization\",\n\t\t\t\t\"preprocessing/optimization/grayscale_normalization\",\n\t\t\t\t\"preprocessing/optimization/deskewing\"\n\t\t\t],\n\t\t\t\"input_file_grp\": [\n\t\t\t\t\"OCR-D-IMG\",\n\t\t\t\t\"OCR-D-SEG-BLOCK\",\n\t\t\t\t\"OCR-D-SEG-LINE\"\n\t\t\t],\n\t\t\t\"output_file_grp\": [\n\t\t\t\t\"OCR-D-IMG-BIN\",\n\t\t\t\t\"OCR-D-SEG-BLOCK\",\n\t\t\t\t\"OCR-D-SEG-LINE\"\n\t\t\t],\n\t\t\t\"description\": \"Binarize (and optionally deskew/despeckle) pages / regions / lines with ocropy\",\n\t\t\t\"parameters\": {\n\t\t\t\t\"method\": {\n\t\t\t\t\t\"type\": \"string\",\n\t\t\t\t\t\"enum\": [\"none\", \"global\", \"otsu\", \"gauss-otsu\", \"ocropy\"],\n\t\t\t\t\t\"description\": \"binarization method to use (only ocropy will include deskewing)\",\n\t\t\t\t\t\"default\": \"ocropy\"\n\t\t\t\t},\n\t\t\t\t\"grayscale\": {\n\t\t\t\t\t\"type\": \"boolean\",\n\t\t\t\t\t\"description\": \"for the ocropy method, produce grayscale-normalized instead of thresholded image\",\n\t\t\t\t\t\"default\": false\n\t\t\t\t},\n\t\t\t\t\"maxskew\": {\n\t\t\t\t\t\"type\": \"number\",\n\t\t\t\t\t\"description\": \"modulus of maximum skewing angle to detect (larger will be slower, 0 will deactivate deskewing)\",\n\t\t\t\t\t\"default\": 0.0\n\t\t\t\t},\n\t\t\t\t\"noise_maxsize\": {\n\t\t\t\t\t\"type\": \"number\",\n\t\t\t\t\t\"description\": \"maximum pixel number for connected components to regard as noise (0 will deactivate denoising)\",\n\t\t\t\t\t\"default\": 0\n\t\t\t\t},\n\t\t\t\t\"level-of-operation\": {\n\t\t\t\t\t\"type\": \"string\",\n\t\t\t\t\t\"enum\": [\"page\", \"region\", \"line\"],\n\t\t\t\t\t\"description\": \"PAGE XML hierarchy level granularity to annotate images for\",\n\t\t\t\t\t\"default\": \"page\"\n\t\t\t\t}\n\t\t\t}\n\t\t},\n\t\t\"ocrd-cis-ocropy-deskew\": {\n\t\t\t\"executable\": \"ocrd-cis-ocropy-deskew\",\n\t\t\t\"categories\": [\n\t\t\t\t\"Image preprocessing\"\n\t\t\t],\n\t\t\t\"steps\": [\n\t\t\t\t\"preprocessing/optimization/deskewing\"\n\t\t\t],\n\t\t\t\"input_file_grp\": [\n\t\t\t\t\"OCR-D-SEG-BLOCK\",\n\t\t\t\t\"OCR-D-SEG-LINE\"\n\t\t\t],\n\t\t\t\"output_file_grp\": [\n\t\t\t\t\"OCR-D-SEG-BLOCK\",\n\t\t\t\t\"OCR-D-SEG-LINE\"\n\t\t\t],\n\t\t\t\"description\": \"Deskew regions with ocropy (by annotating orientation angle and adding AlternativeImage)\",\n\t\t\t\"parameters\": {\n\t\t\t\t\"maxskew\": {\n\t\t\t\t\t\"type\": \"number\",\n\t\t\t\t\t\"description\": \"modulus of maximum skewing angle to detect (larger will be slower, 0 will deactivate deskewing)\",\n\t\t\t\t\t\"default\": 5.0\n\t\t\t\t},\n\t\t\t\t\"level-of-operation\": {\n\t\t\t\t\t\"type\": \"string\",\n\t\t\t\t\t\"enum\": [\"page\", \"region\"],\n\t\t\t\t\t\"description\": \"PAGE XML hierarchy level granularity to annotate images for\",\n\t\t\t\t\t\"default\": \"region\"\n\t\t\t\t}\n\t\t\t}\n\t\t},\n\t\t\"ocrd-cis-ocropy-denoise\": {\n\t\t\t\"executable\": \"ocrd-cis-ocropy-denoise\",\n\t\t\t\"categories\": [\n\t\t\t\t\"Image preprocessing\"\n\t\t\t],\n\t\t\t\"steps\": [\n\t\t\t\t\"preprocessing/optimization/despeckling\"\n\t\t\t],\n\t\t\t\"input_file_grp\": [\n\t\t\t\t\"OCR-D-IMG\",\n\t\t\t\t\"OCR-D-SEG-BLOCK\",\n\t\t\t\t\"OCR-D-SEG-LINE\"\n\t\t\t],\n\t\t\t\"output_file_grp\": [\n\t\t\t\t\"OCR-D-IMG-DESPECK\",\n\t\t\t\t\"OCR-D-SEG-BLOCK\",\n\t\t\t\t\"OCR-D-SEG-LINE\"\n\t\t\t],\n\t\t\t\"description\": \"Despeckle pages / regions / lines with ocropy\",\n\t\t\t\"parameters\": {\n\t\t\t\t\"noise_maxsize\": {\n\t\t\t\t\t\"type\": \"number\",\n\t\t\t\t\t\"format\": \"float\",\n\t\t\t\t\t\"description\": \"maximum size in points (pt) for connected components to regard as noise (0 will deactivate denoising)\",\n\t\t\t\t\t\"default\": 3.0\n\t\t\t\t},\n\t\t\t\t\"level-of-operation\": {\n\t\t\t\t\t\"type\": \"string\",\n\t\t\t\t\t\"enum\": [\"page\", \"region\", \"line\"],\n\t\t\t\t\t\"description\": \"PAGE XML hierarchy level granularity to annotate images for\",\n\t\t\t\t\t\"default\": \"page\"\n\t\t\t\t}\n\t\t\t}\n\t\t},\n\t\t\"ocrd-cis-ocropy-clip\": {\n\t\t\t\"executable\": \"ocrd-cis-ocropy-clip\",\n\t\t\t\"categories\": [\n\t\t\t\t\"Layout analysis\"\n\t\t\t],\n\t\t\t\"steps\": [\n\t\t\t\t\"layout/segmentation/region\",\n\t\t\t\t\"layout/segmentation/line\"\n\t\t\t],\n\t\t\t\"input_file_grp\": [\n\t\t\t\t\"OCR-D-SEG-BLOCK\",\n\t\t\t\t\"OCR-D-SEG-LINE\"\n\t\t\t],\n\t\t\t\"output_file_grp\": [\n\t\t\t\t\"OCR-D-SEG-BLOCK\",\n\t\t\t\t\"OCR-D-SEG-LINE\"\n\t\t\t],\n\t\t\t\"description\": \"Clip text regions / lines at intersections with neighbours\",\n\t\t\t\"parameters\": {\n\t\t\t\t\"level-of-operation\": {\n\t\t\t\t\t\"type\": \"string\",\n\t\t\t\t\t\"enum\": [\"region\", \"line\"],\n\t\t\t\t\t\"description\": \"PAGE XML hierarchy level granularity to annotate images for\",\n\t\t\t\t\t\"default\": \"region\"\n\t\t\t\t},\n\t\t\t\t\"min_fraction\": {\n\t\t\t\t\t\"type\": \"number\",\n\t\t\t\t\t\"format\": \"float\",\n\t\t\t\t\t\"description\": \"share of foreground pixels that must be retained by the largest label\",\n\t\t\t\t\t\"default\": 0.7\n\t\t\t\t}\n\t\t\t}\n\t\t},\n\t\t\"ocrd-cis-ocropy-resegment\": {\n\t\t\t\"executable\": \"ocrd-cis-ocropy-resegment\",\n\t\t\t\"categories\": [\n\t\t\t\t\"Layout analysis\"\n\t\t\t],\n\t\t\t\"steps\": [\n\t\t\t\t\"layout/segmentation/line\"\n\t\t\t],\n\t\t\t\"input_file_grp\": [\n\t\t\t\t\"OCR-D-SEG-LINE\"\n\t\t\t],\n\t\t\t\"output_file_grp\": [\n\t\t\t\t\"OCR-D-SEG-LINE\"\n\t\t\t],\n\t\t\t\"description\": \"Resegment lines with ocropy (by shrinking annotated polygons)\",\n\t\t\t\"parameters\": {\n\t\t\t\t\"min_fraction\": {\n\t\t\t\t\t\"type\": \"number\",\n\t\t\t\t\t\"format\": \"float\",\n\t\t\t\t\t\"description\": \"share of foreground pixels that must be retained by the largest label\",\n\t\t\t\t\t\"default\": 0.8\n\t\t\t\t},\n\t\t\t\t\"extend_margins\": {\n\t\t\t\t\t\"type\": \"number\",\n\t\t\t\t\t\"format\": \"integer\",\n\t\t\t\t\t\"description\": \"number of pixels to extend the input polygons horizontally and vertically before intersecting\",\n\t\t\t\t\t\"default\": 3\n\t\t\t\t}\n\t\t\t}\n\t\t},\n\t\t\"ocrd-cis-ocropy-dewarp\": {\n\t\t\t\"executable\": \"ocrd-cis-ocropy-dewarp\",\n\t\t\t\"categories\": [\n\t\t\t\t\"Image preprocessing\"\n\t\t\t],\n\t\t\t\"steps\": [\n\t\t\t\t\"preprocessing/optimization/dewarping\"\n\t\t\t],\n\t\t\t\"description\": \"Dewarp line images with ocropy\",\n\t\t\t\"input_file_grp\": [\n\t\t\t\t\"OCR-D-SEG-LINE\"\n\t\t\t],\n\t\t\t\"output_file_grp\": [\n\t\t\t\t\"OCR-D-SEG-LINE\"\n\t\t\t],\n\t\t\t\"parameters\": {\n\t\t\t\t\"range\": {\n\t\t\t\t\t\"type\": \"number\",\n\t\t\t\t\t\"description\": \"maximum vertical disposition or maximum margin (will be multiplied by mean centerline deltas to yield pixels)\",\n\t\t\t\t\t\"default\": 4\n\t\t\t\t}\n\t\t\t}\n\t\t},\n\t\t\"ocrd-cis-ocropy-recognize\": {\n\t\t\t\"executable\": \"ocrd-cis-ocropy-recognize\",\n\t\t\t\"categories\": [\n\t\t\t\t\"Text recognition and optimization\"\n\t\t\t],\n\t\t\t\"steps\": [\n\t\t\t\t\"recognition/text-recognition\"\n\t\t\t],\n\t\t\t\"description\": \"Recognize text in (binarized+deskewed+dewarped) lines with ocropy\",\n\t\t\t\"input_file_grp\": [\n\t\t\t\t\"OCR-D-SEG-LINE\",\n\t\t\t\t\"OCR-D-SEG-WORD\",\n\t\t\t\t\"OCR-D-SEG-GLYPH\"\n\t\t\t],\n\t\t\t\"output_file_grp\": [\n\t\t\t\t\"OCR-D-OCR-OCRO\"\n\t\t\t],\n\t\t\t\"parameters\": {\n\t\t\t\t\"textequiv_level\": {\n\t\t\t\t\t\"type\": \"string\",\n\t\t\t\t\t\"enum\": [\"line\", \"word\", \"glyph\"],\n\t\t\t\t\t\"description\": \"PAGE XML hierarchy level granularity to add the TextEquiv results to\",\n\t\t\t\t\t\"default\": \"line\"\n\t\t\t\t},\n\t\t\t\t\"model\": {\n\t\t\t\t\t\"type\": \"string\",\n\t\t\t\t\t\"description\": \"ocropy model to apply (e.g. fraktur.pyrnn)\"\n\t\t\t\t}\n\t\t\t}\n\t\t},\n\t\t\"ocrd-cis-ocropy-rec\": {\n\t\t\t\"executable\": \"ocrd-cis-ocropy-rec\",\n\t\t\t\"categories\": [\n\t\t\t\t\"Text recognition and optimization\"\n\t\t\t],\n\t\t\t\"steps\": [\n\t\t\t\t\"recognition/text-recognition\"\n\t\t\t],\n\t\t\t\"description\": \"Recognize text snippets\",\n\t\t\t\"parameters\": {\n\t\t\t\t\"model\": {\n\t\t\t\t\t\"type\": \"string\",\n\t\t\t\t\t\"description\": \"ocropy model to apply (e.g. fraktur.pyrnn)\"\n\t\t\t\t}\n\t\t\t}\n\t\t},\n\t\t\"ocrd-cis-ocropy-segment\": {\n\t\t\t\"executable\": \"ocrd-cis-ocropy-segment\",\n\t\t\t\"categories\": [\n\t\t\t\t\"Layout analysis\"\n\t\t\t],\n\t\t\t\"steps\": [\n\t\t\t\t\"layout/segmentation/region\",\n\t\t\t\t\"layout/segmentation/line\"\n\t\t\t],\n\t\t\t\"input_file_grp\": [\n\t\t\t\t\"OCR-D-GT-SEG-BLOCK\",\n\t\t\t\t\"OCR-D-SEG-BLOCK\"\n\t\t\t],\n\t\t\t\"output_file_grp\": [\n\t\t\t\t\"OCR-D-SEG-LINE\"\n\t\t\t],\n\t\t\t\"description\": \"Segment pages into regions or regions into lines with ocropy\",\n\t\t\t\"parameters\": {\n\t\t\t\t\"level-of-operation\": {\n\t\t\t\t\t\"type\": \"string\",\n\t\t\t\t\t\"enum\": [\"page\", \"region\"],\n\t\t\t\t\t\"description\": \"PAGE XML hierarchy level to read images from\",\n\t\t\t\t\t\"default\": \"region\"\n\t\t\t\t},\n\t\t\t\t\"maxcolseps\": {\n\t\t\t\t\t\"type\": \"number\",\n\t\t\t\t\t\"format\": \"integer\",\n\t\t\t\t\t\"default\": 2,\n\t\t\t\t\t\"description\": \"number of white/background column separators to try (when operating on the page level)\"\n\t\t\t\t},\n\t\t\t\t\"maxseps\": {\n\t\t\t\t\t\"type\": \"number\",\n\t\t\t\t\t\"format\": \"integer\",\n\t\t\t\t\t\"default\": 5,\n\t\t\t\t\t\"description\": \"number of black/foreground column separators to try, counted individually as lines (when operating on the page level)\"\n\t\t\t\t},\n\t\t\t\t\"overwrite_regions\": {\n\t\t\t\t\t\"type\": \"boolean\",\n\t\t\t\t\t\"default\": true,\n\t\t\t\t\t\"description\": \"remove any existing TextRegion elements (when operating on the page level)\"\n\t\t\t\t},\n\t\t\t\t\"overwrite_lines\": {\n\t\t\t\t\t\"type\": \"boolean\",\n\t\t\t\t\t\"default\": true,\n\t\t\t\t\t\"description\": \"remove any existing TextLine elements (when operating on the region level)\"\n\t\t\t\t},\n\t\t\t\t\"spread\": {\n\t\t\t\t\t\"type\": \"number\",\n\t\t\t\t\t\"format\": \"float\",\n\t\t\t\t\t\"default\": 2.4,\n\t\t\t\t\t\"description\": \"distance in points (pt) from the foreground to project text line (or text region) labels into the background\"\n\t\t\t\t}\n\t\t\t}\n\t\t},\n\t\t\"ocrd-cis-ocropy-train\": {\n\t\t\t\"executable\": \"ocrd-cis-ocropy-train\",\n\t\t\t\"categories\": [\n\t\t\t\t\"lstm ocropy model training\"\n\t\t\t],\n\t\t\t\"steps\": [\n\t\t\t\t\"training\"\n\t\t\t],\n\t\t\t\"description\": \"train model with ground truth from mets data\",\n\t\t\t\"parameters\": {\n\t\t\t\t\"textequiv_level\": {\n\t\t\t\t\t\"type\": \"string\",\n\t\t\t\t\t\"enum\": [\"line\", \"word\", \"glyph\"],\n\t\t\t\t\t\"default\": \"line\"\n\t\t\t\t},\n\t\t\t\t\"model\": {\n\t\t\t\t\t\"type\": \"string\",\n\t\t\t\t\t\"description\": \"load model or crate new one (e.g. fraktur.pyrnn)\"\n\t\t\t\t},\n\t\t\t\t\"ntrain\": {\n\t\t\t\t\t\"type\": \"integer\",\n\t\t\t\t\t\"description\": \"lines to train before stopping\",\n\t\t\t\t\t\"default\": 1000000\n\t\t\t\t},\n\t\t\t\t\"outputpath\": {\n\t\t\t\t\t\"type\": \"string\",\n\t\t\t\t\t\"description\": \"(existing) path for the trained model\"\n\t\t\t\t}\n\t\t\t}\n\t\t},\n\t\t\"ocrd-cis-align\": {\n\t\t\t\"executable\": \"ocrd-cis-align\",\n\t\t\t\"categories\": [\n\t\t\t\t\"Text recognition and optimization\"\n\t\t\t],\n\t\t\t\"steps\": [\n\t\t\t\t\"postprocessing/alignment\"\n\t\t\t],\n\t\t\t\"description\": \"Align multiple OCRs and/or GTs\"\n\t\t},\n\t\t\"ocrd-cis-wer\": {\n\t\t\t\"executable\": \"ocrd-cis-wer\",\n\t\t\t\"categories\": [\n\t\t\t\t\"evaluation\"\n\t\t\t],\n\t\t\t\"steps\": [\n\t\t\t\t\"evaluation\"\n\t\t\t],\n\t\t\t\"description\": \"calculate the word error rate for aligned page xml files\",\n\t\t\t\"parameters\": {\n\t\t\t\t\"testIndex\": {\n\t\t\t\t\t\"description\": \"text equiv index for the test/ocr tokens\",\n\t\t\t\t\t\"type\": \"integer\",\n\t\t\t\t\t\"default\": 0\n\t\t\t\t},\n\t\t\t\t\"gtIndex\": {\n\t\t\t\t\t\"type\": \"integer\",\n\t\t\t\t\t\"description\": \"text equiv index for the gt tokens\",\n\t\t\t\t\t\"default\": -1\n\t\t\t\t}\n\t\t\t}\n\t\t},\n\t\t\"ocrd-cis-jar\": {\n\t\t\t\"executable\": \"ocrd-cis-jar\",\n\t\t\t\"categories\": [\n\t\t\t\t\"Text recognition and optimization\"\n\t\t\t],\n\t\t\t\"steps\": [\n\t\t\t\t\"postprocessing/alignment\"\n\t\t\t],\n\t\t\t\"description\": \"Output path to the ocrd-cis.jar file\"\n\t\t},\n\t\t\"ocrd-cis-profile\": {\n\t\t\t\"executable\": \"ocrd-cis-profile\",\n\t\t\t\"categories\": [\n\t\t\t\t\"Text recognition and optimization\"\n\t\t\t],\n\t\t\t\"steps\": [\n\t\t\t\t\"postprocessing/alignment\"\n\t\t\t],\n\t\t\t\"description\": \"Add a correction suggestions and suspicious tokens (profile)\",\n\t\t\t\"parameters\": {\n\t\t\t\t\"executable\": {\n\t\t\t\t\t\"type\": \"string\",\n\t\t\t\t\t\"required\": true\n\t\t\t\t},\n\t\t\t\t\"backend\": {\n\t\t\t\t\t\"type\": \"string\",\n\t\t\t\t\t\"required\": true\n\t\t\t\t},\n\t\t\t\t\"language\": {\n\t\t\t\t    \"type\": \"string\",\n\t\t\t\t\t\"required\": false,\n\t\t\t\t\t\"default\": \"german\"\n\t\t\t\t},\n\t\t\t\t\"additionalLexicon\": {\n\t\t\t\t\t\"type\": \"string\",\n\t\t\t\t\t\"required\": false,\n\t\t\t\t\t\"default\": \"\"\n\t\t\t\t}\n\t\t\t}\n\t\t},\n\t\t\"ocrd-cis-train\": {\n\t\t\t\"executable\": \"ocrd-cis-train.sh\",\n\t\t\t\"categories\": [\n\t\t\t\t\"Text recognition and optimization\"\n\t\t\t],\n\t\t\t\"steps\": [\n\t\t\t\t\"postprocessing/alignment\"\n\t\t\t],\n\t\t\t\"description\": \"Train post correction model\",\n\t\t\t\"parameters\": {\n\t\t\t\t\"gtArchives\": {\n\t\t\t\t\t\"description\": \"List of ground truth archives\",\n\t\t\t\t\t\"type\": \"array\",\n\t\t\t\t\t\"required\": true,\n\t\t\t\t\t\"items\": {\n\t\t\t\t\t\t\"description\": \"Path (or URL) to a ground truth archive\",\n\t\t\t\t\t\t\"type\": \"string\"\n\t\t\t\t\t}\n\t\t\t\t},\n\t\t\t\t\"imagePreprocessingSteps\": {\n\t\t\t\t\t\"description\": \"List of image preprocessing steps\",\n\t\t\t\t\t\"type\": \"array\",\n\t\t\t\t\t\"required\": true,\n\t\t\t\t\t\"items\": {\n\t\t\t\t\t\t\"description\": \"Image preprocessing command that is evaled using the bash eval command (available parameters: $METS, $LOG_LEVEL, $XML_INPUT_FILE_GRP, $XML_OUTPUT_FILE_GRP, $IMG_OUTPUT_FILE_GRP, $IMG_INPUT_FILE_GRP, $PARAMETER)\",\n\t\t\t\t\t\t\"type\": \"string\"\n\t\t\t\t\t}\n\t\t\t\t},\n\t\t\t\t\"ocrSteps\": {\n\t\t\t\t\t\"description\": \"List of ocr steps\",\n\t\t\t\t\t\"type\": \"array\",\n\t\t\t\t\t\"required\": true,\n\t\t\t\t\t\"items\": {\n\t\t\t\t\t\t\"description\": \"OCR command that is evaled using the bash eval command (available parameters: $METS, $LOG_LEVEL, $XML_INPUT_FILE_GRP, $XML_OUTPUT_FILE_GRP, $PARAMETER)\",\n\t\t\t\t\t\t\"type\": \"string\"\n\t\t\t\t\t}\n\t\t\t\t},\n\t\t\t\t\"training\": {\n\t\t\t\t\t\"description\": \"Configuration of training command\",\n\t\t\t\t\t\"type\": \"object\",\n\t\t\t\t\t\"required\": [\n\t\t\t\t\t\t\"trigrams\",\n\t\t\t\t\t\t\"maxCandidate\",\n\t\t\t\t\t\t\"profiler\",\n\t\t\t\t\t\t\"leFeatures\",\n\t\t\t\t\t\t\"rrFeatures\",\n\t\t\t\t\t\t\"dmFeatures\"\n\t\t\t\t\t],\n\t\t\t\t\t\"properties\": {\n\t\t\t\t\t\t\"trigrams\": {\n\t\t\t\t\t\t\t\"description\": \"Path to character trigrams csv file (format: n,trigram)\",\n\t\t\t\t\t\t\t\"type\": \"string\",\n\t\t\t\t\t\t\t\"required\": true\n\t\t\t\t\t\t},\n\t\t\t\t\t\t\"maxCandidate\": {\n\t\t\t\t\t\t\t\"description\": \"Maximum number of considered profiler candidates per token\",\n\t\t\t\t\t\t\t\"type\": \"integer\",\n\t\t\t\t\t\t\t\"required\": true\n\t\t\t\t\t\t},\n\t\t\t\t\t\t\"filterClasses\": {\n\t\t\t\t\t\t\t\"description\": \"List of filtered feature classes\",\n\t\t\t\t\t\t\t\"required\": false,\n\t\t\t\t\t\t\t\"type\": \"array\",\n\t\t\t\t\t\t\t\"items\": {\n\t\t\t\t\t\t\t\t\"description\": \"Class name of feature class to filter\",\n\t\t\t\t\t\t\t\t\"type\": \"string\"\n\t\t\t\t\t\t\t}\n\t\t\t\t\t\t},\n\t\t\t\t\t\t\"profiler\": {\n\t\t\t\t\t\t\t\"description\": \"Profiler configuration\",\n\t\t\t\t\t\t\t\"type\": \"object\",\n\t\t\t\t\t\t\t\"required\": [\n\t\t\t\t\t\t\t\t\"path\",\n\t\t\t\t\t\t\t\t\"config\"\n\t\t\t\t\t\t\t],\n\t\t\t\t\t\t\t\"properties\": {\n\t\t\t\t\t\t\t\t\"path\": {\n\t\t\t\t\t\t\t\t\t\"description\": \"Path to the profiler executable\",\n\t\t\t\t\t\t\t\t\t\"required\": true,\n\t\t\t\t\t\t\t\t\t\"type\": \"string\"\n\t\t\t\t\t\t\t\t},\n\t\t\t\t\t\t\t\t\"config\": {\n\t\t\t\t\t\t\t\t\t\"description\": \"Path to the profiler language config file\",\n\t\t\t\t\t\t\t\t\t\"required\": true,\n\t\t\t\t\t\t\t\t\t\"type\": \"string\"\n\t\t\t\t\t\t\t\t}\n\t\t\t\t\t\t\t}\n\t\t\t\t\t\t},\n\t\t\t\t\t\t\"leFeatures\": {\n\t\t\t\t\t\t\t\"description\": \"List of the lexicon extension features\",\n\t\t\t\t\t\t\t\"required\": true,\n\t\t\t\t\t\t\t\"type\": \"array\",\n\t\t\t\t\t\t\t\"items\": {\n\t\t\t\t\t\t\t\t\"description\": \"Feature configuration\",\n\t\t\t\t\t\t\t\t\"type\": \"object\",\n\t\t\t\t\t\t\t\t\"required\": [\n\t\t\t\t\t\t\t\t\t\"type\",\n\t\t\t\t\t\t\t\t\t\"name\"\n\t\t\t\t\t\t\t\t],\n\t\t\t\t\t\t\t\t\"properties\": {\n\t\t\t\t\t\t\t\t\t\"name\": {\n\t\t\t\t\t\t\t\t\t\t\"description\": \"Name of the feature\",\n\t\t\t\t\t\t\t\t\t\t\"type\": \"string\"\n\t\t\t\t\t\t\t\t\t},\n\t\t\t\t\t\t\t\t\t\"type\": {\n\t\t\t\t\t\t\t\t\t\t\"description\": \"Fully qualified java class name of the feature\",\n\t\t\t\t\t\t\t\t\t\t\"type\": \"string\"\n\t\t\t\t\t\t\t\t\t},\n\t\t\t\t\t\t\t\t\t\"class\": {\n\t\t\t\t\t\t\t\t\t\t\"description\": \"Class name of the feature\",\n\t\t\t\t\t\t\t\t\t\t\"type\": \"string\"\n\t\t\t\t\t\t\t\t\t}\n\t\t\t\t\t\t\t\t}\n\t\t\t\t\t\t\t}\n\t\t\t\t\t\t},\n\t\t\t\t\t\t\"rrFeatures\": {\n\t\t\t\t\t\t\t\"description\": \"List of the reranker features\",\n\t\t\t\t\t\t\t\"required\": true,\n\t\t\t\t\t\t\t\"type\": \"array\",\n\t\t\t\t\t\t\t\"items\": {\n\t\t\t\t\t\t\t\t\"description\": \"Feature configuration\",\n\t\t\t\t\t\t\t\t\"type\": \"object\",\n\t\t\t\t\t\t\t\t\"required\": [\n\t\t\t\t\t\t\t\t\t\"type\",\n\t\t\t\t\t\t\t\t\t\"name\"\n\t\t\t\t\t\t\t\t],\n\t\t\t\t\t\t\t\t\"properties\": {\n\t\t\t\t\t\t\t\t\t\"name\": {\n\t\t\t\t\t\t\t\t\t\t\"description\": \"Name of the feature\",\n\t\t\t\t\t\t\t\t\t\t\"type\": \"string\"\n\t\t\t\t\t\t\t\t\t},\n\t\t\t\t\t\t\t\t\t\"type\": {\n\t\t\t\t\t\t\t\t\t\t\"description\": \"Fully qualified java class name of the feature\",\n\t\t\t\t\t\t\t\t\t\t\"type\": \"string\"\n\t\t\t\t\t\t\t\t\t},\n\t\t\t\t\t\t\t\t\t\"class\": {\n\t\t\t\t\t\t\t\t\t\t\"description\": \"Class name of the feature\",\n\t\t\t\t\t\t\t\t\t\t\"type\": \"string\"\n\t\t\t\t\t\t\t\t\t}\n\t\t\t\t\t\t\t\t}\n\t\t\t\t\t\t\t}\n\t\t\t\t\t\t},\n\t\t\t\t\t\t\"dmFeatures\": {\n\t\t\t\t\t\t\t\"description\": \"List of the desicion maker features\",\n\t\t\t\t\t\t\t\"required\": true,\n\t\t\t\t\t\t\t\"type\": \"array\",\n\t\t\t\t\t\t\t\"items\": {\n\t\t\t\t\t\t\t\t\"description\": \"Feature configuration\",\n\t\t\t\t\t\t\t\t\"type\": \"object\",\n\t\t\t\t\t\t\t\t\"required\": [\n\t\t\t\t\t\t\t\t\t\"type\",\n\t\t\t\t\t\t\t\t\t\"name\"\n\t\t\t\t\t\t\t\t],\n\t\t\t\t\t\t\t\t\"properties\": {\n\t\t\t\t\t\t\t\t\t\"name\": {\n\t\t\t\t\t\t\t\t\t\t\"description\": \"Name of the feature\",\n\t\t\t\t\t\t\t\t\t\t\"type\": \"string\"\n\t\t\t\t\t\t\t\t\t},\n\t\t\t\t\t\t\t\t\t\"type\": {\n\t\t\t\t\t\t\t\t\t\t\"description\": \"Fully qualified java class name of the feature\",\n\t\t\t\t\t\t\t\t\t\t\"type\": \"string\"\n\t\t\t\t\t\t\t\t\t},\n\t\t\t\t\t\t\t\t\t\"class\": {\n\t\t\t\t\t\t\t\t\t\t\"description\": \"Class name of the feature\",\n\t\t\t\t\t\t\t\t\t\t\"type\": \"string\"\n\t\t\t\t\t\t\t\t\t}\n\t\t\t\t\t\t\t\t}\n\t\t\t\t\t\t\t}\n\t\t\t\t\t\t}\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t}\n\t\t},\n\t\t\"ocrd-cis-post-correct\": {\n\t\t\t\"executable\": \"ocrd-cis-post-correct.sh\",\n\t\t\t\"categories\": [\n\t\t\t\t\"Text recognition and optimization\"\n\t\t\t],\n\t\t\t\"steps\": [\n\t\t\t\t\"postprocessing/alignment\"\n\t\t\t],\n\t\t\t\"description\": \"Post correct OCR results\",\n\t\t\t\"parameters\": {\n\t\t\t\t\"ocrSteps\": {\n\t\t\t\t\t\"description\": \"List of additional ocr steps\",\n\t\t\t\t\t\"type\": \"array\",\n\t\t\t\t\t\"required\": true,\n\t\t\t\t\t\"items\": {\n\t\t\t\t\t\t\"description\": \"OCR command that is evaled using the bash eval command (available parameters: $METS, $LOG_LEVEL, $XML_INPUT_FILE_GRP, $XML_OUTPUT_FILE_GRP, $PARAMETER)\",\n\t\t\t\t\t\t\"type\": \"string\"\n\t\t\t\t\t}\n\t\t\t\t},\n\t\t\t\t\"postCorrection\": {\n\t\t\t\t\t\"description\": \"Configuration of post correction command\",\n\t\t\t\t\t\"type\": \"object\",\n\t\t\t\t\t\"required\": [\n\t\t\t\t\t\t\"maxCandidate\",\n\t\t\t\t\t\t\"profiler\",\n\t\t\t\t\t\t\"model\",\n\t\t\t\t\t\t\"runLE\",\n\t\t\t\t\t\t\"runDM\"\n\t\t\t\t\t],\n\t\t\t\t\t\"properties\": {\n\t\t\t\t\t\t\"maxCandidate\": {\n\t\t\t\t\t\t\t\"description\": \"Maximum number of considered profiler candidates per token\",\n\t\t\t\t\t\t\t\"type\": \"integer\",\n\t\t\t\t\t\t\t\"required\": true\n\t\t\t\t\t\t},\n\t\t\t\t\t\t\"profiler\": {\n\t\t\t\t\t\t\t\"description\": \"Profiler configuration\",\n\t\t\t\t\t\t\t\"type\": \"object\",\n\t\t\t\t\t\t\t\"required\": [\n\t\t\t\t\t\t\t\t\"path\",\n\t\t\t\t\t\t\t\t\"config\"\n\t\t\t\t\t\t\t],\n\t\t\t\t\t\t\t\"properties\": {\n\t\t\t\t\t\t\t\t\"path\": {\n\t\t\t\t\t\t\t\t\t\"description\": \"Path to the profiler executable\",\n\t\t\t\t\t\t\t\t\t\"required\": true,\n\t\t\t\t\t\t\t\t\t\"type\": \"string\"\n\t\t\t\t\t\t\t\t},\n\t\t\t\t\t\t\t\t\"config\": {\n\t\t\t\t\t\t\t\t\t\"description\": \"Path to the profiler language config file\",\n\t\t\t\t\t\t\t\t\t\"required\": true,\n\t\t\t\t\t\t\t\t\t\"type\": \"string\"\n\t\t\t\t\t\t\t\t}\n\t\t\t\t\t\t\t}\n\t\t\t\t\t\t},\n\t\t\t\t\t\t\"model\": {\n\t\t\t\t\t\t\t\"description\": \"Path to the post correction model file\",\n\t\t\t\t\t\t\t\"type\": \"string\",\n\t\t\t\t\t\t\t\"required\": true\n\t\t\t\t\t\t},\n\t\t\t\t\t\t\"runLE\": {\n\t\t\t\t\t\t\t\"description\": \"Do run the lexicon extension step for the post correction\",\n\t\t\t\t\t\t\t\"required\": true,\n\t\t\t\t\t\t\t\"type\": \"boolean\"\n\t\t\t\t\t\t},\n\t\t\t\t\t\t\"runDM\": {\n\t\t\t\t\t\t\t\"description\": \"Do run the ranking and the decision step for the post correction\",\n\t\t\t\t\t\t\t\"required\": true,\n\t\t\t\t\t\t\t\"type\": \"boolean\"\n\t\t\t\t\t\t}\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t}\n}\n",
+            "setup.py": "\"\"\"\nInstalls:\n    - ocrd-cis-align\n    - ocrd-cis-training\n    - ocrd-cis-profile\n    - ocrd-cis-wer\n    - ocrd-cis-data\n    - ocrd-cis-ocropy-clip\n    - ocrd-cis-ocropy-denoise\n    - ocrd-cis-ocropy-deskew\n    - ocrd-cis-ocropy-binarize\n    - ocrd-cis-ocropy-resegment\n    - ocrd-cis-ocropy-segment\n    - ocrd-cis-ocropy-dewarp\n    - ocrd-cis-ocropy-recognize\n    - ocrd-cis-ocropy-train\n\"\"\"\n\nimport codecs\nfrom setuptools import setup\nfrom setuptools import find_packages\n\nwith codecs.open('README.md', encoding='utf-8') as f:\n    README = f.read()\n\nsetup(\n    name='ocrd_cis',\n    version='0.0.6',\n    description='CIS OCR-D command line tools',\n    long_description=README,\n    long_description_content_type='text/markdown',\n    author='Florian Fink, Tobias Englmeier, Christoph Weber',\n    author_email='finkf@cis.lmu.de, englmeier@cis.lmu.de, web_chris@msn.com',\n    url='https://github.com/cisocrgroup/ocrd_cis',\n    license='MIT',\n    packages=find_packages(),\n    include_package_data=True,\n    install_requires=[\n        'ocrd>=2.0.0a1',\n        'click',\n        'scipy',\n        'numpy>=1.17.0',\n        'pillow>=6.2.0',\n        'matplotlib>3.0.0',\n        'python-Levenshtein',\n        'calamari_ocr'\n    ],\n    package_data={\n        '': ['*.json', '*.yml', '*.yaml', '*.csv.gz', '*.jar'],\n    },\n    scripts=[\n        'bashlib/ocrd-cis-lib.sh',\n        'bashlib/ocrd-cis-train.sh',\n        'bashlib/ocrd-cis-post-correct.sh',\n    ],\n    entry_points={\n        'console_scripts': [\n            'ocrd-cis-align=ocrd_cis.align.cli:cis_ocrd_align',\n            'ocrd-cis-profile=ocrd_cis.profile.cli:cis_ocrd_profile',\n            'ocrd-cis-wer=ocrd_cis.wer.cli:cis_ocrd_wer',\n            'ocrd-cis-data=ocrd_cis.data.__main__:main',\n            'ocrd-cis-ocropy-binarize=ocrd_cis.ocropy.cli:cis_ocrd_ocropy_binarize',\n            'ocrd-cis-ocropy-clip=ocrd_cis.ocropy.cli:cis_ocrd_ocropy_clip',\n            'ocrd-cis-ocropy-denoise=ocrd_cis.ocropy.cli:cis_ocrd_ocropy_denoise',\n            'ocrd-cis-ocropy-deskew=ocrd_cis.ocropy.cli:cis_ocrd_ocropy_deskew',\n            'ocrd-cis-ocropy-dewarp=ocrd_cis.ocropy.cli:cis_ocrd_ocropy_dewarp',\n            'ocrd-cis-ocropy-recognize=ocrd_cis.ocropy.cli:cis_ocrd_ocropy_recognize',\n            'ocrd-cis-ocropy-rec=ocrd_cis.ocropy.cli:cis_ocrd_ocropy_rec',\n            'ocrd-cis-ocropy-resegment=ocrd_cis.ocropy.cli:cis_ocrd_ocropy_resegment',\n            'ocrd-cis-ocropy-segment=ocrd_cis.ocropy.cli:cis_ocrd_ocropy_segment',\n        ]\n    },\n)\n"
         },
         "git": {
-            "last_commit": "Thu Oct 24 19:20:11 2019 +0200",
+            "last_commit": "Wed Oct 30 16:47:09 2019 +0100",
             "latest_tag": "",
-            "number_of_commits": "309",
+            "number_of_commits": "392",
             "url": "https://github.com/cisocrgroup/ocrd_cis.git"
         },
         "name": "ocrd_cis",
         "ocrd_tool": {
-            "git_url": "https://github.com/cisocrgroup/cis-ocrd-py",
+            "git_url": "https://github.com/cisocrgroup/ocrd_cis",
             "tools": {
-                "cis-ocrd-ocropy-train": {
-                    "categories": [
-                        "lstm ocropy model training"
-                    ],
-                    "description": "train model with ground truth from mets data",
-                    "executable": "ocrd-cis-ocropy-train",
-                    "parameters": {
-                        "model": {
-                            "description": "load model or crate new one (e.g. fraktur.pyrnn)",
-                            "type": "string"
-                        },
-                        "ntrain": {
-                            "default": 1000000,
-                            "description": "lines to train before stopping",
-                            "type": "integer"
-                        },
-                        "outputpath": {
-                            "description": "(existing) path for the trained model",
-                            "type": "string"
-                        },
-                        "textequiv_level": {
-                            "default": "line",
-                            "enum": [
-                                "line",
-                                "word",
-                                "glyph"
-                            ],
-                            "type": "string"
-                        }
-                    },
-                    "steps": [
-                        "training"
-                    ]
-                },
-                "ocrd-cis-aio": {
-                    "categories": [
-                        "Text recognition and optimization"
-                    ],
-                    "description": "All in One Tool",
-                    "executable": "ocrd-cis-aio",
-                    "parameters": {
-                        "alignparampath": {
-                            "required": true,
-                            "type": "string"
-                        },
-                        "ocropyparampath1": {
-                            "required": true,
-                            "type": "string"
-                        },
-                        "ocropyparampath2": {
-                            "required": true,
-                            "type": "string"
-                        },
-                        "tesserparampath": {
-                            "required": true,
-                            "type": "string"
-                        }
-                    },
-                    "steps": [
-                        "postprocessing/alignment/recognition"
-                    ]
-                },
                 "ocrd-cis-align": {
                     "categories": [
                         "Text recognition and optimization"
@@ -2321,72 +2259,12 @@
                         "postprocessing/alignment"
                     ]
                 },
-                "ocrd-cis-clean": {
+                "ocrd-cis-jar": {
                     "categories": [
                         "Text recognition and optimization"
                     ],
-                    "description": "clean-up-tool",
-                    "executable": "ocrd-cis-clean",
-                    "parameters": {
-                        "mainIndex": {
-                            "description": "model index",
-                            "type": "integer"
-                        },
-                        "mainLevel": {
-                            "default": "line",
-                            "enum": [
-                                "line",
-                                "word",
-                                "glyph"
-                            ],
-                            "type": "string"
-                        }
-                    },
-                    "steps": [
-                        "postprocessing"
-                    ]
-                },
-                "ocrd-cis-cutter": {
-                    "categories": [
-                        "Text recognition and optimization"
-                    ],
-                    "description": "cut lines from input-file-groups",
-                    "executable": "ocrd-cis-cutter",
-                    "parameters": {
-                        "gtdir": {
-                            "type": "string"
-                        }
-                    },
-                    "steps": [
-                        "postprocessing"
-                    ]
-                },
-                "ocrd-cis-importer": {
-                    "categories": [
-                        "Text recognition and optimization"
-                    ],
-                    "description": "different ocropy tool",
-                    "executable": "ocrd-cis-importer",
-                    "parameters": {
-                        "none": {
-                            "type": "string"
-                        }
-                    },
-                    "steps": [
-                        "postprocessing"
-                    ]
-                },
-                "ocrd-cis-lang": {
-                    "categories": [
-                        "Text recognition and optimization"
-                    ],
-                    "description": "Get language and font of input-file-group",
-                    "executable": "ocrd-cis-lang",
-                    "parameters": {
-                        "none": {
-                            "type": "string"
-                        }
-                    },
+                    "description": "Output path to the ocrd-cis.jar file",
+                    "executable": "ocrd-cis-jar",
                     "steps": [
                         "postprocessing/alignment"
                     ]
@@ -2516,8 +2394,9 @@
                             "type": "string"
                         },
                         "noise_maxsize": {
-                            "default": 2,
-                            "description": "maximum pixel number for connected components to regard as noise (0 will deactivate denoising)",
+                            "default": 3.0,
+                            "description": "maximum size in points (pt) for connected components to regard as noise (0 will deactivate denoising)",
+                            "format": "float",
                             "type": "number"
                         }
                     },
@@ -2719,6 +2598,114 @@
                         "layout/segmentation/line"
                     ]
                 },
+                "ocrd-cis-ocropy-train": {
+                    "categories": [
+                        "lstm ocropy model training"
+                    ],
+                    "description": "train model with ground truth from mets data",
+                    "executable": "ocrd-cis-ocropy-train",
+                    "parameters": {
+                        "model": {
+                            "description": "load model or crate new one (e.g. fraktur.pyrnn)",
+                            "type": "string"
+                        },
+                        "ntrain": {
+                            "default": 1000000,
+                            "description": "lines to train before stopping",
+                            "type": "integer"
+                        },
+                        "outputpath": {
+                            "description": "(existing) path for the trained model",
+                            "type": "string"
+                        },
+                        "textequiv_level": {
+                            "default": "line",
+                            "enum": [
+                                "line",
+                                "word",
+                                "glyph"
+                            ],
+                            "type": "string"
+                        }
+                    },
+                    "steps": [
+                        "training"
+                    ]
+                },
+                "ocrd-cis-post-correct": {
+                    "categories": [
+                        "Text recognition and optimization"
+                    ],
+                    "description": "Post correct OCR results",
+                    "executable": "ocrd-cis-post-correct.sh",
+                    "parameters": {
+                        "ocrSteps": {
+                            "description": "List of additional ocr steps",
+                            "items": {
+                                "description": "OCR command that is evaled using the bash eval command (available parameters: $METS, $LOG_LEVEL, $XML_INPUT_FILE_GRP, $XML_OUTPUT_FILE_GRP, $PARAMETER)",
+                                "type": "string"
+                            },
+                            "required": true,
+                            "type": "array"
+                        },
+                        "postCorrection": {
+                            "description": "Configuration of post correction command",
+                            "properties": {
+                                "maxCandidate": {
+                                    "description": "Maximum number of considered profiler candidates per token",
+                                    "required": true,
+                                    "type": "integer"
+                                },
+                                "model": {
+                                    "description": "Path to the post correction model file",
+                                    "required": true,
+                                    "type": "string"
+                                },
+                                "profiler": {
+                                    "description": "Profiler configuration",
+                                    "properties": {
+                                        "config": {
+                                            "description": "Path to the profiler language config file",
+                                            "required": true,
+                                            "type": "string"
+                                        },
+                                        "path": {
+                                            "description": "Path to the profiler executable",
+                                            "required": true,
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "path",
+                                        "config"
+                                    ],
+                                    "type": "object"
+                                },
+                                "runDM": {
+                                    "description": "Do run the ranking and the decision step for the post correction",
+                                    "required": true,
+                                    "type": "boolean"
+                                },
+                                "runLE": {
+                                    "description": "Do run the lexicon extension step for the post correction",
+                                    "required": true,
+                                    "type": "boolean"
+                                }
+                            },
+                            "required": [
+                                "maxCandidate",
+                                "profiler",
+                                "model",
+                                "runLE",
+                                "runDM"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "steps": [
+                        "postprocessing/alignment"
+                    ]
+                },
                 "ocrd-cis-profile": {
                     "categories": [
                         "Text recognition and optimization"
@@ -2749,170 +2736,213 @@
                         "postprocessing/alignment"
                     ]
                 },
-                "ocrd-cis-stats": {
-                    "categories": [
-                        "Text recognition and optimization"
-                    ],
-                    "description": "Get Precision of aligned ocrs",
-                    "executable": "ocrd-cis-stats",
-                    "parameters": {
-                        "none": {
-                            "type": "string"
-                        }
-                    },
-                    "steps": [
-                        "postprocessing/alignment"
-                    ]
-                },
                 "ocrd-cis-train": {
                     "categories": [
                         "Text recognition and optimization"
                     ],
                     "description": "Train post correction model",
-                    "executable": "ocrd-cis-train",
+                    "executable": "ocrd-cis-train.sh",
                     "parameters": {
-                        "jar": {
+                        "gtArchives": {
+                            "description": "List of ground truth archives",
+                            "items": {
+                                "description": "Path (or URL) to a ground truth archive",
+                                "type": "string"
+                            },
                             "required": true,
-                            "type": "string"
+                            "type": "array"
+                        },
+                        "imagePreprocessingSteps": {
+                            "description": "List of image preprocessing steps",
+                            "items": {
+                                "description": "Image preprocessing command that is evaled using the bash eval command (available parameters: $METS, $LOG_LEVEL, $XML_INPUT_FILE_GRP, $XML_OUTPUT_FILE_GRP, $IMG_OUTPUT_FILE_GRP, $IMG_INPUT_FILE_GRP, $PARAMETER)",
+                                "type": "string"
+                            },
+                            "required": true,
+                            "type": "array"
+                        },
+                        "ocrSteps": {
+                            "description": "List of ocr steps",
+                            "items": {
+                                "description": "OCR command that is evaled using the bash eval command (available parameters: $METS, $LOG_LEVEL, $XML_INPUT_FILE_GRP, $XML_OUTPUT_FILE_GRP, $PARAMETER)",
+                                "type": "string"
+                            },
+                            "required": true,
+                            "type": "array"
+                        },
+                        "training": {
+                            "description": "Configuration of training command",
+                            "properties": {
+                                "dmFeatures": {
+                                    "description": "List of the desicion maker features",
+                                    "items": {
+                                        "description": "Feature configuration",
+                                        "properties": {
+                                            "class": {
+                                                "description": "Class name of the feature",
+                                                "type": "string"
+                                            },
+                                            "name": {
+                                                "description": "Name of the feature",
+                                                "type": "string"
+                                            },
+                                            "type": {
+                                                "description": "Fully qualified java class name of the feature",
+                                                "type": "string"
+                                            }
+                                        },
+                                        "required": [
+                                            "type",
+                                            "name"
+                                        ],
+                                        "type": "object"
+                                    },
+                                    "required": true,
+                                    "type": "array"
+                                },
+                                "filterClasses": {
+                                    "description": "List of filtered feature classes",
+                                    "items": {
+                                        "description": "Class name of feature class to filter",
+                                        "type": "string"
+                                    },
+                                    "required": false,
+                                    "type": "array"
+                                },
+                                "leFeatures": {
+                                    "description": "List of the lexicon extension features",
+                                    "items": {
+                                        "description": "Feature configuration",
+                                        "properties": {
+                                            "class": {
+                                                "description": "Class name of the feature",
+                                                "type": "string"
+                                            },
+                                            "name": {
+                                                "description": "Name of the feature",
+                                                "type": "string"
+                                            },
+                                            "type": {
+                                                "description": "Fully qualified java class name of the feature",
+                                                "type": "string"
+                                            }
+                                        },
+                                        "required": [
+                                            "type",
+                                            "name"
+                                        ],
+                                        "type": "object"
+                                    },
+                                    "required": true,
+                                    "type": "array"
+                                },
+                                "maxCandidate": {
+                                    "description": "Maximum number of considered profiler candidates per token",
+                                    "required": true,
+                                    "type": "integer"
+                                },
+                                "profiler": {
+                                    "description": "Profiler configuration",
+                                    "properties": {
+                                        "config": {
+                                            "description": "Path to the profiler language config file",
+                                            "required": true,
+                                            "type": "string"
+                                        },
+                                        "path": {
+                                            "description": "Path to the profiler executable",
+                                            "required": true,
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "path",
+                                        "config"
+                                    ],
+                                    "type": "object"
+                                },
+                                "rrFeatures": {
+                                    "description": "List of the reranker features",
+                                    "items": {
+                                        "description": "Feature configuration",
+                                        "properties": {
+                                            "class": {
+                                                "description": "Class name of the feature",
+                                                "type": "string"
+                                            },
+                                            "name": {
+                                                "description": "Name of the feature",
+                                                "type": "string"
+                                            },
+                                            "type": {
+                                                "description": "Fully qualified java class name of the feature",
+                                                "type": "string"
+                                            }
+                                        },
+                                        "required": [
+                                            "type",
+                                            "name"
+                                        ],
+                                        "type": "object"
+                                    },
+                                    "required": true,
+                                    "type": "array"
+                                },
+                                "trigrams": {
+                                    "description": "Path to character trigrams csv file (format: n,trigram)",
+                                    "required": true,
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "trigrams",
+                                "maxCandidate",
+                                "profiler",
+                                "leFeatures",
+                                "rrFeatures",
+                                "dmFeatures"
+                            ],
+                            "type": "object"
                         }
                     },
                     "steps": [
                         "postprocessing/alignment"
                     ]
+                },
+                "ocrd-cis-wer": {
+                    "categories": [
+                        "evaluation"
+                    ],
+                    "description": "calculate the word error rate for aligned page xml files",
+                    "executable": "ocrd-cis-wer",
+                    "parameters": {
+                        "gtIndex": {
+                            "default": -1,
+                            "description": "text equiv index for the gt tokens",
+                            "type": "integer"
+                        },
+                        "testIndex": {
+                            "default": 0,
+                            "description": "text equiv index for the test/ocr tokens",
+                            "type": "integer"
+                        }
+                    },
+                    "steps": [
+                        "evaluation"
+                    ]
                 }
             },
-            "version": "0.0.1"
+            "version": "0.0.2"
         },
-        "ocrd_tool_validate": "<report valid=\"false\">\n  <error>[tools.ocrd-cis-aio] 'input_file_grp' is a required property</error>\n  <error>[tools.ocrd-cis-aio.parameters.tesserparampath] 'description' is a required property</error>\n  <error>[tools.ocrd-cis-aio.parameters.ocropyparampath1] 'description' is a required property</error>\n  <error>[tools.ocrd-cis-aio.parameters.ocropyparampath2] 'description' is a required property</error>\n  <error>[tools.ocrd-cis-aio.parameters.alignparampath] 'description' is a required property</error>\n  <error>[tools.ocrd-cis-aio.steps.0] 'postprocessing/alignment/recognition' is not one of ['preprocessing/characterization', 'preprocessing/optimization', 'preprocessing/optimization/cropping', 'preprocessing/optimization/deskewing', 'preprocessing/optimization/despeckling', 'preprocessing/optimization/dewarping', 'preprocessing/optimization/binarization', 'preprocessing/optimization/grayscale_normalization', 'recognition/text-recognition', 'recognition/font-identification', 'recognition/post-correction', 'layout/segmentation', 'layout/segmentation/text-nontext', 'layout/segmentation/region', 'layout/segmentation/line', 'layout/segmentation/word', 'layout/segmentation/classification', 'layout/analysis']</error>\n  <error>[tools.ocrd-cis-align] 'input_file_grp' is a required property</error>\n  <error>[tools.ocrd-cis-align.steps.0] 'postprocessing/alignment' is not one of ['preprocessing/characterization', 'preprocessing/optimization', 'preprocessing/optimization/cropping', 'preprocessing/optimization/deskewing', 'preprocessing/optimization/despeckling', 'preprocessing/optimization/dewarping', 'preprocessing/optimization/binarization', 'preprocessing/optimization/grayscale_normalization', 'recognition/text-recognition', 'recognition/font-identification', 'recognition/post-correction', 'layout/segmentation', 'layout/segmentation/text-nontext', 'layout/segmentation/region', 'layout/segmentation/line', 'layout/segmentation/word', 'layout/segmentation/classification', 'layout/analysis']</error>\n  <error>[tools.ocrd-cis-ocropy-rec] 'input_file_grp' is a required property</error>\n  <error>[tools.cis-ocrd-ocropy-train] 'input_file_grp' is a required property</error>\n  <error>[tools.cis-ocrd-ocropy-train.parameters.textequiv_level] 'description' is a required property</error>\n  <error>[tools.cis-ocrd-ocropy-train.parameters.ntrain.type] 'integer' is not one of ['string', 'number', 'boolean']</error>\n  <error>[tools.cis-ocrd-ocropy-train.categories.0] 'lstm ocropy model training' is not one of ['Image preprocessing', 'Layout analysis', 'Text recognition and optimization', 'Model training', 'Long-term preservation', 'Quality assurance']</error>\n  <error>[tools.cis-ocrd-ocropy-train.steps.0] 'training' is not one of ['preprocessing/characterization', 'preprocessing/optimization', 'preprocessing/optimization/cropping', 'preprocessing/optimization/deskewing', 'preprocessing/optimization/despeckling', 'preprocessing/optimization/dewarping', 'preprocessing/optimization/binarization', 'preprocessing/optimization/grayscale_normalization', 'recognition/text-recognition', 'recognition/font-identification', 'recognition/post-correction', 'layout/segmentation', 'layout/segmentation/text-nontext', 'layout/segmentation/region', 'layout/segmentation/line', 'layout/segmentation/word', 'layout/segmentation/classification', 'layout/analysis']</error>\n  <error>[tools.ocrd-cis-profile] 'input_file_grp' is a required property</error>\n  <error>[tools.ocrd-cis-profile.parameters.executable] 'description' is a required property</error>\n  <error>[tools.ocrd-cis-profile.parameters.backend] 'description' is a required property</error>\n  <error>[tools.ocrd-cis-profile.parameters.language] 'description' is a required property</error>\n  <error>[tools.ocrd-cis-profile.parameters.additionalLexicon] 'description' is a required property</error>\n  <error>[tools.ocrd-cis-profile.steps.0] 'postprocessing/alignment' is not one of ['preprocessing/characterization', 'preprocessing/optimization', 'preprocessing/optimization/cropping', 'preprocessing/optimization/deskewing', 'preprocessing/optimization/despeckling', 'preprocessing/optimization/dewarping', 'preprocessing/optimization/binarization', 'preprocessing/optimization/grayscale_normalization', 'recognition/text-recognition', 'recognition/font-identification', 'recognition/post-correction', 'layout/segmentation', 'layout/segmentation/text-nontext', 'layout/segmentation/region', 'layout/segmentation/line', 'layout/segmentation/word', 'layout/segmentation/classification', 'layout/analysis']</error>\n  <error>[tools.ocrd-cis-train] 'input_file_grp' is a required property</error>\n  <error>[tools.ocrd-cis-train.parameters.jar] 'description' is a required property</error>\n  <error>[tools.ocrd-cis-train.steps.0] 'postprocessing/alignment' is not one of ['preprocessing/characterization', 'preprocessing/optimization', 'preprocessing/optimization/cropping', 'preprocessing/optimization/deskewing', 'preprocessing/optimization/despeckling', 'preprocessing/optimization/dewarping', 'preprocessing/optimization/binarization', 'preprocessing/optimization/grayscale_normalization', 'recognition/text-recognition', 'recognition/font-identification', 'recognition/post-correction', 'layout/segmentation', 'layout/segmentation/text-nontext', 'layout/segmentation/region', 'layout/segmentation/line', 'layout/segmentation/word', 'layout/segmentation/classification', 'layout/analysis']</error>\n  <error>[tools.ocrd-cis-stats] 'input_file_grp' is a required property</error>\n  <error>[tools.ocrd-cis-stats.parameters.none] 'description' is a required property</error>\n  <error>[tools.ocrd-cis-stats.steps.0] 'postprocessing/alignment' is not one of ['preprocessing/characterization', 'preprocessing/optimization', 'preprocessing/optimization/cropping', 'preprocessing/optimization/deskewing', 'preprocessing/optimization/despeckling', 'preprocessing/optimization/dewarping', 'preprocessing/optimization/binarization', 'preprocessing/optimization/grayscale_normalization', 'recognition/text-recognition', 'recognition/font-identification', 'recognition/post-correction', 'layout/segmentation', 'layout/segmentation/text-nontext', 'layout/segmentation/region', 'layout/segmentation/line', 'layout/segmentation/word', 'layout/segmentation/classification', 'layout/analysis']</error>\n  <error>[tools.ocrd-cis-lang] 'input_file_grp' is a required property</error>\n  <error>[tools.ocrd-cis-lang.parameters.none] 'description' is a required property</error>\n  <error>[tools.ocrd-cis-lang.steps.0] 'postprocessing/alignment' is not one of ['preprocessing/characterization', 'preprocessing/optimization', 'preprocessing/optimization/cropping', 'preprocessing/optimization/deskewing', 'preprocessing/optimization/despeckling', 'preprocessing/optimization/dewarping', 'preprocessing/optimization/binarization', 'preprocessing/optimization/grayscale_normalization', 'recognition/text-recognition', 'recognition/font-identification', 'recognition/post-correction', 'layout/segmentation', 'layout/segmentation/text-nontext', 'layout/segmentation/region', 'layout/segmentation/line', 'layout/segmentation/word', 'layout/segmentation/classification', 'layout/analysis']</error>\n  <error>[tools.ocrd-cis-importer] 'input_file_grp' is a required property</error>\n  <error>[tools.ocrd-cis-importer.parameters.none] 'description' is a required property</error>\n  <error>[tools.ocrd-cis-importer.steps.0] 'postprocessing' is not one of ['preprocessing/characterization', 'preprocessing/optimization', 'preprocessing/optimization/cropping', 'preprocessing/optimization/deskewing', 'preprocessing/optimization/despeckling', 'preprocessing/optimization/dewarping', 'preprocessing/optimization/binarization', 'preprocessing/optimization/grayscale_normalization', 'recognition/text-recognition', 'recognition/font-identification', 'recognition/post-correction', 'layout/segmentation', 'layout/segmentation/text-nontext', 'layout/segmentation/region', 'layout/segmentation/line', 'layout/segmentation/word', 'layout/segmentation/classification', 'layout/analysis']</error>\n  <error>[tools.ocrd-cis-cutter] 'input_file_grp' is a required property</error>\n  <error>[tools.ocrd-cis-cutter.parameters.gtdir] 'description' is a required property</error>\n  <error>[tools.ocrd-cis-cutter.steps.0] 'postprocessing' is not one of ['preprocessing/characterization', 'preprocessing/optimization', 'preprocessing/optimization/cropping', 'preprocessing/optimization/deskewing', 'preprocessing/optimization/despeckling', 'preprocessing/optimization/dewarping', 'preprocessing/optimization/binarization', 'preprocessing/optimization/grayscale_normalization', 'recognition/text-recognition', 'recognition/font-identification', 'recognition/post-correction', 'layout/segmentation', 'layout/segmentation/text-nontext', 'layout/segmentation/region', 'layout/segmentation/line', 'layout/segmentation/word', 'layout/segmentation/classification', 'layout/analysis']</error>\n  <error>[tools.ocrd-cis-clean] 'input_file_grp' is a required property</error>\n  <error>[tools.ocrd-cis-clean.parameters.mainLevel] 'description' is a required property</error>\n  <error>[tools.ocrd-cis-clean.parameters.mainIndex.type] 'integer' is not one of ['string', 'number', 'boolean']</error>\n  <error>[tools.ocrd-cis-clean.steps.0] 'postprocessing' is not one of ['preprocessing/characterization', 'preprocessing/optimization', 'preprocessing/optimization/cropping', 'preprocessing/optimization/deskewing', 'preprocessing/optimization/despeckling', 'preprocessing/optimization/dewarping', 'preprocessing/optimization/binarization', 'preprocessing/optimization/grayscale_normalization', 'recognition/text-recognition', 'recognition/font-identification', 'recognition/post-correction', 'layout/segmentation', 'layout/segmentation/text-nontext', 'layout/segmentation/region', 'layout/segmentation/line', 'layout/segmentation/word', 'layout/segmentation/classification', 'layout/analysis']</error>\n</report>",
+        "ocrd_tool_validate": "<report valid=\"false\">\n  <error>[tools.ocrd-cis-ocropy-rec] 'input_file_grp' is a required property</error>\n  <error>[tools.ocrd-cis-ocropy-train] 'input_file_grp' is a required property</error>\n  <error>[tools.ocrd-cis-ocropy-train.parameters.textequiv_level] 'description' is a required property</error>\n  <error>[tools.ocrd-cis-ocropy-train.parameters.ntrain.type] 'integer' is not one of ['string', 'number', 'boolean']</error>\n  <error>[tools.ocrd-cis-ocropy-train.categories.0] 'lstm ocropy model training' is not one of ['Image preprocessing', 'Layout analysis', 'Text recognition and optimization', 'Model training', 'Long-term preservation', 'Quality assurance']</error>\n  <error>[tools.ocrd-cis-ocropy-train.steps.0] 'training' is not one of ['preprocessing/characterization', 'preprocessing/optimization', 'preprocessing/optimization/cropping', 'preprocessing/optimization/deskewing', 'preprocessing/optimization/despeckling', 'preprocessing/optimization/dewarping', 'preprocessing/optimization/binarization', 'preprocessing/optimization/grayscale_normalization', 'recognition/text-recognition', 'recognition/font-identification', 'recognition/post-correction', 'layout/segmentation', 'layout/segmentation/text-nontext', 'layout/segmentation/region', 'layout/segmentation/line', 'layout/segmentation/word', 'layout/segmentation/classification', 'layout/analysis']</error>\n  <error>[tools.ocrd-cis-align] 'input_file_grp' is a required property</error>\n  <error>[tools.ocrd-cis-align.steps.0] 'postprocessing/alignment' is not one of ['preprocessing/characterization', 'preprocessing/optimization', 'preprocessing/optimization/cropping', 'preprocessing/optimization/deskewing', 'preprocessing/optimization/despeckling', 'preprocessing/optimization/dewarping', 'preprocessing/optimization/binarization', 'preprocessing/optimization/grayscale_normalization', 'recognition/text-recognition', 'recognition/font-identification', 'recognition/post-correction', 'layout/segmentation', 'layout/segmentation/text-nontext', 'layout/segmentation/region', 'layout/segmentation/line', 'layout/segmentation/word', 'layout/segmentation/classification', 'layout/analysis']</error>\n  <error>[tools.ocrd-cis-wer] 'input_file_grp' is a required property</error>\n  <error>[tools.ocrd-cis-wer.parameters.testIndex.type] 'integer' is not one of ['string', 'number', 'boolean']</error>\n  <error>[tools.ocrd-cis-wer.parameters.gtIndex.type] 'integer' is not one of ['string', 'number', 'boolean']</error>\n  <error>[tools.ocrd-cis-wer.categories.0] 'evaluation' is not one of ['Image preprocessing', 'Layout analysis', 'Text recognition and optimization', 'Model training', 'Long-term preservation', 'Quality assurance']</error>\n  <error>[tools.ocrd-cis-wer.steps.0] 'evaluation' is not one of ['preprocessing/characterization', 'preprocessing/optimization', 'preprocessing/optimization/cropping', 'preprocessing/optimization/deskewing', 'preprocessing/optimization/despeckling', 'preprocessing/optimization/dewarping', 'preprocessing/optimization/binarization', 'preprocessing/optimization/grayscale_normalization', 'recognition/text-recognition', 'recognition/font-identification', 'recognition/post-correction', 'layout/segmentation', 'layout/segmentation/text-nontext', 'layout/segmentation/region', 'layout/segmentation/line', 'layout/segmentation/word', 'layout/segmentation/classification', 'layout/analysis']</error>\n  <error>[tools.ocrd-cis-jar] 'input_file_grp' is a required property</error>\n  <error>[tools.ocrd-cis-jar.steps.0] 'postprocessing/alignment' is not one of ['preprocessing/characterization', 'preprocessing/optimization', 'preprocessing/optimization/cropping', 'preprocessing/optimization/deskewing', 'preprocessing/optimization/despeckling', 'preprocessing/optimization/dewarping', 'preprocessing/optimization/binarization', 'preprocessing/optimization/grayscale_normalization', 'recognition/text-recognition', 'recognition/font-identification', 'recognition/post-correction', 'layout/segmentation', 'layout/segmentation/text-nontext', 'layout/segmentation/region', 'layout/segmentation/line', 'layout/segmentation/word', 'layout/segmentation/classification', 'layout/analysis']</error>\n  <error>[tools.ocrd-cis-profile] 'input_file_grp' is a required property</error>\n  <error>[tools.ocrd-cis-profile.parameters.executable] 'description' is a required property</error>\n  <error>[tools.ocrd-cis-profile.parameters.backend] 'description' is a required property</error>\n  <error>[tools.ocrd-cis-profile.parameters.language] 'description' is a required property</error>\n  <error>[tools.ocrd-cis-profile.parameters.additionalLexicon] 'description' is a required property</error>\n  <error>[tools.ocrd-cis-profile.steps.0] 'postprocessing/alignment' is not one of ['preprocessing/characterization', 'preprocessing/optimization', 'preprocessing/optimization/cropping', 'preprocessing/optimization/deskewing', 'preprocessing/optimization/despeckling', 'preprocessing/optimization/dewarping', 'preprocessing/optimization/binarization', 'preprocessing/optimization/grayscale_normalization', 'recognition/text-recognition', 'recognition/font-identification', 'recognition/post-correction', 'layout/segmentation', 'layout/segmentation/text-nontext', 'layout/segmentation/region', 'layout/segmentation/line', 'layout/segmentation/word', 'layout/segmentation/classification', 'layout/analysis']</error>\n  <error>[tools.ocrd-cis-train] 'input_file_grp' is a required property</error>\n  <error>[tools.ocrd-cis-train.parameters.gtArchives] Additional properties are not allowed ('items' was unexpected)</error>\n  <error>[tools.ocrd-cis-train.parameters.gtArchives.type] 'array' is not one of ['string', 'number', 'boolean']</error>\n  <error>[tools.ocrd-cis-train.parameters.imagePreprocessingSteps] Additional properties are not allowed ('items' was unexpected)</error>\n  <error>[tools.ocrd-cis-train.parameters.imagePreprocessingSteps.type] 'array' is not one of ['string', 'number', 'boolean']</error>\n  <error>[tools.ocrd-cis-train.parameters.ocrSteps] Additional properties are not allowed ('items' was unexpected)</error>\n  <error>[tools.ocrd-cis-train.parameters.ocrSteps.type] 'array' is not one of ['string', 'number', 'boolean']</error>\n  <error>[tools.ocrd-cis-train.parameters.training] Additional properties are not allowed ('properties' was unexpected)</error>\n  <error>[tools.ocrd-cis-train.parameters.training.type] 'object' is not one of ['string', 'number', 'boolean']</error>\n  <error>[tools.ocrd-cis-train.parameters.training.required] ['trigrams', 'maxCandidate', 'profiler', 'leFeatures', 'rrFeatures', 'dmFeatures'] is not of type 'boolean'</error>\n  <error>[tools.ocrd-cis-train.steps.0] 'postprocessing/alignment' is not one of ['preprocessing/characterization', 'preprocessing/optimization', 'preprocessing/optimization/cropping', 'preprocessing/optimization/deskewing', 'preprocessing/optimization/despeckling', 'preprocessing/optimization/dewarping', 'preprocessing/optimization/binarization', 'preprocessing/optimization/grayscale_normalization', 'recognition/text-recognition', 'recognition/font-identification', 'recognition/post-correction', 'layout/segmentation', 'layout/segmentation/text-nontext', 'layout/segmentation/region', 'layout/segmentation/line', 'layout/segmentation/word', 'layout/segmentation/classification', 'layout/analysis']</error>\n  <error>[tools.ocrd-cis-post-correct] 'input_file_grp' is a required property</error>\n  <error>[tools.ocrd-cis-post-correct.parameters.ocrSteps] Additional properties are not allowed ('items' was unexpected)</error>\n  <error>[tools.ocrd-cis-post-correct.parameters.ocrSteps.type] 'array' is not one of ['string', 'number', 'boolean']</error>\n  <error>[tools.ocrd-cis-post-correct.parameters.postCorrection] Additional properties are not allowed ('properties' was unexpected)</error>\n  <error>[tools.ocrd-cis-post-correct.parameters.postCorrection.type] 'object' is not one of ['string', 'number', 'boolean']</error>\n  <error>[tools.ocrd-cis-post-correct.parameters.postCorrection.required] ['maxCandidate', 'profiler', 'model', 'runLE', 'runDM'] is not of type 'boolean'</error>\n  <error>[tools.ocrd-cis-post-correct.steps.0] 'postprocessing/alignment' is not one of ['preprocessing/characterization', 'preprocessing/optimization', 'preprocessing/optimization/cropping', 'preprocessing/optimization/deskewing', 'preprocessing/optimization/despeckling', 'preprocessing/optimization/dewarping', 'preprocessing/optimization/binarization', 'preprocessing/optimization/grayscale_normalization', 'recognition/text-recognition', 'recognition/font-identification', 'recognition/post-correction', 'layout/segmentation', 'layout/segmentation/text-nontext', 'layout/segmentation/region', 'layout/segmentation/line', 'layout/segmentation/word', 'layout/segmentation/classification', 'layout/analysis']</error>\n</report>",
         "official": true,
         "org_plus_name": "cisocrgroup/ocrd_cis",
         "python": {
             "author": "Florian Fink, Tobias Englmeier, Christoph Weber",
             "author-email": "finkf@cis.lmu.de, englmeier@cis.lmu.de, web_chris@msn.com",
-            "name": "cis-ocrd",
-            "pypi": {
-                "info": {
-                    "author": "Florian Fink, Tobias Englmeier, Christoph Weber",
-                    "author_email": "finkf@cis.lmu.de, englmeier@cis.lmu.de, web_chris@msn.com",
-                    "bugtrack_url": null,
-                    "classifiers": [],
-                    "description": "# ocrd_cis\n\n![build status](https://travis-ci.org/cisocrgroup/cis-ocrd-py.svg?branch=dev)\n# cis-ocrd-py\n\n[CIS](http://www.cis.lmu.de) [OCR-D](http://ocr-d.de) command line tools\n\n## General usage\n\n### Essential system packages\n\n```sh\nsudo apt-get install \\\n  git \\\n  build-essential \\\n  python3 python3-pip \\\n  libxml2-dev \\\n  default-jdk\n```\n\n\n\n### Virtualenv\n\nUse `virtualenv` to install dependencies:\n* `virtualenv -p python3.6 env`\n* `source env/bin/activate`\n* `pip install -e path/to/dir/containing/setup.py`\n\nUse `deactivate` to deactivate the virtualenv again.\n\n### OCR-D workspace\n\n* Create a new (empty) workspace: `ocrd workspace init workspace-dir`\n* cd into `workspace-dir`\n* Add new file to workspace: `ocrd workspace add file -G group -i id\n  -m mimetype`\n\n### Tests\n\nIssue `make test` to run the automated test suite. The tests depend on\nthe following tools:\n\n* [wget](https://www.gnu.org/software/wget/)\n* [envsubst](https://linux.die.net/man/1/envsubst)\n\nYou can run individual testcases using the `run_*_test.bash` scripts in\nthe tests directory. Use the `--persistent` or `-p` flag to keep\ntemporary directories.\n\nYou can override the temporary directory by setting the `TMP_DIR` environment\nvariable.\n\n## Tools\n\n### ocrd-cis-align\n\nThe alignment tool line-aligns multiple file groups. It can be used to\nalign the results of multiple OCRs with their respective ground-truth.\n\nThe tool expects a comma-separated list of input file groups, the\naccording output file group and the url of the configuration file:\n\n```sh\nocrd-cis-align \\\n  --input-file-grp 'ocr1,ocr2,gt' \\\n  --output-file-grp 'ocr1+ocr2+gt' \\\n  --mets mets.xml \\\n  --parameter file:///path/to/config.json\n```\n\n\n### ocrd-cis-ocropy-train\nThe ocropy-train tool can be used to train LSTM models.\nIt takes ground truth from the workspace and saves (image+text) snippets from the corresponding pages.\nThen a model is trained on all snippets for 1 million (or the given number of) randomized iterations from the parameter file.\n```sh\nocrd-cis-ocropy-train \\\n  --input-file-grp OCR-D-GT-SEG-LINE \\\n  --mets mets.xml\n  --parameter file:///path/to/config.json\n```\n\n### ocrd-cis-ocropy-clip\nThe ocropy-clip tool can be used to remove intrusions of neighbouring segments in regions / lines of a workspace.\nIt runs a (ad-hoc binarization and) connected component analysis on every text region / line of every PAGE in the input file group, as well as its overlapping neighbours, and for each binary object of conflict, determines whether it belongs to the neighbour, and can therefore be clipped to white. It references the resulting segment image files in the output PAGE (as AlternativeImage).\n```sh\nocrd-cis-ocropy-clip \\\n  --input-file-grp OCR-D-SEG-LINE \\\n  --output-file-grp OCR-D-SEG-LINE-CLIP \\\n  --mets mets.xml\n  --parameter file:///path/to/config.json\n```\n\n### ocrd-cis-ocropy-resegment\nThe ocropy-resegment tool can be used to remove overlap between lines of a workspace.\nIt runs a (ad-hoc binarization and) line segmentation on every text region of every PAGE in the input file group, and for each line already annotated, determines the label of largest extent within the original coordinates (polygon outline) in that line, and annotates the resulting coordinates in the output PAGE.\n```sh\nocrd-cis-ocropy-resegment \\\n  --input-file-grp OCR-D-SEG-LINE \\\n  --output-file-grp OCR-D-SEG-LINE-RES \\\n  --mets mets.xml\n  --parameter file:///path/to/config.json\n```\n\n### ocrd-cis-ocropy-segment\nThe ocropy-segment tool can be used to segment regions into lines.\nIt runs a (ad-hoc binarization and) line segmentation on every text region of every PAGE in the input file group, and adds a TextLine element with the resulting polygon outline to the annotation of the output PAGE.\n```sh\nocrd-cis-ocropy-segment \\\n  --input-file-grp OCR-D-SEG-BLOCK \\\n  --output-file-grp OCR-D-SEG-LINE \\\n  --mets mets.xml\n  --parameter file:///path/to/config.json\n```\n\n### ocrd-cis-ocropy-deskew\nThe ocropy-deskew tool can be used to deskew pages / regions of a workspace.\nIt runs the Ocropy thresholding and deskewing estimation on every segment of every PAGE in the input file group and annotates the orientation angle in the output PAGE.\n```sh\nocrd-cis-ocropy-deskew \\\n  --input-file-grp OCR-D-SEG-LINE \\\n  --output-file-grp OCR-D-SEG-LINE-DES \\\n  --mets mets.xml\n  --parameter file:///path/to/config.json\n```\n\n### ocrd-cis-ocropy-denoise\nThe ocropy-denoise tool can be used to despeckle pages / regions / lines of a workspace.\nIt runs the Ocropy \"nlbin\" denoising on every segment of every PAGE in the input file group and references the resulting segment image files in the output PAGE (as AlternativeImage). \n```sh\nocrd-cis-ocropy-denoise \\\n  --input-file-grp OCR-D-SEG-LINE-DES \\\n  --output-file-grp OCR-D-SEG-LINE-DEN \\\n  --mets mets.xml\n  --parameter file:///path/to/config.json\n```\n\n### ocrd-cis-ocropy-binarize\nThe ocropy-binarize tool can be used to binarize, denoise and deskew pages / regions / lines of a workspace.\nIt runs the Ocropy \"nlbin\" adaptive thresholding, deskewing estimation and denoising on every segment of every PAGE in the input file group and references the resulting segment image files in the output PAGE (as AlternativeImage). (If a deskewing angle has already been annotated in a region, the tool respects that and rotates accordingly.) Images can also be produced grayscale-normalized.\n```sh\nocrd-cis-ocropy-binarize \\\n  --input-file-grp OCR-D-SEG-LINE-DES \\\n  --output-file-grp OCR-D-SEG-LINE-BIN \\\n  --mets mets.xml\n  --parameter file:///path/to/config.json\n```\n\n### ocrd-cis-ocropy-dewarp\nThe ocropy-dewarp tool can be used to dewarp text lines of a workspace.\nIt runs the Ocropy baseline estimation and dewarping on every line in every text region of every PAGE in the input file group and references the resulting line image files in the output PAGE (as AlternativeImage).\n```sh\nocrd-cis-ocropy-dewarp \\\n  --input-file-grp OCR-D-SEG-LINE-BIN \\\n  --output-file-grp OCR-D-SEG-LINE-DEW \\\n  --mets mets.xml\n  --parameter file:///path/to/config.json\n```\n\n### ocrd-cis-ocropy-recognize\nThe ocropy-recognize tool can be used to recognize lines / words / glyphs from pages of a workspace.\nIt runs the Ocropy optical character recognition on every line in every text region of every PAGE in the input file group and adds the resulting text annotation in the output PAGE.\n```sh\nocrd-cis-ocropy-recognize \\\n  --input-file-grp OCR-D-SEG-LINE-DEW \\\n  --output-file-grp OCR-D-OCR-OCRO \\\n  --mets mets.xml\n  --parameter file:///path/to/config.json\n```\n\n## All in One Tool\nFor the all in One Tool install all above tools and Tesserocr as explained below.\nThen use it like:\n```sh\nocrd-cis-aio --parameter file:///path/to/config.json\n```\n\n\n### Tesserocr\nInstall essential system packages for Tesserocr\n```sh\nsudo apt-get install python3-tk \\\n  tesseract-ocr libtesseract-dev libleptonica-dev \\\n  libimage-exiftool-perl libxml2-utils\n```\n\nThen install Tesserocr from: https://github.com/OCR-D/ocrd_tesserocr\n```sh\npip install -r requirements.txt\npip install .\n```\n\nDownload and move tesseract models from:\nhttps://github.com/tesseract-ocr/tesseract/wiki/Data-Files\nor use your own models\nplace them into: /usr/share/tesseract-ocr/4.00/tessdata\n\nTesserocr v2.4.0 seems broken for tesseract 4.0.0-beta. Install\nVersion v2.3.1 instead: `pip install tesseract==2.3.1`.\n\n## Workflow configuration\n\nA decent pipeline might look like this:\n\n1. page-level cropping\n2. page-level binarization\n3. page-level deskewing\n4. page-level dewarping\n5. region segmentation\n6. region-level clipping\n7. region-level deskewing\n8. line segmentation\n9. line-level clipping or resegmentation\n10. line-level dewarping\n11. line-level recognition\n12. line-level alignment\n\nIf GT is used, steps 1, 5 and 8 can be omitted. Else if a segmentation is used in 5 and 8 which does not produce overlapping sections, steps 6 and 9 can be omitted.\n\n## OCR-D links\n\n- [OCR-D](https://ocr-d.github.io)\n- [Github](https://github.com/OCR-D)\n- [Project-page](http://www.ocr-d.de/)\n- [Ground-truth](http://www.ocr-d.de/sites/all/GTDaten/IndexGT.html)\n\n\n",
-                    "description_content_type": "text/markdown",
-                    "docs_url": null,
-                    "download_url": "",
-                    "downloads": {
-                        "last_day": -1,
-                        "last_month": -1,
-                        "last_week": -1
-                    },
-                    "home_page": "https://github.com/cisocrgroup/cis-ocrd-py",
-                    "keywords": "",
-                    "license": "MIT",
-                    "maintainer": "",
-                    "maintainer_email": "",
-                    "name": "cis-ocrd",
-                    "package_url": "https://pypi.org/project/cis-ocrd/",
-                    "platform": "",
-                    "project_url": "https://pypi.org/project/cis-ocrd/",
-                    "project_urls": {
-                        "Homepage": "https://github.com/cisocrgroup/cis-ocrd-py"
-                    },
-                    "release_url": "https://pypi.org/project/cis-ocrd/0.0.5/",
-                    "requires_dist": [
-                        "ocrd (>=2.0.0a1)",
-                        "click",
-                        "scipy",
-                        "numpy (>=1.17.0)",
-                        "pillow (>=6.2.0)",
-                        "matplotlib (>3.0.0)",
-                        "python-Levenshtein",
-                        "calamari-ocr"
-                    ],
-                    "requires_python": "",
-                    "summary": "CIS OCR-D command line tools",
-                    "version": "0.0.5"
-                },
-                "last_serial": 6034741,
-                "releases": {
-                    "0.0.5": [
-                        {
-                            "comment_text": "",
-                            "digests": {
-                                "md5": "0cb7c271e269610696de659dd5e6366a",
-                                "sha256": "f99c92453445e4896a856cb0f146d0aadf0ceeb48addd75ff6b9f4ffda49ac33"
-                            },
-                            "downloads": -1,
-                            "filename": "cis_ocrd-0.0.5-py3-none-any.whl",
-                            "has_sig": false,
-                            "md5_digest": "0cb7c271e269610696de659dd5e6366a",
-                            "packagetype": "bdist_wheel",
-                            "python_version": "py3",
-                            "requires_python": null,
-                            "size": 116744,
-                            "upload_time": "2019-10-26T19:26:55",
-                            "upload_time_iso_8601": "2019-10-26T19:26:55.970846Z",
-                            "url": "https://files.pythonhosted.org/packages/9e/bf/b1818c9f698b1b99475bcd85ae8649a09ee8e802644dedc759bc728f4114/cis_ocrd-0.0.5-py3-none-any.whl"
-                        },
-                        {
-                            "comment_text": "",
-                            "digests": {
-                                "md5": "049c5b627214c7afcce8f51a5a0eee11",
-                                "sha256": "059e22fa0ab0ffd92f2bbfdb26279dbe507a25050bfe38eaa977546da6f60523"
-                            },
-                            "downloads": -1,
-                            "filename": "cis-ocrd-0.0.5.tar.gz",
-                            "has_sig": false,
-                            "md5_digest": "049c5b627214c7afcce8f51a5a0eee11",
-                            "packagetype": "sdist",
-                            "python_version": "source",
-                            "requires_python": null,
-                            "size": 88597,
-                            "upload_time": "2019-10-26T19:26:59",
-                            "upload_time_iso_8601": "2019-10-26T19:26:59.427545Z",
-                            "url": "https://files.pythonhosted.org/packages/c9/64/f6d8e1cb2ac04a6ef81387ad279faf5660f682fada0bb324f4280cb0dd17/cis-ocrd-0.0.5.tar.gz"
-                        }
-                    ]
-                },
-                "urls": [
-                    {
-                        "comment_text": "",
-                        "digests": {
-                            "md5": "0cb7c271e269610696de659dd5e6366a",
-                            "sha256": "f99c92453445e4896a856cb0f146d0aadf0ceeb48addd75ff6b9f4ffda49ac33"
-                        },
-                        "downloads": -1,
-                        "filename": "cis_ocrd-0.0.5-py3-none-any.whl",
-                        "has_sig": false,
-                        "md5_digest": "0cb7c271e269610696de659dd5e6366a",
-                        "packagetype": "bdist_wheel",
-                        "python_version": "py3",
-                        "requires_python": null,
-                        "size": 116744,
-                        "upload_time": "2019-10-26T19:26:55",
-                        "upload_time_iso_8601": "2019-10-26T19:26:55.970846Z",
-                        "url": "https://files.pythonhosted.org/packages/9e/bf/b1818c9f698b1b99475bcd85ae8649a09ee8e802644dedc759bc728f4114/cis_ocrd-0.0.5-py3-none-any.whl"
-                    },
-                    {
-                        "comment_text": "",
-                        "digests": {
-                            "md5": "049c5b627214c7afcce8f51a5a0eee11",
-                            "sha256": "059e22fa0ab0ffd92f2bbfdb26279dbe507a25050bfe38eaa977546da6f60523"
-                        },
-                        "downloads": -1,
-                        "filename": "cis-ocrd-0.0.5.tar.gz",
-                        "has_sig": false,
-                        "md5_digest": "049c5b627214c7afcce8f51a5a0eee11",
-                        "packagetype": "sdist",
-                        "python_version": "source",
-                        "requires_python": null,
-                        "size": 88597,
-                        "upload_time": "2019-10-26T19:26:59",
-                        "upload_time_iso_8601": "2019-10-26T19:26:59.427545Z",
-                        "url": "https://files.pythonhosted.org/packages/c9/64/f6d8e1cb2ac04a6ef81387ad279faf5660f682fada0bb324f4280cb0dd17/cis-ocrd-0.0.5.tar.gz"
-                    }
-                ]
-            },
-            "url": "https://github.com/cisocrgroup/cis-ocrd-py"
+            "name": "ocrd_cis",
+            "pypi": null,
+            "url": "https://github.com/cisocrgroup/ocrd_cis"
         },
         "url": "https://github.com/cisocrgroup/ocrd_cis"
     },
@@ -2924,7 +2954,7 @@
             "setup.py": "# -*- coding: utf-8 -*-\nfrom setuptools import setup, find_packages\n\nsetup(\n    name='ocrd-anybaseocr',\n    version='v0.0.1',\n    author=\"DFKI\",\n    author_email=\"Saqib.Bukhari@dfki.de, Mohammad_mohsin.reza@dfki.de\",\n    url=\"https://github.com/mjenckel/LAYoutERkennung\",\n    license='Apache License 2.0',\n    long_description=open('README.md').read(),\n    long_description_content_type='text/markdown',\n    install_requires=open('requirements.txt').read().split('\\n'),\n    packages=find_packages(exclude=[\"work_dir\", \"src\"]),\n    package_data={\n        '': ['*.json']\n    },\n    entry_points={\n        'console_scripts': [\n            'ocrd-anybaseocr-binarize           = ocrd_anybaseocr.cli.cli:ocrd_anybaseocr_binarize',\n            'ocrd-anybaseocr-deskew             = ocrd_anybaseocr.cli.cli:ocrd_anybaseocr_deskew',\n            'ocrd-anybaseocr-crop               = ocrd_anybaseocr.cli.cli:ocrd_anybaseocr_cropping',        \n            'ocrd-anybaseocr-dewarp             = ocrd_anybaseocr.cli.cli:ocrd_anybaseocr_dewarp',\n            'ocrd-anybaseocr-tiseg              = ocrd_anybaseocr.cli.cli:ocrd_anybaseocr_tiseg',\n            'ocrd-anybaseocr-textline           = ocrd_anybaseocr.cli.cli:ocrd_anybaseocr_textline',\n            'ocrd-anybaseocr-layout-analysis    = ocrd_anybaseocr.cli.cli:ocrd_anybaseocr_layout_analysis',\n            'ocrd-anybaseocr-block-segmentation = ocrd_anybaseocr.cli.cli:ocrd_anybaseocr_block_segmentation'\n        ]\n    },\n)\n"
         },
         "git": {
-            "last_commit": "Fri Nov 1 12:41:51 2019 +0100",
+            "last_commit": "Fri Nov 1 12:46:33 2019 +0100",
             "latest_tag": "",
             "number_of_commits": "84",
             "url": "https://github.com/mjenckel/LAYoutERkennung"
