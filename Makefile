@@ -1,2 +1,2 @@
 repos.json:
-	ocrd-kwalitee json -a > "$@"
+	ocrd-kwalitee json > "$@"
