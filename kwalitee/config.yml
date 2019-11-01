@@ -2,19 +2,26 @@
 repodir: /data/ocrd_all
 # repos to clone and process
 repolist:
-    - https://github.com/ASVLeipzig/cor-asv-ann
-    - https://github.com/ASVLeipzig/cor-asv-fst
-    - https://github.com/OCR-D/ocrd_calamari
-    - https://github.com/OCR-D/ocrd_im6convert
-    - https://github.com/OCR-D/ocrd_keraslm
-    - https://github.com/OCR-D/ocrd_kraken
-    - https://github.com/OCR-D/ocrd_ocropy
-    - https://github.com/OCR-D/ocrd_olena
-    - https://github.com/OCR-D/ocrd_segment
-    - https://github.com/OCR-D/ocrd_tesserocr
-    - https://github.com/cisocrgroup/ocrd_cis
-    - https://github.com/mjenckel/LAYoutERkennung
-    - https://github.com/ocr-d-modul-2-segmentierung/segmentation-runner
-    - https://github.com/qurator-spk/dinglehopper
-    - https://github.com/qurator-spk/pixelwise_segmentation_SBB
-    - https://github.com/seuretm/ocrd_typegroups_classifier
+  - url: https://github.com/ASVLeipzig/cor-asv-ann
+    official: true
+  - url: https://github.com/ASVLeipzig/cor-asv-fst
+    official: true
+  - url: https://github.com/OCR-D/ocrd_calamari
+  - url: https://github.com/OCR-D/ocrd_im6convert
+  - url: https://github.com/OCR-D/ocrd_keraslm
+  - url: https://github.com/OCR-D/ocrd_kraken
+  - url: https://github.com/OCR-D/ocrd_ocropy
+  - url: https://github.com/OCR-D/ocrd_olena
+  - url: https://github.com/OCR-D/ocrd_segment
+  - url: https://github.com/OCR-D/ocrd_tesserocr
+    official: true
+  - url: https://github.com/cisocrgroup/ocrd_cis
+    official: true
+  - url: https://github.com/mjenckel/LAYoutERkennung
+    official: true
+  - url: https://github.com/ocr-d-modul-2-segmentierung/segmentation-runner
+    official: true
+  - url: https://github.com/qurator-spk/dinglehopper
+  - url: https://github.com/qurator-spk/pixelwise_segmentation_SBB
+  - url: https://github.com/seuretm/ocrd_typegroups_classifier
+    official: true

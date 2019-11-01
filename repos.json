@@ -8,6 +8,7 @@
         },
         "git": {
             "last_commit": "Tue Oct 22 11:23:54 2019 +0200",
+            "latest_tag": "",
             "number_of_commits": "37",
             "url": "https://github.com/ASVLeipzig/cor-asv-ann.git"
         },
@@ -83,6 +84,7 @@
             "version": "0.1.0"
         },
         "ocrd_tool_validate": "<report valid=\"false\">\n  <error>[tools.ocrd-cor-asv-ann-evaluate] 'input_file_grp' is a required property</error>\n  <error>[tools.ocrd-cor-asv-ann-evaluate.steps.0] 'recognition/evaluation' is not one of ['preprocessing/characterization', 'preprocessing/optimization', 'preprocessing/optimization/cropping', 'preprocessing/optimization/deskewing', 'preprocessing/optimization/despeckling', 'preprocessing/optimization/dewarping', 'preprocessing/optimization/binarization', 'preprocessing/optimization/grayscale_normalization', 'recognition/text-recognition', 'recognition/font-identification', 'recognition/post-correction', 'layout/segmentation', 'layout/segmentation/text-nontext', 'layout/segmentation/region', 'layout/segmentation/line', 'layout/segmentation/word', 'layout/segmentation/classification', 'layout/analysis']</error>\n</report>",
+        "official": true,
         "org_plus_name": "ASVLeipzig/cor-asv-ann",
         "python": {
             "author": "Robert Sachunsky",
@@ -102,12 +104,14 @@
         },
         "git": {
             "last_commit": "Tue Jul 23 17:00:16 2019 +0200",
+            "latest_tag": "",
             "number_of_commits": "172",
             "url": "https://github.com/ASVLeipzig/cor-asv-fst"
         },
         "name": "cor-asv-fst",
         "ocrd_tool": "",
         "ocrd_tool_validate": "NO ocrd-tool.json",
+        "official": true,
         "org_plus_name": "ASVLeipzig/cor-asv-fst",
         "python": {
             "author": "Maciej Sumalvico, Robert Sachunsky",
@@ -127,6 +131,7 @@
         },
         "git": {
             "last_commit": "Fri Sep 27 15:52:03 2019 +0200",
+            "latest_tag": "",
             "number_of_commits": "24",
             "url": "https://github.com/OCR-D/ocrd_calamari.git"
         },
@@ -165,12 +170,132 @@
             "version": "0.0.1"
         },
         "ocrd_tool_validate": "<report valid=\"false\">\n  <error>[tools.ocrd-calamari-recognize.parameters.checkpoint] 'description' is a required property</error>\n  <error>[tools.ocrd-calamari-recognize.parameters.voter] 'description' is a required property</error>\n</report>",
+        "official": false,
         "org_plus_name": "OCR-D/ocrd_calamari",
         "python": {
             "author": "Konstantin Baierer, Mike Gerber",
             "author-email": "unixprog@gmail.com, mike.gerber@sbb.spk-berlin.de",
             "name": "ocrd_calamari",
-            "pypi": null,
+            "pypi": {
+                "info": {
+                    "author": "Konstantin Baierer, Mike Gerber",
+                    "author_email": "unixprog@gmail.com, mike.gerber@sbb.spk-berlin.de",
+                    "bugtrack_url": null,
+                    "classifiers": [],
+                    "description": "# ocrd_calamari\n\nRecognize text using [Calamari OCR](https://github.com/Calamari-OCR/calamari).\n\n## Introduction\n\nThis offers a OCR-D compliant workspace processor for some of the functionality of Calamari OCR.\n\nThis processor only operates on the text line level and so needs a line segmentation (and by extension a binarized \nimage) as its input.\n\n## Example Usage\n\n```sh\nocrd-calamari-recognize -p test-parameters.json -m mets.xml -I OCR-D-SEG-LINE -O OCR-D-OCR-CALAMARI\n```\n\nWith `test-parameters.json`:\n\n```json\n{\n    \"checkpoint\": \"/path/to/some/trained/models/*.ckpt.json\"\n}\n```\n\nTODO\n----\n\n* Support Calamari's \"extended prediction data\" output\n* Currently, the processor only supports a prediction using confidence voting of multiple models. While this is\n  superior, it makes sense to support single model prediction, too.\n\n\n",
+                    "description_content_type": "text/markdown",
+                    "docs_url": null,
+                    "download_url": "",
+                    "downloads": {
+                        "last_day": -1,
+                        "last_month": -1,
+                        "last_week": -1
+                    },
+                    "home_page": "https://github.com/kba/ocrd_calamari",
+                    "keywords": "",
+                    "license": "Apache License 2.0",
+                    "maintainer": "",
+                    "maintainer_email": "",
+                    "name": "ocrd-calamari",
+                    "package_url": "https://pypi.org/project/ocrd-calamari/",
+                    "platform": "",
+                    "project_url": "https://pypi.org/project/ocrd-calamari/",
+                    "project_urls": {
+                        "Homepage": "https://github.com/kba/ocrd_calamari"
+                    },
+                    "release_url": "https://pypi.org/project/ocrd-calamari/0.0.1/",
+                    "requires_dist": [
+                        "numpy",
+                        "calamari-ocr",
+                        "setuptools (>=41.0.0)",
+                        "tensorflow-gpu",
+                        "click",
+                        "ocrd (>=1.0.0b11)"
+                    ],
+                    "requires_python": "",
+                    "summary": "Calamari bindings",
+                    "version": "0.0.1"
+                },
+                "last_serial": 6034935,
+                "releases": {
+                    "0.0.1": [
+                        {
+                            "comment_text": "",
+                            "digests": {
+                                "md5": "a247c6638d77f7590453855f8414a97b",
+                                "sha256": "cf08ec027390519d465f6be861e5672b48e7b39b3d1f8e13e54cb401034355b6"
+                            },
+                            "downloads": -1,
+                            "filename": "ocrd_calamari-0.0.1-py3-none-any.whl",
+                            "has_sig": false,
+                            "md5_digest": "a247c6638d77f7590453855f8414a97b",
+                            "packagetype": "bdist_wheel",
+                            "python_version": "py3",
+                            "requires_python": null,
+                            "size": 9320,
+                            "upload_time": "2019-10-26T20:18:11",
+                            "upload_time_iso_8601": "2019-10-26T20:18:11.044376Z",
+                            "url": "https://files.pythonhosted.org/packages/30/62/d8efee35233443d444fc49f7f89792979234c1d735285d599f989e63cee1/ocrd_calamari-0.0.1-py3-none-any.whl"
+                        },
+                        {
+                            "comment_text": "",
+                            "digests": {
+                                "md5": "1daa1956ba64485b65d9d69a149dcb6a",
+                                "sha256": "51a09088d677799258d8c796dbaba8a1b44a318d06c060314499f708fa37bdd4"
+                            },
+                            "downloads": -1,
+                            "filename": "ocrd_calamari-0.0.1.tar.gz",
+                            "has_sig": false,
+                            "md5_digest": "1daa1956ba64485b65d9d69a149dcb6a",
+                            "packagetype": "sdist",
+                            "python_version": "source",
+                            "requires_python": null,
+                            "size": 3884,
+                            "upload_time": "2019-10-26T20:18:13",
+                            "upload_time_iso_8601": "2019-10-26T20:18:13.643406Z",
+                            "url": "https://files.pythonhosted.org/packages/46/1a/b5f02d113aa7810cb773f0b586d1202c254d22e4bf3c6b829d937da2c1b0/ocrd_calamari-0.0.1.tar.gz"
+                        }
+                    ]
+                },
+                "urls": [
+                    {
+                        "comment_text": "",
+                        "digests": {
+                            "md5": "a247c6638d77f7590453855f8414a97b",
+                            "sha256": "cf08ec027390519d465f6be861e5672b48e7b39b3d1f8e13e54cb401034355b6"
+                        },
+                        "downloads": -1,
+                        "filename": "ocrd_calamari-0.0.1-py3-none-any.whl",
+                        "has_sig": false,
+                        "md5_digest": "a247c6638d77f7590453855f8414a97b",
+                        "packagetype": "bdist_wheel",
+                        "python_version": "py3",
+                        "requires_python": null,
+                        "size": 9320,
+                        "upload_time": "2019-10-26T20:18:11",
+                        "upload_time_iso_8601": "2019-10-26T20:18:11.044376Z",
+                        "url": "https://files.pythonhosted.org/packages/30/62/d8efee35233443d444fc49f7f89792979234c1d735285d599f989e63cee1/ocrd_calamari-0.0.1-py3-none-any.whl"
+                    },
+                    {
+                        "comment_text": "",
+                        "digests": {
+                            "md5": "1daa1956ba64485b65d9d69a149dcb6a",
+                            "sha256": "51a09088d677799258d8c796dbaba8a1b44a318d06c060314499f708fa37bdd4"
+                        },
+                        "downloads": -1,
+                        "filename": "ocrd_calamari-0.0.1.tar.gz",
+                        "has_sig": false,
+                        "md5_digest": "1daa1956ba64485b65d9d69a149dcb6a",
+                        "packagetype": "sdist",
+                        "python_version": "source",
+                        "requires_python": null,
+                        "size": 3884,
+                        "upload_time": "2019-10-26T20:18:13",
+                        "upload_time_iso_8601": "2019-10-26T20:18:13.643406Z",
+                        "url": "https://files.pythonhosted.org/packages/46/1a/b5f02d113aa7810cb773f0b586d1202c254d22e4bf3c6b829d937da2c1b0/ocrd_calamari-0.0.1.tar.gz"
+                    }
+                ]
+            },
             "url": "https://github.com/kba/ocrd_calamari"
         },
         "url": "https://github.com/OCR-D/ocrd_calamari"
@@ -184,6 +309,7 @@
         },
         "git": {
             "last_commit": "Tue Jun 26 18:30:04 2018 +0200",
+            "latest_tag": "",
             "number_of_commits": "5",
             "url": "https://github.com/OCR-D/ocrd_im6convert"
         },
@@ -216,6 +342,7 @@
             "version": "0.0.1"
         },
         "ocrd_tool_validate": "<report valid=\"false\">\n  <error>[tools.ocrd-im6convert] 'input_file_grp' is a required property</error>\n  <error>[tools.ocrd-im6convert.parameters.output-format] 'description' is a required property</error>\n</report>",
+        "official": false,
         "org_plus_name": "OCR-D/ocrd_im6convert",
         "url": "https://github.com/OCR-D/ocrd_im6convert"
     },
@@ -228,6 +355,7 @@
         },
         "git": {
             "last_commit": "Tue Oct 22 11:25:28 2019 +0200",
+            "latest_tag": "",
             "number_of_commits": "81",
             "url": "https://github.com/OCR-D/ocrd_keraslm.git"
         },
@@ -299,12 +427,135 @@
             "version": "0.3.1"
         },
         "ocrd_tool_validate": "<report valid=\"true\">\n</report>",
+        "official": false,
         "org_plus_name": "OCR-D/ocrd_keraslm",
         "python": {
             "author": "Konstantin Baierer, Kay-Michael W\u00fcrzner",
             "author-email": "unixprog@gmail.com, wuerzner@gmail.com",
             "name": "ocrd_keraslm",
-            "pypi": null,
+            "pypi": {
+                "info": {
+                    "author": "Robert Sachunsky, Konstantin Baierer, Kay-Michael W\u00fcrzner",
+                    "author_email": "sachunsky@informatik.uni-leipzig.de, unixprog@gmail.com, wuerzner@gmail.com",
+                    "bugtrack_url": null,
+                    "classifiers": [],
+                    "description": "# ocrd_keraslm\n    character-level language modelling using Keras\n\n\n## Introduction\n\nThis is a tool for statistical _language modelling_ (predicting text from context) with recurrent neural networks. It models probabilities not on the word level but the _character level_ so as to allow open vocabulary processing (avoiding morphology, historic orthography and word segmentation problems). It manages a vocabulary of mapped characters, which can be easily extended by training on more text. Above that, unmapped characters are treated with underspecification.\n\nIn addition to character sequences, (meta-data) context variables can be configured as extra input. \n\n### Architecture\n\nThe model consists of:\n\n0. an input layer: characters are represented as indexes from the vocabulary mapping, in windows of a number `length` of characters,\n1. a character embedding layer: window sequences are converted into dense vectors by looking up the indexes in an embedding weight matrix,\n2. a context embedding layer: context variables are converted into dense vectors by looking up the indexes in an embedding weight matrix, \n3. character and context vector sequences are concatenated,\n4. a number `depth` of hidden layers: each with a number `width` of hidden recurrent units of _LSTM cells_ (Long Short-term Memory) connected on top of each other,\n5. an output layer derived from the transposed character embedding matrix (weight tying): hidden activations are projected linearly to vectors of dimensionality equal to the character vocabulary size, then softmax is applied returning a probability for each possible value of the next character, respectively.\n\n![model graph depiction](model-graph.png \"graph with 1 context variable\")\n\nThe model is trained by feeding windows of text in index representation to the input layer, calculating output and comparing it to the same text shifted backward by 1 character, and represented as unit vectors (\"one-hot coding\") as target. The loss is calculated as the (unweighted) cross-entropy between target and output. Backpropagation yields error gradients for each layer, which is used to iteratively update the weights (stochastic gradient descent).\n\nThis is implemented in [Keras](https://keras.io) with [Tensorflow](https://www.tensorflow.org/) as backend. It automatically uses a fast CUDA-optimized LSTM implementation (Nividia GPU and Tensorflow installation with GPU support, see below), both in learning and in prediction phase, if available.\n\n\n### Modes of operation\n\nNotably, this model (by default) runs _statefully_, i.e. by implicitly passing hidden state from one window (batch of samples) to the next. That way, the context available for predictions can be arbitrarily long (above `length`, e.g. the complete document up to that point), or short (below `length`, e.g. at the start of a text). (However, this is a passive perspective above `length`, because errors are never back-propagated any further in time during gradient-descent training.) This is favourable to stateless mode because all characters can be output in parallel, and no partial windows need to be presented during training (which slows down).\n\nBesides stateful mode, the model can also be run _incrementally_, i.e. by explicitly passing hidden state from the caller. That way, multiple alternative hypotheses can be processed together. This is used for generation (sampling from the model) and alternative decoding (finding the best path through a sequence of alternatives).\n\n### Context conditioning\n\nEvery text has meta-data like time, author, text type, genre, production features (e.g. print vs typewriter vs digital born rich text, OCR version), language, structural element (e.g. title vs heading vs paragraph vs footer vs marginalia), font family (e.g. Antiqua vs Fraktura) and font shape (e.g. bold vs letter-spaced vs italic vs normal) etc. \n\nThis information (however noisy) can be very useful to facilitate stochastic modelling, since language has an extreme diversity and complexity. To that end, models can be conditioned on extra inputs here, termed _context variables_. The model learns to represent these high-dimensional discrete values as low-dimensional continuous vectors (embeddings), also entering the recurrent hidden layers (as a form of simple additive adaptation).\n\n### Underspecification\n\nIndex zero is reserved for unmapped characters (unseen contexts). During training, its embedding vector is regularised to occupy a center position of all mapped characters (all other contexts), and the hidden layers get to see it every now and then by random degradation. At runtime, therefore, some unknown character (some unknown context) represented as zero does not disturb follow-up predictions too much.\n\n\n## Installation\n\nRequired Ubuntu packages:\n\n* Python (``python`` or ``python3``)\n* pip (``python-pip`` or ``python3-pip``)\n* virtualenv (``python-virtualenv`` or ``python3-virtualenv``)\n\nCreate and activate a virtualenv as usual.\n\nIf you need a custom version of ``keras`` or ``tensorflow`` (like [GPU support](https://www.tensorflow.org/install/install_sources)), install them via `pip` now.\n\nTo install Python dependencies and this module, then do:\n```shell\nmake deps install\n```\nWhich is the equivalent of:\n```shell\npip install -r requirements.txt\npip install -e .\n```\n\nUseful environment variables are:\n- ``TF_CPP_MIN_LOG_LEVEL`` (set to `1` to suppress most of Tensorflow's messages\n- ``CUDA_VISIBLE_DEVICES`` (set empty to force CPU even in a GPU installation)\n\n\n## Usage\n\nThis packages has two user interfaces:\n\n### command line interface `keraslm-rate`\n\nTo be used with string arguments and plain-text files.\n\n```shell\nUsage: keraslm-rate [OPTIONS] COMMAND [ARGS]...\n\nOptions:\n  --help  Show this message and exit.\n\nCommands:\n  train                           train a language model\n  test                            get overall perplexity from language model\n  apply                           get individual probabilities from language model\n  generate                        sample characters from language model\n  print-charset                   Print the mapped characters\n  prune-charset                   Delete one character from mapping\n  plot-char-embeddings-similarity\n                                  Paint a heat map of character embeddings\n  plot-context-embeddings-similarity\n                                  Paint a heat map of context embeddings\n  plot-context-embeddings-projection\n                                  Paint a 2-d PCA projection of context embeddings\n```\n\nExamples:\n```shell\nkeraslm-rate train --width 64 --depth 4 --length 256 --model model_dta_64_4_256.h5 dta_komplett_2017-09-01/txt/*.tcf.txt\nkeraslm-rate generate -m model_dta_64_4_256.h5 --number 6 \"f\u00fcr die Wi\u017f\u017fen\"\nkeraslm-rate apply -m model_dta_64_4_256.h5 \"so sch\u00e4dlich ist es Borkickheile zu pflanzen\"\nkeraslm-rate test -m model_dta_64_4_256.h5 dta_komplett_2017-09-01/txt/grimm_*.tcf.txt\n```\n\n### [OCR-D processor](https://github.com/OCR-D/core) interface `ocrd-keraslm-rate`\n\nTo be used with [PageXML](https://www.primaresearch.org/tools/PAGELibraries) documents in an [OCR-D](https://github.com/OCR-D/spec/) annotation workflow. Input could be anything with a textual annotation (`TextEquiv` on the given `textequiv_level`). The LM rater could be used for both quality control (without alternative decoding, using only each first index `TextEquiv`) and part of post-correction (with `alternative_decoding=True`, finding the best path among `TextEquiv` indexes).\n\n```json\n  \"tools\": {\n    \"ocrd-keraslm-rate\": {\n      \"executable\": \"ocrd-keraslm-rate\",\n      \"categories\": [\n        \"Text recognition and optimization\"\n      ],\n      \"steps\": [\n        \"recognition/text-recognition\"\n      ],\n      \"description\": \"Rate elements of the text with a character-level LSTM language model in Keras\",\n      \"input_file_grp\": [\n        \"OCR-D-OCR-TESS\",\n        \"OCR-D-OCR-KRAK\",\n        \"OCR-D-OCR-OCRO\",\n        \"OCR-D-OCR-CALA\",\n        \"OCR-D-OCR-ANY\",\n        \"OCR-D-COR-CIS\",\n        \"OCR-D-COR-ASV\"\n      ],\n      \"output_file_grp\": [\n        \"OCR-D-COR-LM\"\n      ],\n      \"parameters\": {\n        \"model_file\": {\n          \"type\": \"string\",\n          \"format\": \"uri\",\n          \"content-type\": \"application/x-hdf;subtype=bag\",\n          \"description\": \"path of h5py weight/config file for model trained with keraslm\",\n          \"required\": true,\n          \"cacheable\": true\n        },\n        \"textequiv_level\": {\n          \"type\": \"string\",\n          \"enum\": [\"region\", \"line\", \"word\", \"glyph\"],\n          \"default\": \"glyph\",\n          \"description\": \"PAGE XML hierarchy level to evaluate TextEquiv sequences on\"\n        },\n        \"alternative_decoding\": {\n          \"type\": \"boolean\",\n          \"description\": \"whether to process all TextEquiv alternatives, finding the best path via beam search, and delete each non-best alternative\",\n          \"default\": true\n        },\n        \"beam_width\": {\n          \"type\": \"number\",\n          \"format\": \"integer\",\n          \"description\": \"maximum number of best partial paths to consider during search with alternative_decoding\",\n          \"default\": 100\n        }\n      }\n    }\n  }\n```\n\nExamples:\n```shell\nmake deps-test # installs ocrd_tesserocr\nmake test/assets # downloads GT, imports PageXML, builds workspaces\nocrd workspace clone -a test/assets/kant_aufklaerung_1784/mets.xml ws1\ncd ws1\nocrd-tesserocr-segment-region -I OCR-D-IMG -O OCR-D-SEG-BLOCK\nocrd-tesserocr-segment-line -I OCR-D-SEG-BLOCK -O OCR-D-SEG-LINE\nocrd-tesserocr-recognize -I OCR-D-SEG-LINE -O OCR-D-OCR-TESS-WORD -p '{ \"textequiv_level\" : \"word\", \"model\" : \"Fraktur\" }'\nocrd-tesserocr-recognize -I OCR-D-SEG-LINE -O OCR-D-OCR-TESS-GLYPH -p '{ \"textequiv_level\" : \"glyph\", \"model\" : \"deu-frak\" }'\n# get confidences and perplexity:\nocrd-keraslm-rate -I OCR-D-OCR-TESS-WORD -O OCR-D-OCR-LM-WORD -p '{ \"model_file\": \"model_dta_64_4_256.h5\", \"textequiv_level\": \"word\", \"alternative_decoding\": false }'\n# also get best path:\nocrd-keraslm-rate -I OCR-D-OCR-TESS-GLYPH -O OCR-D-OCR-LM-GLYPH -p '{ \"model_file\": \"model_dta_64_4_256.h5\", \"textequiv_level\": \"glyph\", \"alternative_decoding\": true, \"beam_width\": 10 }'\n```\n\n## Testing\n\n```shell\nmake deps-test test\n```\nWhich is the equivalent of:\n```shell\npip install -r requirements_test.txt\ntest -e test/assets || test/prepare_gt.bash test/assets\ntest -f model_dta_test.h5 || keraslm-rate train -m model_dta_test.h5 test/assets/*.txt\nkeraslm-rate test -m model_dta_test.h5 test/assets/*.txt\npython -m pytest test $(PYTEST_ARGS)\n```\n\nSet `PYTEST_ARGS=\"-s --verbose\"` to see log output (`-s`) and individual test results (`--verbose`).\n\n\n",
+                    "description_content_type": "text/markdown",
+                    "docs_url": null,
+                    "download_url": "",
+                    "downloads": {
+                        "last_day": -1,
+                        "last_month": -1,
+                        "last_week": -1
+                    },
+                    "home_page": "https://github.com/OCR-D/ocrd_keraslm",
+                    "keywords": "",
+                    "license": "Apache License 2.0",
+                    "maintainer": "",
+                    "maintainer_email": "",
+                    "name": "ocrd-keraslm",
+                    "package_url": "https://pypi.org/project/ocrd-keraslm/",
+                    "platform": "",
+                    "project_url": "https://pypi.org/project/ocrd-keraslm/",
+                    "project_urls": {
+                        "Homepage": "https://github.com/OCR-D/ocrd_keraslm"
+                    },
+                    "release_url": "https://pypi.org/project/ocrd-keraslm/0.3.1/",
+                    "requires_dist": [
+                        "ocrd (>=1.0.1)",
+                        "click",
+                        "keras (>=2.2.4)",
+                        "numpy",
+                        "tensorflow",
+                        "h5py",
+                        "networkx",
+                        "sklearn; extra == 'plotting'",
+                        "matplotlib; extra == 'plotting'"
+                    ],
+                    "requires_python": "",
+                    "summary": "character-level language modelling in Keras",
+                    "version": "0.3.1"
+                },
+                "last_serial": 6032189,
+                "releases": {
+                    "0.3.1": [
+                        {
+                            "comment_text": "",
+                            "digests": {
+                                "md5": "0da1139d7b62ee27b9bb3af2b4e38929",
+                                "sha256": "f3ec82a615434e90028722586c6123e4a1887e36b0a57f06566a291892280e88"
+                            },
+                            "downloads": -1,
+                            "filename": "ocrd_keraslm-0.3.1-py2.py3-none-any.whl",
+                            "has_sig": false,
+                            "md5_digest": "0da1139d7b62ee27b9bb3af2b4e38929",
+                            "packagetype": "bdist_wheel",
+                            "python_version": "py2.py3",
+                            "requires_python": null,
+                            "size": 34192,
+                            "upload_time": "2019-10-25T22:53:09",
+                            "upload_time_iso_8601": "2019-10-25T22:53:09.567407Z",
+                            "url": "https://files.pythonhosted.org/packages/eb/ba/8f5f0f1801ea99221c772357e2c79d9935a88e89873924e557e24aea6c33/ocrd_keraslm-0.3.1-py2.py3-none-any.whl"
+                        },
+                        {
+                            "comment_text": "",
+                            "digests": {
+                                "md5": "e8d597a8dbf64e45dcbf19196e73bbf8",
+                                "sha256": "665a9bf1d7bc46f497d71638b2d33608062edd16ac11b9cff05be56eacda53c9"
+                            },
+                            "downloads": -1,
+                            "filename": "ocrd_keraslm-0.3.1.tar.gz",
+                            "has_sig": false,
+                            "md5_digest": "e8d597a8dbf64e45dcbf19196e73bbf8",
+                            "packagetype": "sdist",
+                            "python_version": "source",
+                            "requires_python": null,
+                            "size": 32287,
+                            "upload_time": "2019-10-25T22:53:12",
+                            "upload_time_iso_8601": "2019-10-25T22:53:12.437293Z",
+                            "url": "https://files.pythonhosted.org/packages/79/0e/744edc5497d706ac558b90d8d85b2e52ad5fb6b794c6f9cb44fc0aaa341a/ocrd_keraslm-0.3.1.tar.gz"
+                        }
+                    ]
+                },
+                "urls": [
+                    {
+                        "comment_text": "",
+                        "digests": {
+                            "md5": "0da1139d7b62ee27b9bb3af2b4e38929",
+                            "sha256": "f3ec82a615434e90028722586c6123e4a1887e36b0a57f06566a291892280e88"
+                        },
+                        "downloads": -1,
+                        "filename": "ocrd_keraslm-0.3.1-py2.py3-none-any.whl",
+                        "has_sig": false,
+                        "md5_digest": "0da1139d7b62ee27b9bb3af2b4e38929",
+                        "packagetype": "bdist_wheel",
+                        "python_version": "py2.py3",
+                        "requires_python": null,
+                        "size": 34192,
+                        "upload_time": "2019-10-25T22:53:09",
+                        "upload_time_iso_8601": "2019-10-25T22:53:09.567407Z",
+                        "url": "https://files.pythonhosted.org/packages/eb/ba/8f5f0f1801ea99221c772357e2c79d9935a88e89873924e557e24aea6c33/ocrd_keraslm-0.3.1-py2.py3-none-any.whl"
+                    },
+                    {
+                        "comment_text": "",
+                        "digests": {
+                            "md5": "e8d597a8dbf64e45dcbf19196e73bbf8",
+                            "sha256": "665a9bf1d7bc46f497d71638b2d33608062edd16ac11b9cff05be56eacda53c9"
+                        },
+                        "downloads": -1,
+                        "filename": "ocrd_keraslm-0.3.1.tar.gz",
+                        "has_sig": false,
+                        "md5_digest": "e8d597a8dbf64e45dcbf19196e73bbf8",
+                        "packagetype": "sdist",
+                        "python_version": "source",
+                        "requires_python": null,
+                        "size": 32287,
+                        "upload_time": "2019-10-25T22:53:12",
+                        "upload_time_iso_8601": "2019-10-25T22:53:12.437293Z",
+                        "url": "https://files.pythonhosted.org/packages/79/0e/744edc5497d706ac558b90d8d85b2e52ad5fb6b794c6f9cb44fc0aaa341a/ocrd_keraslm-0.3.1.tar.gz"
+                    }
+                ]
+            },
             "url": "https://github.com/OCR-D/ocrd_keraslm"
         },
         "url": "https://github.com/OCR-D/ocrd_keraslm"
@@ -318,6 +569,7 @@
         },
         "git": {
             "last_commit": "Mon Oct 21 20:52:26 2019 +0200",
+            "latest_tag": "v0.1.1",
             "number_of_commits": "85",
             "url": "https://github.com/OCR-D/ocrd_kraken.git"
         },
@@ -416,6 +668,7 @@
             "version": "0.0.2"
         },
         "ocrd_tool_validate": "<report valid=\"false\">\n  <error>[tools.ocrd-kraken-binarize.input_file_grp] 'OCR-D-IMG' is not of type 'array'</error>\n  <error>[tools.ocrd-kraken-binarize.output_file_grp] 'OCR-D-IMG-BIN' is not of type 'array'</error>\n  <error>[tools.ocrd-kraken-binarize.parameters.level-of-operation] 'description' is a required property</error>\n  <error>[tools.ocrd-kraken-segment] 'input_file_grp' is a required property</error>\n  <error>[tools.ocrd-kraken-segment.parameters.maxcolseps] 'description' is a required property</error>\n  <error>[tools.ocrd-kraken-segment.parameters.scale] 'description' is a required property</error>\n  <error>[tools.ocrd-kraken-segment.parameters.black_colseps] 'description' is a required property</error>\n  <error>[tools.ocrd-kraken-segment.parameters.white_colseps] 'description' is a required property</error>\n  <error>[tools.ocrd-kraken-ocr] 'input_file_grp' is a required property</error>\n  <error>[tools.ocrd-kraken-ocr.parameters.lines-json.required] 'true' is not of type 'boolean'</error>\n</report>",
+        "official": false,
         "org_plus_name": "OCR-D/ocrd_kraken",
         "python": {
             "author": "Konstantin Baierer, Kay-Michael W\u00fcrzner",
@@ -476,6 +729,7 @@
                             "requires_python": null,
                             "size": 10691,
                             "upload_time": "2019-01-04T13:42:30",
+                            "upload_time_iso_8601": "2019-01-04T13:42:30.728403Z",
                             "url": "https://files.pythonhosted.org/packages/b4/52/aea22b8cfab48546e10118e0eb7e70dc108fe633af3e07194dfd04e00fb2/ocrd_kraken-0.0.2-py2-none-any.whl"
                         },
                         {
@@ -493,6 +747,7 @@
                             "requires_python": null,
                             "size": 9634,
                             "upload_time": "2019-01-04T13:42:32",
+                            "upload_time_iso_8601": "2019-01-04T13:42:32.808242Z",
                             "url": "https://files.pythonhosted.org/packages/06/00/a9843c2c73a086c1f66e28d6b0d64053ecd66995daddfb5c0f28e566c9f7/ocrd_kraken-0.0.2-py3-none-any.whl"
                         },
                         {
@@ -510,6 +765,7 @@
                             "requires_python": null,
                             "size": 5003,
                             "upload_time": "2019-01-04T13:42:34",
+                            "upload_time_iso_8601": "2019-01-04T13:42:34.101144Z",
                             "url": "https://files.pythonhosted.org/packages/32/bb/9e4299ec1d5f494e7bf14de447f361455f36ea0255181871ee937aae0528/ocrd_kraken-0.0.2.tar.gz"
                         }
                     ],
@@ -529,6 +785,7 @@
                             "requires_python": null,
                             "size": 10442,
                             "upload_time": "2019-02-28T09:37:43",
+                            "upload_time_iso_8601": "2019-02-28T09:37:43.225080Z",
                             "url": "https://files.pythonhosted.org/packages/d6/4b/d7027ac27e1228cf9aa3ecd94e412b371b2a63ab2c93c1b77ad5414380c1/ocrd_kraken-0.1.0-py3-none-any.whl"
                         },
                         {
@@ -546,6 +803,7 @@
                             "requires_python": null,
                             "size": 4121,
                             "upload_time": "2019-02-28T09:37:44",
+                            "upload_time_iso_8601": "2019-02-28T09:37:44.655031Z",
                             "url": "https://files.pythonhosted.org/packages/cb/35/7be3dd70b97e276ce2300dddf165bfc21c0e469c2626d7d531a07b8bf0fb/ocrd_kraken-0.1.0.tar.gz"
                         }
                     ],
@@ -565,6 +823,7 @@
                             "requires_python": null,
                             "size": 10595,
                             "upload_time": "2019-10-21T18:20:21",
+                            "upload_time_iso_8601": "2019-10-21T18:20:21.215930Z",
                             "url": "https://files.pythonhosted.org/packages/20/af/393dbc0767398429e08adb761289656516ab18d4f65d8e5c81791c6cafdc/ocrd_kraken-0.1.1-py3-none-any.whl"
                         },
                         {
@@ -582,6 +841,7 @@
                             "requires_python": null,
                             "size": 4209,
                             "upload_time": "2019-10-21T18:20:22",
+                            "upload_time_iso_8601": "2019-10-21T18:20:22.550782Z",
                             "url": "https://files.pythonhosted.org/packages/bb/18/1c305cd6dc5b38880a3240bdca9f3ac53c2780a292b2a02812075ddddff7/ocrd_kraken-0.1.1.tar.gz"
                         }
                     ]
@@ -602,6 +862,7 @@
                         "requires_python": null,
                         "size": 10595,
                         "upload_time": "2019-10-21T18:20:21",
+                        "upload_time_iso_8601": "2019-10-21T18:20:21.215930Z",
                         "url": "https://files.pythonhosted.org/packages/20/af/393dbc0767398429e08adb761289656516ab18d4f65d8e5c81791c6cafdc/ocrd_kraken-0.1.1-py3-none-any.whl"
                     },
                     {
@@ -619,6 +880,7 @@
                         "requires_python": null,
                         "size": 4209,
                         "upload_time": "2019-10-21T18:20:22",
+                        "upload_time_iso_8601": "2019-10-21T18:20:22.550782Z",
                         "url": "https://files.pythonhosted.org/packages/bb/18/1c305cd6dc5b38880a3240bdca9f3ac53c2780a292b2a02812075ddddff7/ocrd_kraken-0.1.1.tar.gz"
                     }
                 ]
@@ -636,6 +898,7 @@
         },
         "git": {
             "last_commit": "Tue Jun 11 14:51:00 2019 +0200",
+            "latest_tag": "v0.0.3",
             "number_of_commits": "66",
             "url": "https://github.com/OCR-D/ocrd_ocropy.git"
         },
@@ -730,6 +993,7 @@
             "version": "0.0.1"
         },
         "ocrd_tool_validate": "<report valid=\"true\">\n</report>",
+        "official": false,
         "org_plus_name": "OCR-D/ocrd_ocropy",
         "python": {
             "author": "Konstantin Baierer",
@@ -790,6 +1054,7 @@
                             "requires_python": null,
                             "size": 6462,
                             "upload_time": "2019-03-19T17:02:48",
+                            "upload_time_iso_8601": "2019-03-19T17:02:48.327057Z",
                             "url": "https://files.pythonhosted.org/packages/c7/ce/9f578c500afbffba6de78fb1fb0d881c23ddb794256a276e4277d5ad7c25/ocrd_ocropy-0.0.1a1-py3-none-any.whl"
                         },
                         {
@@ -807,6 +1072,7 @@
                             "requires_python": null,
                             "size": 6105,
                             "upload_time": "2019-03-19T17:02:50",
+                            "upload_time_iso_8601": "2019-03-19T17:02:50.204116Z",
                             "url": "https://files.pythonhosted.org/packages/8f/a1/2030fb1c2c08cac624a7640daa6a12c3d115a52a9d7d66de5c6b427bbbde/ocrd_ocropy-0.0.1a1.tar.gz"
                         }
                     ],
@@ -826,6 +1092,7 @@
                             "requires_python": null,
                             "size": 10625,
                             "upload_time": "2019-03-24T19:17:23",
+                            "upload_time_iso_8601": "2019-03-24T19:17:23.779614Z",
                             "url": "https://files.pythonhosted.org/packages/7f/46/222d127fe28c522ab65448bd552f9b9b66ec6e5582f8cc7e2ee57f5450a5/ocrd_ocropy-0.0.2-py3-none-any.whl"
                         },
                         {
@@ -843,6 +1110,7 @@
                             "requires_python": null,
                             "size": 5855,
                             "upload_time": "2019-03-24T19:17:25",
+                            "upload_time_iso_8601": "2019-03-24T19:17:25.438144Z",
                             "url": "https://files.pythonhosted.org/packages/89/18/c634cc95db36cfa523a75f3ae4e5ee3055b8bcf56969bc3231cdddb3d082/ocrd_ocropy-0.0.2.tar.gz"
                         }
                     ],
@@ -862,6 +1130,7 @@
                             "requires_python": null,
                             "size": 10632,
                             "upload_time": "2019-03-24T19:53:40",
+                            "upload_time_iso_8601": "2019-03-24T19:53:40.405082Z",
                             "url": "https://files.pythonhosted.org/packages/7b/0a/dd552d4077fe60652b1fe30e0fe4363686838bc8b88aa852d080e667d370/ocrd_ocropy-0.0.3-py3-none-any.whl"
                         },
                         {
@@ -879,6 +1148,7 @@
                             "requires_python": null,
                             "size": 5867,
                             "upload_time": "2019-03-24T19:53:41",
+                            "upload_time_iso_8601": "2019-03-24T19:53:41.685748Z",
                             "url": "https://files.pythonhosted.org/packages/6b/5a/d711492c2f10b241069361df84544145dab22654a173ac566645cec0bb9f/ocrd_ocropy-0.0.3.tar.gz"
                         }
                     ]
@@ -899,6 +1169,7 @@
                         "requires_python": null,
                         "size": 10632,
                         "upload_time": "2019-03-24T19:53:40",
+                        "upload_time_iso_8601": "2019-03-24T19:53:40.405082Z",
                         "url": "https://files.pythonhosted.org/packages/7b/0a/dd552d4077fe60652b1fe30e0fe4363686838bc8b88aa852d080e667d370/ocrd_ocropy-0.0.3-py3-none-any.whl"
                     },
                     {
@@ -916,6 +1187,7 @@
                         "requires_python": null,
                         "size": 5867,
                         "upload_time": "2019-03-24T19:53:41",
+                        "upload_time_iso_8601": "2019-03-24T19:53:41.685748Z",
                         "url": "https://files.pythonhosted.org/packages/6b/5a/d711492c2f10b241069361df84544145dab22654a173ac566645cec0bb9f/ocrd_ocropy-0.0.3.tar.gz"
                     }
                 ]
@@ -933,6 +1205,7 @@
         },
         "git": {
             "last_commit": "Thu Oct 24 12:18:12 2019 +0200",
+            "latest_tag": "",
             "number_of_commits": "60",
             "url": "https://github.com/OCR-D/ocrd_olena.git"
         },
@@ -995,6 +1268,7 @@
             "version": "0.0.2"
         },
         "ocrd_tool_validate": "<report valid=\"true\">\n</report>",
+        "official": false,
         "org_plus_name": "OCR-D/ocrd_olena",
         "url": "https://github.com/OCR-D/ocrd_olena"
     },
@@ -1007,6 +1281,7 @@
         },
         "git": {
             "last_commit": "Tue Sep 10 08:31:29 2019 +0200",
+            "latest_tag": "",
             "number_of_commits": "28",
             "url": "https://github.com/OCR-D/ocrd_segment.git"
         },
@@ -1062,6 +1337,7 @@
             "version": "0.0.1"
         },
         "ocrd_tool_validate": "<report valid=\"true\">\n</report>",
+        "official": false,
         "org_plus_name": "OCR-D/ocrd_segment",
         "python": {
             "author": "Konstantin Baierer, Kay-Michael W\u00fcrzner, Robert Sachunsky",
@@ -1081,6 +1357,7 @@
         },
         "git": {
             "last_commit": "Thu Sep 26 15:06:11 2019 +0200",
+            "latest_tag": "v0.4.0",
             "number_of_commits": "252",
             "url": "https://github.com/OCR-D/ocrd_tesserocr.git"
         },
@@ -1301,6 +1578,7 @@
             "version": "0.3.0"
         },
         "ocrd_tool_validate": "<report valid=\"true\">\n</report>",
+        "official": true,
         "org_plus_name": "OCR-D/ocrd_tesserocr",
         "python": {
             "author": "Konstantin Baierer, Kay-Michael W\u00fcrzner, Robert Sachunsky",
@@ -1312,8 +1590,8 @@
                     "author_email": "unixprog@gmail.com, wuerzner@gmail.com, sachunsky@informatik.uni-leipzig.de",
                     "bugtrack_url": null,
                     "classifiers": [],
-                    "description": "ocrd_tesserocr\n==============\n\n    Crop, deskew, segment into regions / lines / words, or recognize with tesserocr\n\n.. image:: https://circleci.com/gh/OCR-D/ocrd_tesserocr.svg?style=svg\n    :target: https://circleci.com/gh/OCR-D/ocrd_tesserocr\n\n.. image:: https://img.shields.io/pypi/v/ocrd_tesserocr.svg\n    :target: https://pypi.org/project/ocrd_tesserocr/\n\n.. image:: https://codecov.io/gh/OCR-D/ocrd_tesserocr/branch/master/graph/badge.svg\n    :target: https://codecov.io/gh/OCR-D/ocrd_tesserocr\n\n.. image:: https://img.shields.io/docker/automated/ocrd/tesserocr.svg\n    :target: https://hub.docker.com/r/ocrd/tesserocr/tags/\n    :alt: Docker Automated build\n\nIntroduction\n------------\n\nThis offers `OCR-D`_ compliant workspace processors for (much of) the functionality of `Tesseract`_ via its Python API wrapper `tesserocr`_ . (Each processor is a step in the OCR-D functional model, and can be replaced with an alternative implementation. Data is represented within METS/PAGE.)\n\nThis includes image preprocessing (cropping, binarization, deskewing), layout analysis (region, line, word segmentation) and OCR proper. Most processors can operate on different levels of the PAGE hierarchy, depending on the workflow configuration. Image results are referenced (read and written) via ``AlternativeImage``, text results via ``TextEquiv``, deskewing via ``@orientation``, cropping via ``Border`` and segmentation via ``Region`` / ``TextLine`` / ``Word`` elements with ``Coords/@points``.\n\n.. _OCR-D: https://ocr-d.github.io\n.. _Tesseract: https://github.com/tesseract-ocr\n.. _tesserocr: https://github.com/sirfz/tesserocr\n\n\nInstallation\n------------\n\nRequired ubuntu packages:\n\n* Tesseract headers (``libtesseract-dev``)\n* Some tesseract language models (``tesseract-ocr-{eng,deu,frk,...}`` or script models (``tesseract-ocr-script-{latn,frak,...}``)\n* Leptonica headers (``libleptonica-dev``)\n\n::\n\n    make deps-ubuntu # or manually\n    make deps # or pip install -r requirements\n    make install # or pip install .\n\nIf tesserocr fails to compile with an error:::\n\n    $PREFIX/include/tesseract/unicharset.h:241:10: error: \u2018string\u2019 does not name a type; did you mean \u2018stdin\u2019? \n           static string CleanupString(const char* utf8_str) {\n                  ^~~~~~\n                  stdin\n\nThis is due to some inconsistencies in the installed tesseract C headers (fix expected for next Ubuntu upgrade, already fixed for Debian).\nReplace ``string`` with ``std::string`` in ``$PREFIX/include/tesseract/unicharset.h:265:5:`` and ``$PREFIX/include/tesseract/unichar.h:164:10:`` ff.\n\nIf tesserocr fails with an error about ``LSTM``/``CUBE``, you have a\nmismatch between tesseract header/data/pkg-config versions. ``apt policy\nlibtesseract-dev`` lists the apt-installable versions, keep it consistent. Make\nsure there are no spurious pkg-config artifacts, e.g. in\n``/usr/local/lib/pkgconfig/tesseract.pc``. The same goes for language models.\n\n\nUsage\n-----\n\nSee docstrings and in the individual processors and `ocrd-tool.json`_ descriptions.\n\n.. _ocrd-tool.json: ocrd_tesserocr/ocrd-tool.json\n\nAvailable processors are:\n\n- `ocrd-tesserocr-crop`_\n- `ocrd-tesserocr-deskew`_\n- `ocrd-tesserocr-binarize`_\n- `ocrd-tesserocr-segment-region`_\n- `ocrd-tesserocr-segment-line`_\n- `ocrd-tesserocr-segment-word`_\n- `ocrd-tesserocr-recognize`_\n\n.. _`ocrd-tesserocr-crop`: ocrd_tesserocr/crop.py\n.. _`ocrd-tesserocr-deskew`: ocrd_tesserocr/deskew.py\n.. _`ocrd-tesserocr-binarize`: ocrd_tesserocr/binarize.py\n.. _`ocrd-tesserocr-segment-region`: ocrd_tesserocr/segment_region.py\n.. _`ocrd-tesserocr-segment-line`: ocrd_tesserocr/segment_line.py\n.. _`ocrd-tesserocr-segment-word`: ocrd_tesserocr/segment_word.py\n.. _`ocrd-tesserocr-recognize`: ocrd_tesserocr/recognize.py\n\n\nTesting\n-------\n\n::\n\n    make test\n\nThis downloads some test data from <https://github.com/OCR-D/assets> under ``repo/assets``, and runs some basic test of the Python API as well as the CLIs.\n\nSet ``PYTEST_ARGS=\"-s --verbose\"`` to see log output (``-s``) and individual test results (``--verbose``).\n\n\n",
-                    "description_content_type": "",
+                    "description": "# ocrd_tesserocr\n\n> Crop, deskew, segment into regions / lines / words, or recognize with tesserocr\n\n[![image](https://circleci.com/gh/OCR-D/ocrd_tesserocr.svg?style=svg)](https://circleci.com/gh/OCR-D/ocrd_tesserocr)\n[![image](https://img.shields.io/pypi/v/ocrd_tesserocr.svg)](https://pypi.org/project/ocrd_tesserocr/)\n[![image](https://codecov.io/gh/OCR-D/ocrd_tesserocr/branch/master/graph/badge.svg)](https://codecov.io/gh/OCR-D/ocrd_tesserocr)\n[![Docker Automated build](https://img.shields.io/docker/automated/ocrd/tesserocr.svg)](https://hub.docker.com/r/ocrd/tesserocr/tags/)\n\n## Introduction\n\nThis offers [OCR-D](https://ocr-d.github.io) compliant workspace processors for (much of) the functionality of [Tesseract](https://github.com/tesseract-ocr) via its Python API wrapper [tesserocr](https://github.com/sirfz/tesserocr) . (Each processor is a step in the OCR-D functional model, and can be replaced with an alternative implementation. Data is represented within METS/PAGE.)\n\nThis includes image preprocessing (cropping, binarization, deskewing), layout analysis (region, line, word segmentation) and OCR proper. Most processors can operate on different levels of the PAGE hierarchy, depending on the workflow configuration. Image results are referenced (read and written) via `AlternativeImage`, text results via `TextEquiv`, deskewing via `@orientation`, cropping via `Border` and segmentation via `Region` / `TextLine` / `Word` elements with `Coords/@points`.\n\n## Installation\n\n### Required ubuntu packages:\n\n- Tesseract headers (`libtesseract-dev`)\n- Some tesseract language models (`tesseract-ocr-{eng,deu,frk,...}` or script models (`tesseract-ocr-script-{latn,frak,...}`)\n- Leptonica headers (`libleptonica-dev`)\n\n### From PyPI\n\nThis is the best option if you want to use the stable, released version.\n\n```sh\nsudo apt-get install git python3 python3-pip libtesseract-dev libleptonica-dev tesseract-ocr-eng tesseract-ocr wget\npip install ocrd_tesserocr\n```\n\n### With docker\n\nThis is the best option if you want to run the software in a container.\n\nYou need to have [Docker](https://docs.docker.com/install/linux/docker-ce/ubuntu/)\n\n```sh\ndocker pull ocrd/tesserocr\n```\n\n### From git \n\nThis is the best option if you want to change the source code or install the latest, unpublished changes.\n\nWe strongly recommend to use [venv](https://packaging.python.org/guides/installing-using-pip-and-virtual-environments/).\n\n```sh\ngit clone https://github.com/OCR-D/ocrd_tesserocr\ncd ocrd_tesserocr\nmake deps-ubuntu # or manually with apt-get\nmake deps        # or pip install -r requirements\nmake install     # or pip install .\n```\n\n## Usage\n\nSee docstrings and in the individual processors and [ocrd-tool.json](ocrd_tesserocr/ocrd-tool.json) descriptions.\n\nAvailable processors are:\n\n- [ocrd-tesserocr-crop](ocrd_tesserocr/crop.py)\n- [ocrd-tesserocr-deskew](ocrd_tesserocr/deskew.py)\n- [ocrd-tesserocr-binarize](ocrd_tesserocr/binarize.py)\n- [ocrd-tesserocr-segment-region](ocrd_tesserocr/segment_region.py)\n- [ocrd-tesserocr-segment-line](ocrd_tesserocr/segment_line.py)\n- [ocrd-tesserocr-segment-word](ocrd_tesserocr/segment_word.py)\n- [ocrd-tesserocr-recognize](ocrd_tesserocr/recognize.py)\n\n## Testing\n\nTo run with docker:\n\n```\ndocker run ocrd/tesserocr ocrd-tesserocrd-crop ...\n```\n\n## Testing\n\n```sh\nmake test\n```\n\nThis downloads some test data from https://github.com/OCR-D/assets under `repo/assets`, and runs some basic test of the Python API as well as the CLIs.\n\nSet `PYTEST_ARGS=\"-s --verbose\"` to see log output (`-s`) and individual test results (`--verbose`).\n\n## Development\n\nLatest changes that require pre-release of [ocrd >= 2.0.0](https://github.com/OCR-D/core/tree/edge) are kept in branch [`edge`](https://github.com/OCR-D/ocrd_tesserocr/tree/edge).\n\n\n",
+                    "description_content_type": "text/markdown",
                     "docs_url": null,
                     "download_url": "",
                     "downloads": {
@@ -1333,17 +1611,17 @@
                     "project_urls": {
                         "Homepage": "https://github.com/OCR-D/ocrd_tesserocr"
                     },
-                    "release_url": "https://pypi.org/project/ocrd-tesserocr/0.4.0/",
+                    "release_url": "https://pypi.org/project/ocrd-tesserocr/0.5.1/",
                     "requires_dist": [
-                        "ocrd (>=1.0.0b17)",
+                        "ocrd (>=2.0.0a1)",
                         "click",
-                        "ocrd-fork-tesserocr (==3.0.0rc2)"
+                        "tesserocr (>=2.4.1)"
                     ],
                     "requires_python": "",
                     "summary": "Tesserocr bindings",
-                    "version": "0.4.0"
+                    "version": "0.5.1"
                 },
-                "last_serial": 5710706,
+                "last_serial": 6059500,
                 "releases": {
                     "0.1.0": [
                         {
@@ -1361,6 +1639,7 @@
                             "requires_python": null,
                             "size": 17089,
                             "upload_time": "2018-08-31T14:13:24",
+                            "upload_time_iso_8601": "2018-08-31T14:13:24.592860Z",
                             "url": "https://files.pythonhosted.org/packages/07/63/e617002f9c2013f8a9ce10baeab48acffc0dff3d21ab160ee67428e08ebd/ocrd_tesserocr-0.1.0-py2-none-any.whl"
                         },
                         {
@@ -1378,6 +1657,7 @@
                             "requires_python": null,
                             "size": 15424,
                             "upload_time": "2018-08-31T14:13:25",
+                            "upload_time_iso_8601": "2018-08-31T14:13:25.913866Z",
                             "url": "https://files.pythonhosted.org/packages/4d/48/282d1d793137f1ec30118a9a0bd48534a6a8053bc74a830b6c4eb389653f/ocrd_tesserocr-0.1.0-py3-none-any.whl"
                         },
                         {
@@ -1395,6 +1675,7 @@
                             "requires_python": null,
                             "size": 9234,
                             "upload_time": "2018-08-31T14:13:27",
+                            "upload_time_iso_8601": "2018-08-31T14:13:27.040863Z",
                             "url": "https://files.pythonhosted.org/packages/eb/a7/66775daafba5937821fd643b6d1069570b262af3a48d701712d2a94350a2/ocrd_tesserocr-0.1.0.tar.gz"
                         }
                     ],
@@ -1414,6 +1695,7 @@
                             "requires_python": null,
                             "size": 15461,
                             "upload_time": "2018-08-31T14:18:51",
+                            "upload_time_iso_8601": "2018-08-31T14:18:51.905308Z",
                             "url": "https://files.pythonhosted.org/packages/5c/95/7f29b87ff5be4fdd149400855862840de4681b669d3fda60a2ce8bf24127/ocrd_tesserocr-0.1.1-py2-none-any.whl"
                         },
                         {
@@ -1431,6 +1713,7 @@
                             "requires_python": null,
                             "size": 15461,
                             "upload_time": "2018-08-31T14:18:53",
+                            "upload_time_iso_8601": "2018-08-31T14:18:53.535866Z",
                             "url": "https://files.pythonhosted.org/packages/da/23/fb5e1e125f1fda3b1069960426c5b40a9c5e12fe8f73ac29244888cf110b/ocrd_tesserocr-0.1.1-py3-none-any.whl"
                         },
                         {
@@ -1448,6 +1731,7 @@
                             "requires_python": null,
                             "size": 9251,
                             "upload_time": "2018-08-31T14:18:54",
+                            "upload_time_iso_8601": "2018-08-31T14:18:54.917641Z",
                             "url": "https://files.pythonhosted.org/packages/31/73/c2044ae57f402e21947ceb97f574625cf534eccbf432f6916c419cf3d7e7/ocrd_tesserocr-0.1.1.tar.gz"
                         }
                     ],
@@ -1467,6 +1751,7 @@
                             "requires_python": null,
                             "size": 15453,
                             "upload_time": "2018-09-03T13:14:20",
+                            "upload_time_iso_8601": "2018-09-03T13:14:20.618650Z",
                             "url": "https://files.pythonhosted.org/packages/c1/ca/38355a461d8e29d7039391f5051be291d6a425b078783adb1ebb6ba10e55/ocrd_tesserocr-0.1.2-py3-none-any.whl"
                         },
                         {
@@ -1484,6 +1769,7 @@
                             "requires_python": null,
                             "size": 9242,
                             "upload_time": "2018-09-03T13:14:21",
+                            "upload_time_iso_8601": "2018-09-03T13:14:21.805810Z",
                             "url": "https://files.pythonhosted.org/packages/1b/fe/b365c2ffddea53e616408f0213e45614ce3791ead2058df33a795ddc3d21/ocrd_tesserocr-0.1.2.tar.gz"
                         }
                     ],
@@ -1503,6 +1789,7 @@
                             "requires_python": null,
                             "size": 17420,
                             "upload_time": "2019-01-04T13:36:12",
+                            "upload_time_iso_8601": "2019-01-04T13:36:12.698851Z",
                             "url": "https://files.pythonhosted.org/packages/18/7f/fd08ca819e6f3980220ac680b5c931080247544c2704963e518db6f7a3d0/ocrd_tesserocr-0.1.3-py2-none-any.whl"
                         },
                         {
@@ -1520,6 +1807,7 @@
                             "requires_python": null,
                             "size": 15729,
                             "upload_time": "2019-01-04T13:36:14",
+                            "upload_time_iso_8601": "2019-01-04T13:36:14.276437Z",
                             "url": "https://files.pythonhosted.org/packages/34/08/ea3ebc9476e1d28672e23b8d1332dbbc95ac9a3246cd7d02be2375995da6/ocrd_tesserocr-0.1.3-py3-none-any.whl"
                         },
                         {
@@ -1537,6 +1825,7 @@
                             "requires_python": null,
                             "size": 9442,
                             "upload_time": "2019-01-04T13:36:15",
+                            "upload_time_iso_8601": "2019-01-04T13:36:15.802793Z",
                             "url": "https://files.pythonhosted.org/packages/f3/10/d1b3c66b891193ccc07200d93391cbcfe9c4c5ea2bb1cac045e7d1cf1fa6/ocrd_tesserocr-0.1.3.tar.gz"
                         }
                     ],
@@ -1556,6 +1845,7 @@
                             "requires_python": null,
                             "size": 16547,
                             "upload_time": "2019-02-28T10:12:21",
+                            "upload_time_iso_8601": "2019-02-28T10:12:21.318896Z",
                             "url": "https://files.pythonhosted.org/packages/d1/94/606de830cdba1f81928dc42a71f7e58cc6510d6a8b0f9e945c01f56ee3e7/ocrd_tesserocr-0.2.0-py3-none-any.whl"
                         },
                         {
@@ -1573,6 +1863,7 @@
                             "requires_python": null,
                             "size": 10356,
                             "upload_time": "2019-02-28T10:12:22",
+                            "upload_time_iso_8601": "2019-02-28T10:12:22.854225Z",
                             "url": "https://files.pythonhosted.org/packages/50/1c/eda34c75846857877176db4f4f0564e8b7c979a872e4c2a521fa8c389fbb/ocrd_tesserocr-0.2.0.tar.gz"
                         }
                     ],
@@ -1592,6 +1883,7 @@
                             "requires_python": null,
                             "size": 15963,
                             "upload_time": "2019-04-16T14:58:44",
+                            "upload_time_iso_8601": "2019-04-16T14:58:44.123075Z",
                             "url": "https://files.pythonhosted.org/packages/39/af/10f4d710bde5515131fc16ea3408670af8e786998a1e0f6d127e800fbc17/ocrd_tesserocr-0.2.1-py3-none-any.whl"
                         },
                         {
@@ -1609,6 +1901,7 @@
                             "requires_python": null,
                             "size": 9534,
                             "upload_time": "2019-04-16T14:58:45",
+                            "upload_time_iso_8601": "2019-04-16T14:58:45.820115Z",
                             "url": "https://files.pythonhosted.org/packages/df/cc/fd5b999abcae94ff2116a25e31f593b95f0dda4486d89bd4e83d6671b805/ocrd_tesserocr-0.2.1.tar.gz"
                         }
                     ],
@@ -1628,6 +1921,7 @@
                             "requires_python": null,
                             "size": 18334,
                             "upload_time": "2019-05-20T10:24:06",
+                            "upload_time_iso_8601": "2019-05-20T10:24:06.855632Z",
                             "url": "https://files.pythonhosted.org/packages/4e/5f/37ec32a07681542a1d34fa9764c76ef34d201a82489335d154d34e8b46b2/ocrd_tesserocr-0.2.2-py3-none-any.whl"
                         },
                         {
@@ -1645,6 +1939,7 @@
                             "requires_python": null,
                             "size": 10990,
                             "upload_time": "2019-05-20T10:24:08",
+                            "upload_time_iso_8601": "2019-05-20T10:24:08.563041Z",
                             "url": "https://files.pythonhosted.org/packages/38/53/c0186de6ad8429e6b8e0f5e5ac51a8a3d51a2c71bcb597a5879313bf2a2d/ocrd_tesserocr-0.2.2.tar.gz"
                         }
                     ],
@@ -1664,6 +1959,7 @@
                             "requires_python": null,
                             "size": 34706,
                             "upload_time": "2019-08-21T14:42:39",
+                            "upload_time_iso_8601": "2019-08-21T14:42:39.261053Z",
                             "url": "https://files.pythonhosted.org/packages/b2/b5/8a890997a3f874498a1f596f3ebdb765daa181858a46cc5a66949945adf8/ocrd_tesserocr-0.3.0-py3-none-any.whl"
                         },
                         {
@@ -1681,6 +1977,7 @@
                             "requires_python": null,
                             "size": 22743,
                             "upload_time": "2019-08-21T14:42:40",
+                            "upload_time_iso_8601": "2019-08-21T14:42:40.918776Z",
                             "url": "https://files.pythonhosted.org/packages/f3/fa/10af8e05b04c55680b20582c18bed55ffa846bfa65948c6b6138252a8434/ocrd_tesserocr-0.3.0.tar.gz"
                         }
                     ],
@@ -1700,6 +1997,7 @@
                             "requires_python": null,
                             "size": 37231,
                             "upload_time": "2019-08-21T16:47:05",
+                            "upload_time_iso_8601": "2019-08-21T16:47:05.083051Z",
                             "url": "https://files.pythonhosted.org/packages/ee/2b/483b44bf3180e81aa8a5bf7307ae47da4d1656e69dec1a704f9a8d558b88/ocrd_tesserocr-0.4.0-py3-none-any.whl"
                         },
                         {
@@ -1717,7 +2015,122 @@
                             "requires_python": null,
                             "size": 19943,
                             "upload_time": "2019-08-21T16:47:06",
+                            "upload_time_iso_8601": "2019-08-21T16:47:06.605798Z",
                             "url": "https://files.pythonhosted.org/packages/87/09/b994a5d7310f73b04b7dd840a5fbdd726da42b7980ac0a07595b6c56ef00/ocrd_tesserocr-0.4.0.tar.gz"
+                        }
+                    ],
+                    "0.4.1": [
+                        {
+                            "comment_text": "",
+                            "digests": {
+                                "md5": "e634e1792d14a33a6bdde296483f0817",
+                                "sha256": "d21818eceac8bcdc1fdb38d4a58bfd1620cef8e7a5d0e6276afbd7695c2cac31"
+                            },
+                            "downloads": -1,
+                            "filename": "ocrd_tesserocr-0.4.1-py3-none-any.whl",
+                            "has_sig": false,
+                            "md5_digest": "e634e1792d14a33a6bdde296483f0817",
+                            "packagetype": "bdist_wheel",
+                            "python_version": "py3",
+                            "requires_python": null,
+                            "size": 38864,
+                            "upload_time": "2019-10-31T14:58:27",
+                            "upload_time_iso_8601": "2019-10-31T14:58:27.102775Z",
+                            "url": "https://files.pythonhosted.org/packages/1d/78/93c90d9593f62546fea5e2ef9b5edbb5a47121582db724ca41f93830ec87/ocrd_tesserocr-0.4.1-py3-none-any.whl"
+                        },
+                        {
+                            "comment_text": "",
+                            "digests": {
+                                "md5": "3de4e2c8fcb66eb6a3cb32a1a1cd361b",
+                                "sha256": "bbf3843361c4807c5790790d8a8fc0a0325b2fb9817cd4fa70210659dde8c8cb"
+                            },
+                            "downloads": -1,
+                            "filename": "ocrd_tesserocr-0.4.1.tar.gz",
+                            "has_sig": false,
+                            "md5_digest": "3de4e2c8fcb66eb6a3cb32a1a1cd361b",
+                            "packagetype": "sdist",
+                            "python_version": "source",
+                            "requires_python": null,
+                            "size": 20535,
+                            "upload_time": "2019-10-31T14:58:28",
+                            "upload_time_iso_8601": "2019-10-31T14:58:28.641792Z",
+                            "url": "https://files.pythonhosted.org/packages/a7/2e/de857738105ed9f1888d3f6724c0c314404b67582652a91b060d25cff808/ocrd_tesserocr-0.4.1.tar.gz"
+                        }
+                    ],
+                    "0.5.0": [
+                        {
+                            "comment_text": "",
+                            "digests": {
+                                "md5": "4a807653bdfacd7d22b6c303dc1ac04f",
+                                "sha256": "f3bca0adcb9fce640a010d38d7e1d04b4fc423ec0cc958ff3980afbf74a5711f"
+                            },
+                            "downloads": -1,
+                            "filename": "ocrd_tesserocr-0.5.0-py3-none-any.whl",
+                            "has_sig": false,
+                            "md5_digest": "4a807653bdfacd7d22b6c303dc1ac04f",
+                            "packagetype": "bdist_wheel",
+                            "python_version": "py3",
+                            "requires_python": null,
+                            "size": 33343,
+                            "upload_time": "2019-10-26T18:40:17",
+                            "upload_time_iso_8601": "2019-10-26T18:40:17.958444Z",
+                            "url": "https://files.pythonhosted.org/packages/36/98/a6c6b46903a3b25b1740cde4aedaf62de6441ac887536e36ad24a3c3bf12/ocrd_tesserocr-0.5.0-py3-none-any.whl"
+                        },
+                        {
+                            "comment_text": "",
+                            "digests": {
+                                "md5": "b4885925db28012b94b5fa3c86d80e28",
+                                "sha256": "aaf012b2c6adcd9a34b6fa9351dcd16fed3ab848d4d8a563b3825f9b7103be42"
+                            },
+                            "downloads": -1,
+                            "filename": "ocrd_tesserocr-0.5.0.tar.gz",
+                            "has_sig": false,
+                            "md5_digest": "b4885925db28012b94b5fa3c86d80e28",
+                            "packagetype": "sdist",
+                            "python_version": "source",
+                            "requires_python": null,
+                            "size": 21170,
+                            "upload_time": "2019-10-26T18:40:19",
+                            "upload_time_iso_8601": "2019-10-26T18:40:19.386827Z",
+                            "url": "https://files.pythonhosted.org/packages/85/5b/7c5c21b78ccd00d49f7747ad5b2a381d9860aeed41fe545a24a361544837/ocrd_tesserocr-0.5.0.tar.gz"
+                        }
+                    ],
+                    "0.5.1": [
+                        {
+                            "comment_text": "",
+                            "digests": {
+                                "md5": "8835763816200fbfec9b58670bd69d8f",
+                                "sha256": "18cef805014268db86fd6c32bca83069cdf536298fe8151f59f9197d255a9d14"
+                            },
+                            "downloads": -1,
+                            "filename": "ocrd_tesserocr-0.5.1-py3-none-any.whl",
+                            "has_sig": false,
+                            "md5_digest": "8835763816200fbfec9b58670bd69d8f",
+                            "packagetype": "bdist_wheel",
+                            "python_version": "py3",
+                            "requires_python": null,
+                            "size": 38309,
+                            "upload_time": "2019-10-31T16:43:42",
+                            "upload_time_iso_8601": "2019-10-31T16:43:42.078476Z",
+                            "url": "https://files.pythonhosted.org/packages/06/84/b5aca7d06e31dcb91683ab60e154b73a8d0e1cb4d5ae22debf55922573df/ocrd_tesserocr-0.5.1-py3-none-any.whl"
+                        },
+                        {
+                            "comment_text": "",
+                            "digests": {
+                                "md5": "1c203160eddb792cdbd706ccbb5e35bb",
+                                "sha256": "7dd6a5fd556395deb58070d5f6196871a241d89434a26d0a0fc7e106404aa90a"
+                            },
+                            "downloads": -1,
+                            "filename": "ocrd_tesserocr-0.5.1.tar.gz",
+                            "has_sig": false,
+                            "md5_digest": "1c203160eddb792cdbd706ccbb5e35bb",
+                            "packagetype": "sdist",
+                            "python_version": "source",
+                            "requires_python": null,
+                            "size": 20350,
+                            "upload_time": "2019-10-31T16:43:43",
+                            "upload_time_iso_8601": "2019-10-31T16:43:43.864345Z",
+                            "url": "https://files.pythonhosted.org/packages/15/1f/ed95415ee91659222301aa77e4f8c27be33df8e258972059bc031a2c0e3b/ocrd_tesserocr-0.5.1.tar.gz"
                         }
                     ]
                 },
@@ -1725,36 +2138,38 @@
                     {
                         "comment_text": "",
                         "digests": {
-                            "md5": "9d5ea4deb4c75bae31b7d44a4a8fdd0a",
-                            "sha256": "4822713547e696dbb327a80f9dd5bad705be4b7dc1f44fdef1d44f9e03c21c1d"
+                            "md5": "8835763816200fbfec9b58670bd69d8f",
+                            "sha256": "18cef805014268db86fd6c32bca83069cdf536298fe8151f59f9197d255a9d14"
                         },
                         "downloads": -1,
-                        "filename": "ocrd_tesserocr-0.4.0-py3-none-any.whl",
+                        "filename": "ocrd_tesserocr-0.5.1-py3-none-any.whl",
                         "has_sig": false,
-                        "md5_digest": "9d5ea4deb4c75bae31b7d44a4a8fdd0a",
+                        "md5_digest": "8835763816200fbfec9b58670bd69d8f",
                         "packagetype": "bdist_wheel",
                         "python_version": "py3",
                         "requires_python": null,
-                        "size": 37231,
-                        "upload_time": "2019-08-21T16:47:05",
-                        "url": "https://files.pythonhosted.org/packages/ee/2b/483b44bf3180e81aa8a5bf7307ae47da4d1656e69dec1a704f9a8d558b88/ocrd_tesserocr-0.4.0-py3-none-any.whl"
+                        "size": 38309,
+                        "upload_time": "2019-10-31T16:43:42",
+                        "upload_time_iso_8601": "2019-10-31T16:43:42.078476Z",
+                        "url": "https://files.pythonhosted.org/packages/06/84/b5aca7d06e31dcb91683ab60e154b73a8d0e1cb4d5ae22debf55922573df/ocrd_tesserocr-0.5.1-py3-none-any.whl"
                     },
                     {
                         "comment_text": "",
                         "digests": {
-                            "md5": "91e09cbc5208905353c22f07029db316",
-                            "sha256": "616bf420794ef71bcc372fa4c29775c48d6909d01b6849e2d0be83766cd0ed90"
+                            "md5": "1c203160eddb792cdbd706ccbb5e35bb",
+                            "sha256": "7dd6a5fd556395deb58070d5f6196871a241d89434a26d0a0fc7e106404aa90a"
                         },
                         "downloads": -1,
-                        "filename": "ocrd_tesserocr-0.4.0.tar.gz",
+                        "filename": "ocrd_tesserocr-0.5.1.tar.gz",
                         "has_sig": false,
-                        "md5_digest": "91e09cbc5208905353c22f07029db316",
+                        "md5_digest": "1c203160eddb792cdbd706ccbb5e35bb",
                         "packagetype": "sdist",
                         "python_version": "source",
                         "requires_python": null,
-                        "size": 19943,
-                        "upload_time": "2019-08-21T16:47:06",
-                        "url": "https://files.pythonhosted.org/packages/87/09/b994a5d7310f73b04b7dd840a5fbdd726da42b7980ac0a07595b6c56ef00/ocrd_tesserocr-0.4.0.tar.gz"
+                        "size": 20350,
+                        "upload_time": "2019-10-31T16:43:43",
+                        "upload_time_iso_8601": "2019-10-31T16:43:43.864345Z",
+                        "url": "https://files.pythonhosted.org/packages/15/1f/ed95415ee91659222301aa77e4f8c27be33df8e258972059bc031a2c0e3b/ocrd_tesserocr-0.5.1.tar.gz"
                     }
                 ]
             },
@@ -1771,6 +2186,7 @@
         },
         "git": {
             "last_commit": "Thu Oct 24 19:20:11 2019 +0200",
+            "latest_tag": "",
             "number_of_commits": "309",
             "url": "https://github.com/cisocrgroup/ocrd_cis.git"
         },
@@ -2313,12 +2729,134 @@
             "version": "0.0.1"
         },
         "ocrd_tool_validate": "<report valid=\"false\">\n  <error>[tools.ocrd-cis-aio] 'input_file_grp' is a required property</error>\n  <error>[tools.ocrd-cis-aio.parameters.tesserparampath] 'description' is a required property</error>\n  <error>[tools.ocrd-cis-aio.parameters.ocropyparampath1] 'description' is a required property</error>\n  <error>[tools.ocrd-cis-aio.parameters.ocropyparampath2] 'description' is a required property</error>\n  <error>[tools.ocrd-cis-aio.parameters.alignparampath] 'description' is a required property</error>\n  <error>[tools.ocrd-cis-aio.steps.0] 'postprocessing/alignment/recognition' is not one of ['preprocessing/characterization', 'preprocessing/optimization', 'preprocessing/optimization/cropping', 'preprocessing/optimization/deskewing', 'preprocessing/optimization/despeckling', 'preprocessing/optimization/dewarping', 'preprocessing/optimization/binarization', 'preprocessing/optimization/grayscale_normalization', 'recognition/text-recognition', 'recognition/font-identification', 'recognition/post-correction', 'layout/segmentation', 'layout/segmentation/text-nontext', 'layout/segmentation/region', 'layout/segmentation/line', 'layout/segmentation/word', 'layout/segmentation/classification', 'layout/analysis']</error>\n  <error>[tools.ocrd-cis-align] 'input_file_grp' is a required property</error>\n  <error>[tools.ocrd-cis-align.steps.0] 'postprocessing/alignment' is not one of ['preprocessing/characterization', 'preprocessing/optimization', 'preprocessing/optimization/cropping', 'preprocessing/optimization/deskewing', 'preprocessing/optimization/despeckling', 'preprocessing/optimization/dewarping', 'preprocessing/optimization/binarization', 'preprocessing/optimization/grayscale_normalization', 'recognition/text-recognition', 'recognition/font-identification', 'recognition/post-correction', 'layout/segmentation', 'layout/segmentation/text-nontext', 'layout/segmentation/region', 'layout/segmentation/line', 'layout/segmentation/word', 'layout/segmentation/classification', 'layout/analysis']</error>\n  <error>[tools.ocrd-cis-ocropy-rec] 'input_file_grp' is a required property</error>\n  <error>[tools.cis-ocrd-ocropy-train] 'input_file_grp' is a required property</error>\n  <error>[tools.cis-ocrd-ocropy-train.parameters.textequiv_level] 'description' is a required property</error>\n  <error>[tools.cis-ocrd-ocropy-train.parameters.ntrain.type] 'integer' is not one of ['string', 'number', 'boolean']</error>\n  <error>[tools.cis-ocrd-ocropy-train.categories.0] 'lstm ocropy model training' is not one of ['Image preprocessing', 'Layout analysis', 'Text recognition and optimization', 'Model training', 'Long-term preservation', 'Quality assurance']</error>\n  <error>[tools.cis-ocrd-ocropy-train.steps.0] 'training' is not one of ['preprocessing/characterization', 'preprocessing/optimization', 'preprocessing/optimization/cropping', 'preprocessing/optimization/deskewing', 'preprocessing/optimization/despeckling', 'preprocessing/optimization/dewarping', 'preprocessing/optimization/binarization', 'preprocessing/optimization/grayscale_normalization', 'recognition/text-recognition', 'recognition/font-identification', 'recognition/post-correction', 'layout/segmentation', 'layout/segmentation/text-nontext', 'layout/segmentation/region', 'layout/segmentation/line', 'layout/segmentation/word', 'layout/segmentation/classification', 'layout/analysis']</error>\n  <error>[tools.ocrd-cis-profile] 'input_file_grp' is a required property</error>\n  <error>[tools.ocrd-cis-profile.parameters.executable] 'description' is a required property</error>\n  <error>[tools.ocrd-cis-profile.parameters.backend] 'description' is a required property</error>\n  <error>[tools.ocrd-cis-profile.parameters.language] 'description' is a required property</error>\n  <error>[tools.ocrd-cis-profile.parameters.additionalLexicon] 'description' is a required property</error>\n  <error>[tools.ocrd-cis-profile.steps.0] 'postprocessing/alignment' is not one of ['preprocessing/characterization', 'preprocessing/optimization', 'preprocessing/optimization/cropping', 'preprocessing/optimization/deskewing', 'preprocessing/optimization/despeckling', 'preprocessing/optimization/dewarping', 'preprocessing/optimization/binarization', 'preprocessing/optimization/grayscale_normalization', 'recognition/text-recognition', 'recognition/font-identification', 'recognition/post-correction', 'layout/segmentation', 'layout/segmentation/text-nontext', 'layout/segmentation/region', 'layout/segmentation/line', 'layout/segmentation/word', 'layout/segmentation/classification', 'layout/analysis']</error>\n  <error>[tools.ocrd-cis-train] 'input_file_grp' is a required property</error>\n  <error>[tools.ocrd-cis-train.parameters.jar] 'description' is a required property</error>\n  <error>[tools.ocrd-cis-train.steps.0] 'postprocessing/alignment' is not one of ['preprocessing/characterization', 'preprocessing/optimization', 'preprocessing/optimization/cropping', 'preprocessing/optimization/deskewing', 'preprocessing/optimization/despeckling', 'preprocessing/optimization/dewarping', 'preprocessing/optimization/binarization', 'preprocessing/optimization/grayscale_normalization', 'recognition/text-recognition', 'recognition/font-identification', 'recognition/post-correction', 'layout/segmentation', 'layout/segmentation/text-nontext', 'layout/segmentation/region', 'layout/segmentation/line', 'layout/segmentation/word', 'layout/segmentation/classification', 'layout/analysis']</error>\n  <error>[tools.ocrd-cis-stats] 'input_file_grp' is a required property</error>\n  <error>[tools.ocrd-cis-stats.parameters.none] 'description' is a required property</error>\n  <error>[tools.ocrd-cis-stats.steps.0] 'postprocessing/alignment' is not one of ['preprocessing/characterization', 'preprocessing/optimization', 'preprocessing/optimization/cropping', 'preprocessing/optimization/deskewing', 'preprocessing/optimization/despeckling', 'preprocessing/optimization/dewarping', 'preprocessing/optimization/binarization', 'preprocessing/optimization/grayscale_normalization', 'recognition/text-recognition', 'recognition/font-identification', 'recognition/post-correction', 'layout/segmentation', 'layout/segmentation/text-nontext', 'layout/segmentation/region', 'layout/segmentation/line', 'layout/segmentation/word', 'layout/segmentation/classification', 'layout/analysis']</error>\n  <error>[tools.ocrd-cis-lang] 'input_file_grp' is a required property</error>\n  <error>[tools.ocrd-cis-lang.parameters.none] 'description' is a required property</error>\n  <error>[tools.ocrd-cis-lang.steps.0] 'postprocessing/alignment' is not one of ['preprocessing/characterization', 'preprocessing/optimization', 'preprocessing/optimization/cropping', 'preprocessing/optimization/deskewing', 'preprocessing/optimization/despeckling', 'preprocessing/optimization/dewarping', 'preprocessing/optimization/binarization', 'preprocessing/optimization/grayscale_normalization', 'recognition/text-recognition', 'recognition/font-identification', 'recognition/post-correction', 'layout/segmentation', 'layout/segmentation/text-nontext', 'layout/segmentation/region', 'layout/segmentation/line', 'layout/segmentation/word', 'layout/segmentation/classification', 'layout/analysis']</error>\n  <error>[tools.ocrd-cis-importer] 'input_file_grp' is a required property</error>\n  <error>[tools.ocrd-cis-importer.parameters.none] 'description' is a required property</error>\n  <error>[tools.ocrd-cis-importer.steps.0] 'postprocessing' is not one of ['preprocessing/characterization', 'preprocessing/optimization', 'preprocessing/optimization/cropping', 'preprocessing/optimization/deskewing', 'preprocessing/optimization/despeckling', 'preprocessing/optimization/dewarping', 'preprocessing/optimization/binarization', 'preprocessing/optimization/grayscale_normalization', 'recognition/text-recognition', 'recognition/font-identification', 'recognition/post-correction', 'layout/segmentation', 'layout/segmentation/text-nontext', 'layout/segmentation/region', 'layout/segmentation/line', 'layout/segmentation/word', 'layout/segmentation/classification', 'layout/analysis']</error>\n  <error>[tools.ocrd-cis-cutter] 'input_file_grp' is a required property</error>\n  <error>[tools.ocrd-cis-cutter.parameters.gtdir] 'description' is a required property</error>\n  <error>[tools.ocrd-cis-cutter.steps.0] 'postprocessing' is not one of ['preprocessing/characterization', 'preprocessing/optimization', 'preprocessing/optimization/cropping', 'preprocessing/optimization/deskewing', 'preprocessing/optimization/despeckling', 'preprocessing/optimization/dewarping', 'preprocessing/optimization/binarization', 'preprocessing/optimization/grayscale_normalization', 'recognition/text-recognition', 'recognition/font-identification', 'recognition/post-correction', 'layout/segmentation', 'layout/segmentation/text-nontext', 'layout/segmentation/region', 'layout/segmentation/line', 'layout/segmentation/word', 'layout/segmentation/classification', 'layout/analysis']</error>\n  <error>[tools.ocrd-cis-clean] 'input_file_grp' is a required property</error>\n  <error>[tools.ocrd-cis-clean.parameters.mainLevel] 'description' is a required property</error>\n  <error>[tools.ocrd-cis-clean.parameters.mainIndex.type] 'integer' is not one of ['string', 'number', 'boolean']</error>\n  <error>[tools.ocrd-cis-clean.steps.0] 'postprocessing' is not one of ['preprocessing/characterization', 'preprocessing/optimization', 'preprocessing/optimization/cropping', 'preprocessing/optimization/deskewing', 'preprocessing/optimization/despeckling', 'preprocessing/optimization/dewarping', 'preprocessing/optimization/binarization', 'preprocessing/optimization/grayscale_normalization', 'recognition/text-recognition', 'recognition/font-identification', 'recognition/post-correction', 'layout/segmentation', 'layout/segmentation/text-nontext', 'layout/segmentation/region', 'layout/segmentation/line', 'layout/segmentation/word', 'layout/segmentation/classification', 'layout/analysis']</error>\n</report>",
+        "official": true,
         "org_plus_name": "cisocrgroup/ocrd_cis",
         "python": {
             "author": "Florian Fink, Tobias Englmeier, Christoph Weber",
             "author-email": "finkf@cis.lmu.de, englmeier@cis.lmu.de, web_chris@msn.com",
             "name": "cis-ocrd",
-            "pypi": null,
+            "pypi": {
+                "info": {
+                    "author": "Florian Fink, Tobias Englmeier, Christoph Weber",
+                    "author_email": "finkf@cis.lmu.de, englmeier@cis.lmu.de, web_chris@msn.com",
+                    "bugtrack_url": null,
+                    "classifiers": [],
+                    "description": "# ocrd_cis\n\n![build status](https://travis-ci.org/cisocrgroup/cis-ocrd-py.svg?branch=dev)\n# cis-ocrd-py\n\n[CIS](http://www.cis.lmu.de) [OCR-D](http://ocr-d.de) command line tools\n\n## General usage\n\n### Essential system packages\n\n```sh\nsudo apt-get install \\\n  git \\\n  build-essential \\\n  python3 python3-pip \\\n  libxml2-dev \\\n  default-jdk\n```\n\n\n\n### Virtualenv\n\nUse `virtualenv` to install dependencies:\n* `virtualenv -p python3.6 env`\n* `source env/bin/activate`\n* `pip install -e path/to/dir/containing/setup.py`\n\nUse `deactivate` to deactivate the virtualenv again.\n\n### OCR-D workspace\n\n* Create a new (empty) workspace: `ocrd workspace init workspace-dir`\n* cd into `workspace-dir`\n* Add new file to workspace: `ocrd workspace add file -G group -i id\n  -m mimetype`\n\n### Tests\n\nIssue `make test` to run the automated test suite. The tests depend on\nthe following tools:\n\n* [wget](https://www.gnu.org/software/wget/)\n* [envsubst](https://linux.die.net/man/1/envsubst)\n\nYou can run individual testcases using the `run_*_test.bash` scripts in\nthe tests directory. Use the `--persistent` or `-p` flag to keep\ntemporary directories.\n\nYou can override the temporary directory by setting the `TMP_DIR` environment\nvariable.\n\n## Tools\n\n### ocrd-cis-align\n\nThe alignment tool line-aligns multiple file groups. It can be used to\nalign the results of multiple OCRs with their respective ground-truth.\n\nThe tool expects a comma-separated list of input file groups, the\naccording output file group and the url of the configuration file:\n\n```sh\nocrd-cis-align \\\n  --input-file-grp 'ocr1,ocr2,gt' \\\n  --output-file-grp 'ocr1+ocr2+gt' \\\n  --mets mets.xml \\\n  --parameter file:///path/to/config.json\n```\n\n\n### ocrd-cis-ocropy-train\nThe ocropy-train tool can be used to train LSTM models.\nIt takes ground truth from the workspace and saves (image+text) snippets from the corresponding pages.\nThen a model is trained on all snippets for 1 million (or the given number of) randomized iterations from the parameter file.\n```sh\nocrd-cis-ocropy-train \\\n  --input-file-grp OCR-D-GT-SEG-LINE \\\n  --mets mets.xml\n  --parameter file:///path/to/config.json\n```\n\n### ocrd-cis-ocropy-clip\nThe ocropy-clip tool can be used to remove intrusions of neighbouring segments in regions / lines of a workspace.\nIt runs a (ad-hoc binarization and) connected component analysis on every text region / line of every PAGE in the input file group, as well as its overlapping neighbours, and for each binary object of conflict, determines whether it belongs to the neighbour, and can therefore be clipped to white. It references the resulting segment image files in the output PAGE (as AlternativeImage).\n```sh\nocrd-cis-ocropy-clip \\\n  --input-file-grp OCR-D-SEG-LINE \\\n  --output-file-grp OCR-D-SEG-LINE-CLIP \\\n  --mets mets.xml\n  --parameter file:///path/to/config.json\n```\n\n### ocrd-cis-ocropy-resegment\nThe ocropy-resegment tool can be used to remove overlap between lines of a workspace.\nIt runs a (ad-hoc binarization and) line segmentation on every text region of every PAGE in the input file group, and for each line already annotated, determines the label of largest extent within the original coordinates (polygon outline) in that line, and annotates the resulting coordinates in the output PAGE.\n```sh\nocrd-cis-ocropy-resegment \\\n  --input-file-grp OCR-D-SEG-LINE \\\n  --output-file-grp OCR-D-SEG-LINE-RES \\\n  --mets mets.xml\n  --parameter file:///path/to/config.json\n```\n\n### ocrd-cis-ocropy-segment\nThe ocropy-segment tool can be used to segment regions into lines.\nIt runs a (ad-hoc binarization and) line segmentation on every text region of every PAGE in the input file group, and adds a TextLine element with the resulting polygon outline to the annotation of the output PAGE.\n```sh\nocrd-cis-ocropy-segment \\\n  --input-file-grp OCR-D-SEG-BLOCK \\\n  --output-file-grp OCR-D-SEG-LINE \\\n  --mets mets.xml\n  --parameter file:///path/to/config.json\n```\n\n### ocrd-cis-ocropy-deskew\nThe ocropy-deskew tool can be used to deskew pages / regions of a workspace.\nIt runs the Ocropy thresholding and deskewing estimation on every segment of every PAGE in the input file group and annotates the orientation angle in the output PAGE.\n```sh\nocrd-cis-ocropy-deskew \\\n  --input-file-grp OCR-D-SEG-LINE \\\n  --output-file-grp OCR-D-SEG-LINE-DES \\\n  --mets mets.xml\n  --parameter file:///path/to/config.json\n```\n\n### ocrd-cis-ocropy-denoise\nThe ocropy-denoise tool can be used to despeckle pages / regions / lines of a workspace.\nIt runs the Ocropy \"nlbin\" denoising on every segment of every PAGE in the input file group and references the resulting segment image files in the output PAGE (as AlternativeImage). \n```sh\nocrd-cis-ocropy-denoise \\\n  --input-file-grp OCR-D-SEG-LINE-DES \\\n  --output-file-grp OCR-D-SEG-LINE-DEN \\\n  --mets mets.xml\n  --parameter file:///path/to/config.json\n```\n\n### ocrd-cis-ocropy-binarize\nThe ocropy-binarize tool can be used to binarize, denoise and deskew pages / regions / lines of a workspace.\nIt runs the Ocropy \"nlbin\" adaptive thresholding, deskewing estimation and denoising on every segment of every PAGE in the input file group and references the resulting segment image files in the output PAGE (as AlternativeImage). (If a deskewing angle has already been annotated in a region, the tool respects that and rotates accordingly.) Images can also be produced grayscale-normalized.\n```sh\nocrd-cis-ocropy-binarize \\\n  --input-file-grp OCR-D-SEG-LINE-DES \\\n  --output-file-grp OCR-D-SEG-LINE-BIN \\\n  --mets mets.xml\n  --parameter file:///path/to/config.json\n```\n\n### ocrd-cis-ocropy-dewarp\nThe ocropy-dewarp tool can be used to dewarp text lines of a workspace.\nIt runs the Ocropy baseline estimation and dewarping on every line in every text region of every PAGE in the input file group and references the resulting line image files in the output PAGE (as AlternativeImage).\n```sh\nocrd-cis-ocropy-dewarp \\\n  --input-file-grp OCR-D-SEG-LINE-BIN \\\n  --output-file-grp OCR-D-SEG-LINE-DEW \\\n  --mets mets.xml\n  --parameter file:///path/to/config.json\n```\n\n### ocrd-cis-ocropy-recognize\nThe ocropy-recognize tool can be used to recognize lines / words / glyphs from pages of a workspace.\nIt runs the Ocropy optical character recognition on every line in every text region of every PAGE in the input file group and adds the resulting text annotation in the output PAGE.\n```sh\nocrd-cis-ocropy-recognize \\\n  --input-file-grp OCR-D-SEG-LINE-DEW \\\n  --output-file-grp OCR-D-OCR-OCRO \\\n  --mets mets.xml\n  --parameter file:///path/to/config.json\n```\n\n## All in One Tool\nFor the all in One Tool install all above tools and Tesserocr as explained below.\nThen use it like:\n```sh\nocrd-cis-aio --parameter file:///path/to/config.json\n```\n\n\n### Tesserocr\nInstall essential system packages for Tesserocr\n```sh\nsudo apt-get install python3-tk \\\n  tesseract-ocr libtesseract-dev libleptonica-dev \\\n  libimage-exiftool-perl libxml2-utils\n```\n\nThen install Tesserocr from: https://github.com/OCR-D/ocrd_tesserocr\n```sh\npip install -r requirements.txt\npip install .\n```\n\nDownload and move tesseract models from:\nhttps://github.com/tesseract-ocr/tesseract/wiki/Data-Files\nor use your own models\nplace them into: /usr/share/tesseract-ocr/4.00/tessdata\n\nTesserocr v2.4.0 seems broken for tesseract 4.0.0-beta. Install\nVersion v2.3.1 instead: `pip install tesseract==2.3.1`.\n\n## Workflow configuration\n\nA decent pipeline might look like this:\n\n1. page-level cropping\n2. page-level binarization\n3. page-level deskewing\n4. page-level dewarping\n5. region segmentation\n6. region-level clipping\n7. region-level deskewing\n8. line segmentation\n9. line-level clipping or resegmentation\n10. line-level dewarping\n11. line-level recognition\n12. line-level alignment\n\nIf GT is used, steps 1, 5 and 8 can be omitted. Else if a segmentation is used in 5 and 8 which does not produce overlapping sections, steps 6 and 9 can be omitted.\n\n## OCR-D links\n\n- [OCR-D](https://ocr-d.github.io)\n- [Github](https://github.com/OCR-D)\n- [Project-page](http://www.ocr-d.de/)\n- [Ground-truth](http://www.ocr-d.de/sites/all/GTDaten/IndexGT.html)\n\n\n",
+                    "description_content_type": "text/markdown",
+                    "docs_url": null,
+                    "download_url": "",
+                    "downloads": {
+                        "last_day": -1,
+                        "last_month": -1,
+                        "last_week": -1
+                    },
+                    "home_page": "https://github.com/cisocrgroup/cis-ocrd-py",
+                    "keywords": "",
+                    "license": "MIT",
+                    "maintainer": "",
+                    "maintainer_email": "",
+                    "name": "cis-ocrd",
+                    "package_url": "https://pypi.org/project/cis-ocrd/",
+                    "platform": "",
+                    "project_url": "https://pypi.org/project/cis-ocrd/",
+                    "project_urls": {
+                        "Homepage": "https://github.com/cisocrgroup/cis-ocrd-py"
+                    },
+                    "release_url": "https://pypi.org/project/cis-ocrd/0.0.5/",
+                    "requires_dist": [
+                        "ocrd (>=2.0.0a1)",
+                        "click",
+                        "scipy",
+                        "numpy (>=1.17.0)",
+                        "pillow (>=6.2.0)",
+                        "matplotlib (>3.0.0)",
+                        "python-Levenshtein",
+                        "calamari-ocr"
+                    ],
+                    "requires_python": "",
+                    "summary": "CIS OCR-D command line tools",
+                    "version": "0.0.5"
+                },
+                "last_serial": 6034741,
+                "releases": {
+                    "0.0.5": [
+                        {
+                            "comment_text": "",
+                            "digests": {
+                                "md5": "0cb7c271e269610696de659dd5e6366a",
+                                "sha256": "f99c92453445e4896a856cb0f146d0aadf0ceeb48addd75ff6b9f4ffda49ac33"
+                            },
+                            "downloads": -1,
+                            "filename": "cis_ocrd-0.0.5-py3-none-any.whl",
+                            "has_sig": false,
+                            "md5_digest": "0cb7c271e269610696de659dd5e6366a",
+                            "packagetype": "bdist_wheel",
+                            "python_version": "py3",
+                            "requires_python": null,
+                            "size": 116744,
+                            "upload_time": "2019-10-26T19:26:55",
+                            "upload_time_iso_8601": "2019-10-26T19:26:55.970846Z",
+                            "url": "https://files.pythonhosted.org/packages/9e/bf/b1818c9f698b1b99475bcd85ae8649a09ee8e802644dedc759bc728f4114/cis_ocrd-0.0.5-py3-none-any.whl"
+                        },
+                        {
+                            "comment_text": "",
+                            "digests": {
+                                "md5": "049c5b627214c7afcce8f51a5a0eee11",
+                                "sha256": "059e22fa0ab0ffd92f2bbfdb26279dbe507a25050bfe38eaa977546da6f60523"
+                            },
+                            "downloads": -1,
+                            "filename": "cis-ocrd-0.0.5.tar.gz",
+                            "has_sig": false,
+                            "md5_digest": "049c5b627214c7afcce8f51a5a0eee11",
+                            "packagetype": "sdist",
+                            "python_version": "source",
+                            "requires_python": null,
+                            "size": 88597,
+                            "upload_time": "2019-10-26T19:26:59",
+                            "upload_time_iso_8601": "2019-10-26T19:26:59.427545Z",
+                            "url": "https://files.pythonhosted.org/packages/c9/64/f6d8e1cb2ac04a6ef81387ad279faf5660f682fada0bb324f4280cb0dd17/cis-ocrd-0.0.5.tar.gz"
+                        }
+                    ]
+                },
+                "urls": [
+                    {
+                        "comment_text": "",
+                        "digests": {
+                            "md5": "0cb7c271e269610696de659dd5e6366a",
+                            "sha256": "f99c92453445e4896a856cb0f146d0aadf0ceeb48addd75ff6b9f4ffda49ac33"
+                        },
+                        "downloads": -1,
+                        "filename": "cis_ocrd-0.0.5-py3-none-any.whl",
+                        "has_sig": false,
+                        "md5_digest": "0cb7c271e269610696de659dd5e6366a",
+                        "packagetype": "bdist_wheel",
+                        "python_version": "py3",
+                        "requires_python": null,
+                        "size": 116744,
+                        "upload_time": "2019-10-26T19:26:55",
+                        "upload_time_iso_8601": "2019-10-26T19:26:55.970846Z",
+                        "url": "https://files.pythonhosted.org/packages/9e/bf/b1818c9f698b1b99475bcd85ae8649a09ee8e802644dedc759bc728f4114/cis_ocrd-0.0.5-py3-none-any.whl"
+                    },
+                    {
+                        "comment_text": "",
+                        "digests": {
+                            "md5": "049c5b627214c7afcce8f51a5a0eee11",
+                            "sha256": "059e22fa0ab0ffd92f2bbfdb26279dbe507a25050bfe38eaa977546da6f60523"
+                        },
+                        "downloads": -1,
+                        "filename": "cis-ocrd-0.0.5.tar.gz",
+                        "has_sig": false,
+                        "md5_digest": "049c5b627214c7afcce8f51a5a0eee11",
+                        "packagetype": "sdist",
+                        "python_version": "source",
+                        "requires_python": null,
+                        "size": 88597,
+                        "upload_time": "2019-10-26T19:26:59",
+                        "upload_time_iso_8601": "2019-10-26T19:26:59.427545Z",
+                        "url": "https://files.pythonhosted.org/packages/c9/64/f6d8e1cb2ac04a6ef81387ad279faf5660f682fada0bb324f4280cb0dd17/cis-ocrd-0.0.5.tar.gz"
+                    }
+                ]
+            },
             "url": "https://github.com/cisocrgroup/cis-ocrd-py"
         },
         "url": "https://github.com/cisocrgroup/ocrd_cis"
@@ -2332,6 +2870,7 @@
         },
         "git": {
             "last_commit": "Tue Oct 22 17:00:56 2019 +0200",
+            "latest_tag": "",
             "number_of_commits": "75",
             "url": "https://github.com/mjenckel/LAYoutERkennung"
         },
@@ -2863,6 +3402,7 @@
             "version": "0.0.1"
         },
         "ocrd_tool_validate": "<report valid=\"false\">\n  <error>[tools.ocrd-anybaseocr-tiseg.steps.0] 'layout/segmentation/text-image' is not one of ['preprocessing/characterization', 'preprocessing/optimization', 'preprocessing/optimization/cropping', 'preprocessing/optimization/deskewing', 'preprocessing/optimization/despeckling', 'preprocessing/optimization/dewarping', 'preprocessing/optimization/binarization', 'preprocessing/optimization/grayscale_normalization', 'recognition/text-recognition', 'recognition/font-identification', 'recognition/post-correction', 'layout/segmentation', 'layout/segmentation/text-nontext', 'layout/segmentation/region', 'layout/segmentation/line', 'layout/segmentation/word', 'layout/segmentation/classification', 'layout/analysis']</error>\n  <error>[tools.ocrd-anybaseocr-layout-analysis.steps.0] 'layout/segmentation/text-image' is not one of ['preprocessing/characterization', 'preprocessing/optimization', 'preprocessing/optimization/cropping', 'preprocessing/optimization/deskewing', 'preprocessing/optimization/despeckling', 'preprocessing/optimization/dewarping', 'preprocessing/optimization/binarization', 'preprocessing/optimization/grayscale_normalization', 'recognition/text-recognition', 'recognition/font-identification', 'recognition/post-correction', 'layout/segmentation', 'layout/segmentation/text-nontext', 'layout/segmentation/region', 'layout/segmentation/line', 'layout/segmentation/word', 'layout/segmentation/classification', 'layout/analysis']</error>\n  <error>[tools.ocrd-anybaseocr-block-segmentation.steps.0] 'layout/segmentation/text-image' is not one of ['preprocessing/characterization', 'preprocessing/optimization', 'preprocessing/optimization/cropping', 'preprocessing/optimization/deskewing', 'preprocessing/optimization/despeckling', 'preprocessing/optimization/dewarping', 'preprocessing/optimization/binarization', 'preprocessing/optimization/grayscale_normalization', 'recognition/text-recognition', 'recognition/font-identification', 'recognition/post-correction', 'layout/segmentation', 'layout/segmentation/text-nontext', 'layout/segmentation/region', 'layout/segmentation/line', 'layout/segmentation/word', 'layout/segmentation/classification', 'layout/analysis']</error>\n</report>",
+        "official": true,
         "org_plus_name": "mjenckel/LAYoutERkennung",
         "python": {
             "author": "DFKI",
@@ -2882,12 +3422,14 @@
         },
         "git": {
             "last_commit": "Fri Mar 29 16:48:09 2019 +0100",
+            "latest_tag": "",
             "number_of_commits": "3",
             "url": "https://github.com/ocr-d-modul-2-segmentierung/segmentation-runner"
         },
         "name": "segmentation-runner",
         "ocrd_tool": "",
         "ocrd_tool_validate": "NO ocrd-tool.json",
+        "official": true,
         "org_plus_name": "ocr-d-modul-2-segmentierung/segmentation-runner",
         "python": {
             "author": "Alexander Gehrke, Christian Reul, Christoph Wick",
@@ -2907,6 +3449,7 @@
         },
         "git": {
             "last_commit": "Fri Oct 18 17:45:24 2019 +0200",
+            "latest_tag": "",
             "number_of_commits": "32",
             "url": "https://github.com/qurator-spk/dinglehopper.git"
         },
@@ -2934,6 +3477,7 @@
             }
         },
         "ocrd_tool_validate": "<report valid=\"false\">\n  <error>[] 'version' is a required property</error>\n</report>",
+        "official": false,
         "org_plus_name": "qurator-spk/dinglehopper",
         "python": {
             "author": "Mike Gerber, The QURATOR SPK Team",
@@ -2953,12 +3497,14 @@
         },
         "git": {
             "last_commit": "Wed Jul 10 12:30:57 2019 +0200",
+            "latest_tag": "",
             "number_of_commits": "6",
             "url": "https://github.com/qurator-spk/pixelwise_segmentation_SBB.git"
         },
         "name": "pixelwise_segmentation_SBB",
         "ocrd_tool": "",
         "ocrd_tool_validate": "NO ocrd-tool.json",
+        "official": false,
         "org_plus_name": "qurator-spk/pixelwise_segmentation_SBB",
         "url": "https://github.com/qurator-spk/pixelwise_segmentation_SBB"
     },
@@ -2971,6 +3517,7 @@
         },
         "git": {
             "last_commit": "Fri Sep 6 11:52:17 2019 +0200",
+            "latest_tag": "",
             "number_of_commits": "67",
             "url": "https://github.com/seuretm/ocrd_typegroups_classifier"
         },
@@ -3005,6 +3552,7 @@
             "version": "0.0.1"
         },
         "ocrd_tool_validate": "<report valid=\"false\">\n  <error>[tools.ocrd-typegroups-classifier] 'input_file_grp' is a required property</error>\n</report>",
+        "official": true,
         "org_plus_name": "seuretm/ocrd_typegroups_classifier",
         "python": {
             "author": "Matthias Seuret, Konstantin Baierer",

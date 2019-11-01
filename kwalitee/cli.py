@@ -21,7 +21,11 @@ class CliCtx():
     def __init__(self, config_file):
         with open(config_file, 'r') as f_config_file:
             self.config = safe_load(f_config_file.read())
-            self.repos = [Repo(self.config, url) for url in self.config['repolist']]
+            self.repos = []
+            for repo_desc in self.config['repolist']:
+                url = repo_desc['url']
+                official = repo_desc.get('official', False)
+                self.repos.append(Repo(self.config, url, official))
 pass_ctx = click.make_pass_decorator(CliCtx)
 
 @click.group()
