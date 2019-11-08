@@ -31,6 +31,6 @@ repolist:
     official: true
     compliant_cli: false
   - url: https://github.com/qurator-spk/dinglehopper
-  - url: https://github.com/qurator-spk/pixelwise_segmentation_SBB
+  # - url: https://github.com/qurator-spk/pixelwise_segmentation_SBB
   - url: https://github.com/seuretm/ocrd_typegroups_classifier
     official: true
