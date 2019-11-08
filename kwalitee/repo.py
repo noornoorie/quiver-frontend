@@ -10,11 +10,12 @@ LOG = getLogger('kwalitee.repo')
 
 class Repo():
 
-    def __init__(self, config, url, official=False):
+    def __init__(self, config, url, official=False, compliant_cli=False):
         self.url = url
         self.config = config
         self.name = Path(url).name
         self.official = official
+        self.compliant_cli = compliant_cli
         self.path = Path(self.config['repodir'], self.name)
 
     def __str__(self):
@@ -75,6 +76,7 @@ class Repo():
         desc = {}
         desc['url'] = self.url
         desc['official'] = self.official
+        desc['compliant_cli'] = self.compliant_cli
         desc['org_plus_name'] = '/'.join(self.url.split('/')[-2:])
         desc['name'] = self.name
         desc['files'] = self.get_file_contents()
