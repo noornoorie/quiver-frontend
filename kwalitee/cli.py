@@ -25,7 +25,8 @@ class CliCtx():
             for repo_desc in self.config['repolist']:
                 url = repo_desc['url']
                 official = repo_desc.get('official', False)
-                self.repos.append(Repo(self.config, url, official))
+                compliant_cli = repo_desc.get('compliant_cli', False)
+                self.repos.append(Repo(self.config, url, official, compliant_cli))
 pass_ctx = click.make_pass_decorator(CliCtx)
 
 @click.group()
