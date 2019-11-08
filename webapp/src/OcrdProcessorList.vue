@@ -5,8 +5,13 @@
       <b-collapse id="processor-controls">
         <b-container>
           <b-row>
+            <b-form-checkbox v-model="show_noncompliant" name="check-button" switch>
+            Non-compliant projects <b>({{ show_noncompliant ? "Show" : "Hide" }})</b>
+            </b-form-checkbox>
+          </b-row>
+          <b-row>
             <b-form-checkbox v-model="show_unofficial" name="check-button" switch>
-            Unofficial processors <b>({{ checked ? "Show" : "hide" }})</b>
+            Unofficial processors <b>({{ show_unofficial ? "Show" : "hide" }})</b>
             </b-form-checkbox>
           </b-row>
           <b-row>
@@ -54,6 +59,7 @@ export default {
     return {
       step_filter: [],
       show_unofficial: true,
+      show_noncompliant: true,
       category_filter: {require: true},
       category_filter: [],
     }
@@ -73,6 +79,9 @@ export default {
             return false
         }
         if (!(this.show_unofficial || tool.official)) {
+          return false
+        }
+        if (!(this.show_noncompliant || project.compliant_cli)) {
           return false
         }
         return true

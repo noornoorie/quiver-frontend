@@ -48,6 +48,7 @@ export default {
             tool.idx = tool_idx++
             tool.part_of = project.org_plus_name
             tool.official = project.official
+            tool.compliant_cli = project.compliant_cli
             return tool
           }))
         return all
@@ -62,4 +63,7 @@ export default {
 </script>
 
 <style>
+.non-compliant {
+  background-color: #fcc;
+}
 </style>

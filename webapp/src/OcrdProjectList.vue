@@ -5,8 +5,13 @@
       <b-collapse id="project-controls">
         <b-container>
           <b-row>
+            <b-form-checkbox v-model="show_noncompliant" name="check-button" switch>
+            Non-compliant projects <b>({{ show_noncompliant ? "Show" : "Hide" }})</b>
+            </b-form-checkbox>
+          </b-row>
+          <b-row>
             <b-form-checkbox v-model="show_unofficial" name="check-button" switch>
-            Unofficial projects <b>({{ checked ? "Show" : "hide" }})</b>
+            Unofficial projects <b>({{ show_unofficial ? "Show" : "Hide" }})</b>
             </b-form-checkbox>
           </b-row>
           <b-row>
@@ -51,6 +56,7 @@ export default {
     return {
       name_filter: '',
       show_unofficial: true,
+      show_noncompliant: true,
       tabIndex: 0,
     }
   },
@@ -58,6 +64,9 @@ export default {
     filtered_projects() {
       return this.projects.filter(project => {
         if (!(this.show_unofficial || project.official)) {
+          return false
+        }
+        if (!(this.show_noncompliant || project.compliant_cli)) {
           return false
         }
         return project.name.toLowerCase().includes(this.name_filter.toLowerCase())

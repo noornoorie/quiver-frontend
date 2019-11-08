@@ -2,7 +2,7 @@
   <b-card
     :title="project.org_plus_name"
     tag="article"
-    class="mb-5 ocrd-project-list-item"
+    :class="`mb-5 ocrd-project-list-item ${project.compliant_cli ? 'compliant' : 'non-compliant'}`"
     >
     <b-card-text v-if="!modal">
       <b-button @click="$root.showModal('project', projectIndex)">Expand</b-button>
@@ -17,7 +17,7 @@
       <b-tab title="Git">
         <b-card-text>
           <p>
-            <a href="`https://pypi.org/project/${ project.python.name }/`">             <img :src="`https://img.shields.io/pypi/v/${ project.python.name }.svg`"                                     /> </a>
+            <a v-if="project.python" href="`https://pypi.org/project/${ project.python.name }/`">             <img :src="`https://img.shields.io/pypi/v/${ project.python.name }.svg`"                                     /> </a>
             <!-- <a href="`https://travis-ci.org/${ project.org_plus_name }`">               <img :src="`https://travis-ci.org/${ project.org_plus_name }.svg?branch=master`"                             /> </a> -->
             <!-- <a href="`https://circleci.com/gh/${ project.org_plus_name }`">             <img :src="`https://circleci.com/gh/${ project.org_plus_name }.svg?style=svg`"                               /> </a> -->
             <!-- <a href="`https://hub.docker.com/r/ocrd/core/tags/`">                     <img :src="`https://img.shields.io/docker/automated/ocrd/core.svg`"                                        /> </a> -->
