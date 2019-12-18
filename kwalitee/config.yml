@@ -17,11 +17,11 @@ repolist:
     official: true
   - url: https://github.com/cisocrgroup/ocrd_cis
     official: true
-  - url: https://github.com/mjenckel/LAYoutERkennung
+  - url: https://github.com/OCR-D/ocrd_anybaseocr
     official: true
-  - url: https://github.com/ocr-d-modul-2-segmentierung/segmentation-runner
+  - url: https://github.com/ocr-d-modul-2-segmentierung/ocrd_pc_segmentation
     official: true
   - url: https://github.com/qurator-spk/dinglehopper
-  - url: https://github.com/qurator-spk/pixelwise_segmentation_SBB
-  - url: https://github.com/seuretm/ocrd_typegroups_classifier
+  # - url: https://github.com/qurator-spk/pixelwise_segmentation_SBB
+  - url: https://github.com/OCR-D/ocrd_typegroups_classifier
     official: true
