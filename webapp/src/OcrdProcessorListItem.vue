@@ -2,7 +2,7 @@
   <b-card
     tag="article"
     :title="processor.executable.replace('ocrd-', '')"
-    class="mb-5"
+    :class="`mb-5 ocrd-processor-list-item ${processor.compliant_cli ? 'compliant' : 'non-compliant'}`"
     >
     <b-card-text>
 

@@ -1,4 +1,4 @@
 click >=7
-ocrd >= 2.0.0a1
+ocrd
 pyyaml
 requests
