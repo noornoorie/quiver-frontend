@@ -31,7 +31,7 @@ window.kwalitee_app = new Vue({
   },
   methods: {
     fetchprojectData() {
-      fetch('repos.json').then(resp => resp.json()).then(projects => {
+      fetch('/repos.json').then(resp => resp.json()).then(projects => {
           projects.map((project, idx) => project.idx = idx)
           this.projects.splice(0, this.projects.length)
           this.projects.push(...projects)
