@@ -1,4 +1,5 @@
 import click
+from pathlib import Path
 from ocrd.decorators import ocrd_loglevel
 from ocrd_utils import getLogger
 from yaml import safe_load
@@ -66,8 +67,9 @@ def pull_all(ctx):
     Generate JSON
 
 ''')
+@click.option('-o', '--output', help="Output file. Omit to print to STDOU")
 @pass_ctx
-def generate_json(ctx):
+def generate_json(ctx, output=None):
     ret = []
     _check_cloned(ctx)
     for repo in ctx.repos:
@@ -75,4 +77,8 @@ def generate_json(ctx):
         repo.clone()
         ret.append(repo.to_json())
         #  print('%s %s -> %s' % (repo.path.is_dir(), repo.url, repo.path))
-    print(json.dumps(ret, indent=4, sort_keys=True))
+    json_str = json.dumps(ret, indent=4, sort_keys=True)
+    if output:
+        Path(output).write_text(json_str)
+    else:
+        print(json_str)
