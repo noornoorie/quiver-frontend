@@ -8,8 +8,6 @@ from pkg_resources import resource_filename
 
 from .repo import Repo
 
-LOG = getLogger('kwalitee.cli')
-
 def _check_cloned(ctx):
     uncloned = []
     for repo in ctx.repos:
@@ -20,6 +18,7 @@ def _check_cloned(ctx):
 
 class CliCtx():
     def __init__(self, config_file):
+        self.log = getLogger('ocrd.kwalitee')
         with open(config_file, 'r') as f_config_file:
             self.config = safe_load(f_config_file.read())
             self.repos = []
@@ -45,9 +44,9 @@ def cli(ctx, config_file, **kwargs): # pylint: disable=unused-argument
 def clone_all(ctx):
     for repo in ctx.repos:
         if repo.is_cloned():
-            LOG.info("Already cloned %s" % repo)
+            ctx.log.info("Already cloned %s" % repo)
         else:
-            LOG.info("Cloning %s" % repo)
+            ctx.log.info("Cloning %s" % repo)
             repo.clone()
 
 @cli.command('pull', help='''
@@ -58,7 +57,7 @@ def clone_all(ctx):
 def pull_all(ctx):
     _check_cloned(ctx)
     for repo in ctx.repos:
-        LOG.info("Pulling %s" % repo)
+        ctx.log.info("Pulling %s" % repo)
         repo.pull()
 
 
@@ -73,10 +72,27 @@ def generate_json(ctx, output=None):
     ret = []
     _check_cloned(ctx)
     for repo in ctx.repos:
-        LOG.info("# Assessing %s" % repo.name)
+        ctx.log.info("# Assessing %s" % repo.name)
         repo.clone()
         ret.append(repo.to_json())
         #  print('%s %s -> %s' % (repo.path.is_dir(), repo.url, repo.path))
+    json_str = json.dumps(ret, indent=4, sort_keys=True)
+    if output:
+        Path(output).write_text(json_str)
+    else:
+        print(json_str)
+
+@cli.command('ocrd-tool')
+@click.option('-o', '--output', help="Output file. Omit to print to STDOUT")
+@pass_ctx
+def generate_tool_json(ctx, output=None):
+    '''
+    Return one big list of ocrd tools
+    '''
+    ret = {}
+    _check_cloned(ctx)
+    for repo in ctx.repos:
+        ret = {**ret, **repo.get_ocrd_tools()}
     json_str = json.dumps(ret, indent=4, sort_keys=True)
     if output:
         Path(output).write_text(json_str)

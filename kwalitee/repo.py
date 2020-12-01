@@ -5,12 +5,10 @@ from shlex import split as X
 from ocrd_utils import pushd_popd, getLogger
 import requests as R
 
-LOG = getLogger('kwalitee.repo')
-
-
 class Repo():
 
     def __init__(self, config, url, official=False, compliant_cli=False):
+        self.log = getLogger('kwalitee.repo')
         self.url = url
         self.config = config
         self.name = Path(url).name
@@ -30,17 +28,17 @@ class Repo():
 
     def clone(self):
         if self.is_cloned():
-            LOG.debug("Already cloned: %s" % self.path)
+            self.log.debug("Already cloned: %s" % self.path)
             return
         with pushd_popd(self.config['repodir']):
-            LOG.debug("Cloning %s" % self.url)
+            self.log.debug("Cloning %s" % self.url)
             result = self._run('git clone --depth 1 "%s"' % self.url)
-            LOG.debug("Result: %s" % result)
+            self.log.debug("Result: %s" % result)
 
 
     def get_git_stats(self):
         ret = {}
-        LOG.info("  Fetching git info")
+        self.log.info("  Fetching git info")
         with pushd_popd(self.path):
             ret['number_of_commits'] = self._run('git rev-list HEAD --count').stdout
             ret['last_commit'] = self._run(r'git log -1 --format=%cd ').stdout
@@ -50,7 +48,7 @@ class Repo():
 
     def get_file_contents(self):
         ret = {}
-        LOG.info("  Getting file contents")
+        self.log.info("%s  Getting file contents" % self.url)
         with pushd_popd(self.path):
             for path in [Path(x) for x in ['ocrd-tool.json', 'Dockerfile', 'README.md', 'setup.py']]:
                 if path.is_file():
@@ -67,10 +65,14 @@ class Repo():
             ret['name'] = self._run('python3 setup.py --name').stdout
             ret['author'] = self._run('python3 setup.py --author').stdout
             ret['author-email'] = self._run('python3 setup.py --author-email').stdout
-        LOG.info("  Fetching pypi info")
+        self.log.info("  Fetching pypi info")
         response = R.get('https://pypi.python.org/pypi/%s/json' % ret['name'])
         ret['pypi'] = json.loads(response.text) if response.status_code == 200 else None
         return ret
+
+    def get_ocrd_tools(self):
+        ot = json.loads(self.get_file_contents()['ocrd-tool.json'])
+        return ot['tools']
 
     def to_json(self):
         desc = {}
