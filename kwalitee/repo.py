@@ -7,11 +7,11 @@ import requests as R
 
 class Repo():
 
-    def __init__(self, config, url, official=False, compliant_cli=False):
+    def __init__(self, config, url, name=None, official=False, compliant_cli=False):
         self.log = getLogger('kwalitee.repo')
         self.url = url
         self.config = config
-        self.name = Path(url).name
+        self.name = name if name else Path(url).name
         self.official = official
         self.compliant_cli = compliant_cli
         self.path = Path(self.config['repodir'], self.name)
