@@ -1,0 +1,11 @@
+{
+  "projects": "Projects",
+  "processors": "Processors",
+  "workflows": "Workflows",
+  "list": "List",
+  "table": "Table",
+  "sort_by": "Sort by",
+  "group_by": "Group by",
+  "documents": "Documents",
+  "no_content": "This view is not created yet. Please try again later. "
+}

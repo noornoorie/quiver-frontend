@@ -1,0 +1,18 @@
+@import "./base.scss";
+@import 'primeflex/primeflex.scss';
+
+.grid {
+  margin: 0;
+}
+
+.eval-low {
+  background-color: var(--red-200);
+}
+
+.eval-medium {
+  background-color: var(--yellow-300);
+}
+
+.eval-high {
+  background-color: var(--green-200);
+}
