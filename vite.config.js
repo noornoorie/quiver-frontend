@@ -7,7 +7,7 @@ import vueI18n from '@intlify/vite-plugin-vue-i18n';
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  base: '',
+  base: '/quiver-frontend/',
   build: {
     outDir: 'dist',
   },
