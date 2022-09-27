@@ -7,6 +7,11 @@ import vueI18n from '@intlify/vite-plugin-vue-i18n';
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  base: '',
+  build: {
+    outDir: 'dist',
+  },
+  publicDir: 'assets',
   plugins: [
     vue(),
     vueI18n({
