@@ -7,7 +7,10 @@ import Button from 'primevue/button';
 import Card from 'primevue/card';
 import Dropdown from 'primevue/dropdown';
 import SelectButton from 'primevue/selectbutton';
-import Tooltip from 'primevue/tooltip';
+import Accordion from 'primevue/accordion';
+import AccordionTab from 'primevue/accordiontab';
+import Chip from 'primevue/chip';
+import Tag from 'primevue/tag';
 
 import { createI18n } from "vue-i18n";
 
@@ -37,5 +40,9 @@ app.component('Button', Button);
 app.component('Card', Card);
 app.component('Dropdown', Dropdown);
 app.component('SelectButton', SelectButton);
-app.directive('tooltip', Tooltip);
+app.component('Chip', Chip);
+app.component('Accordion', Accordion);
+app.component('AccordionTab', AccordionTab);
+app.component('Tag', Tag);
+
 app.mount('#app');
