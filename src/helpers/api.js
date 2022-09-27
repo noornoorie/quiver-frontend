@@ -184,10 +184,13 @@ async function getProjects() {
 }
 
 async function getWorkflows() {
-    // return await request(baseUrl + '/workflows.json');
-    return Promise.resolve(workflowsJson);
-
+    return await request(baseUrl + '/workflows.json');
+    // return Promise.resolve(workflowsJson);
 }
+async function getEvalDefinitions() {
+    return await request(baseUrl + '/metrics_definitions.json');
+}
+
 
 async function request (url) {
     const response = await fetch(url);
@@ -196,5 +199,6 @@ async function request (url) {
 
 export default {
     getProjects,
-    getWorkflows
+    getWorkflows,
+    getEvalDefinitions
 };

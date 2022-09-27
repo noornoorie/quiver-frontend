@@ -7,5 +7,7 @@
   "sort_by": "Sortieren nach",
   "group_by": "Gruppieren nach",
   "documents": "Dokumente",
-  "no_content": "Diese Ansicht befindet sich im Aufbau. Bitte schauen Sie später vorbei."
+  "no_content": "Diese Ansicht befindet sich im Aufbau. Bitte schauen Sie später vorbei.",
+  "no_description": "Keine Beschreibung verfügbar.",
+  "details": "Details"
 }

@@ -1,8 +1,8 @@
 <template>
   <div class="container">
-    <div class="grid mb-3">
+    <div class="grid mb-4">
       <div class="flex align-items-center ml-auto">
-        <p class="mr-2">{{ $t('sort_by')}}:</p>
+        <p class="mr-2">{{ $t('group_by')}}:</p>
         <Dropdown
             v-model="sortBy"
             :options="sortOptions"
@@ -15,8 +15,20 @@
       <tr>
         <th class="border-gray-400"></th>
         <th class="border-gray-400"></th>
-        <th class="border-left-1 border-gray-400 pb-2" v-for="(evalName, i) in evals" :key="i">
-          <span class="font-bold">{{evalName}}</span>
+        <th class="border-left-1 border-gray-400 pb-2" v-for="(evalKey, i) in evals" :key="i">
+<!--          v-tooltip.top="defs[evalKey] ? defs[evalKey].short_descr : $t('no_description')"-->
+          <span
+              class="def-label font-bold flex align-items-center justify-content-center gap-2 cursor-pointer"
+          >
+            {{defs[evalKey] ? defs[evalKey].label : evalKey}}
+            <i class="pi pi-question-circle"></i>
+            <div class="def-tooltip">
+              <p>
+                {{ defs[evalKey] ? defs[evalKey].short_descr : $t('no_description') }}.
+                <a v-if="defs[evalKey]" :href="defs[evalKey].url">{{ $t('details')}}</a>
+              </p>
+            </div>
+          </span>
         </th>
       </tr>
       <template v-for="(key, i) in Object.keys(groupedData)" :key="i">
@@ -49,7 +61,7 @@ import { useI18n } from "vue-i18n";
 import { getEvalColor } from "@/helpers/eval-colors";
 
 const { t } = useI18n();
-const props = defineProps(['data']);
+const props = defineProps(['data', 'defs']);
 const groupedData = ref({});
 const evals = ref([]);
 const sortOptions = ref([{
@@ -119,6 +131,26 @@ const groupByDocuments = () => {
 watch(() => props.data, groupByDocuments, { immediate: true });
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+@import 'primeflex/primeflex.scss';
 
+.def-label {
+  position: relative;
+  &:hover {
+    .def-tooltip {
+      visibility: visible;
+    }
+  }
+}
+.def-tooltip {
+  visibility: hidden;
+  position: absolute;
+  top: 0;
+  padding: 10px 14px;
+  transform: translateY(-100%);
+  width: 300px;
+  z-index: 100;
+  background: #fff;
+  @include styleclass('border-gray-300 border-1 border-round shadow-2');
+}
 </style>

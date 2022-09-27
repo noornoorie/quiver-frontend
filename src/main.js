@@ -7,6 +7,7 @@ import Button from 'primevue/button';
 import Card from 'primevue/card';
 import Dropdown from 'primevue/dropdown';
 import SelectButton from 'primevue/selectbutton';
+import Tooltip from 'primevue/tooltip';
 
 import { createI18n } from "vue-i18n";
 
@@ -36,5 +37,5 @@ app.component('Button', Button);
 app.component('Card', Card);
 app.component('Dropdown', Dropdown);
 app.component('SelectButton', SelectButton);
-
+app.directive('tooltip', Tooltip);
 app.mount('#app');

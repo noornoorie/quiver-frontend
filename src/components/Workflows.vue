@@ -2,8 +2,8 @@
   <div class="container mb-3">
     <SelectButton v-model="selectedOption" :options="options" optionLabel="name"></SelectButton>
   </div>
-  <WorkflowsList v-if="selectedOption.value === 'list'" :data="data" />
-  <WorkflowsTable v-else :data="data" />
+  <WorkflowsList v-if="selectedOption.value === 'list'" :data="data" :defs="defs" />
+  <WorkflowsTable v-else :data="data" :defs="defs" />
 </template>
 
 <script setup>
@@ -17,6 +17,7 @@ import { useI18n } from "vue-i18n";
 const { t } = useI18n();
 
 const data = ref([]);
+const defs = ref({});
 const router = useRouter();
 const route = useRoute();
 
@@ -33,6 +34,7 @@ watch(selectedOption, ({ value }) => {
 
 onMounted(async () => {
   data.value = await api.getWorkflows();
+  defs.value = await api.getEvalDefinitions();
 
   selectedOption.value = options.value.map((option) => {
     return (!route.query.view || route.query.view === option.value) ? option : options.value[0];

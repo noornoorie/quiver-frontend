@@ -8,8 +8,8 @@
         <div class="grid">
           <div class="col-5 py-0 ml-auto">
             <div class="grid">
-              <div class="col py-0" v-for="(evalName, i) in evals" :key="i">
-                <span class="font-bold">{{evalName}}</span>
+              <div class="col py-0" v-for="(evalKey, i) in evals" :key="i">
+                <span class="font-bold">{{defs[evalKey] ? defs[evalKey].label : evalKey}}</span>
               </div>
             </div>
             <div class="grid">
@@ -32,7 +32,7 @@
 import { ref, onMounted, watch } from "vue";
 import { getEvalColor } from "@/helpers/eval-colors";
 
-const props = defineProps(['data']);
+const props = defineProps(['data', 'defs']);
 const list = ref([]);
 const evals = ref([]);
 
