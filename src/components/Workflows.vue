@@ -2,8 +2,10 @@
   <div class="container mb-3">
     <SelectButton v-model="selectedOption" :options="options" optionLabel="name"></SelectButton>
   </div>
-  <WorkflowsList v-if="selectedOption.value === 'list'" :data="data" :defs="defs" />
-  <WorkflowsTable v-else :data="data" :defs="defs" />
+  <div v-if="selectedOption">
+    <WorkflowsList v-if="selectedOption.value === 'list'" :data="data" :defs="defs" />
+    <WorkflowsTable v-else :data="data" :defs="defs" />
+  </div>
 </template>
 
 <script setup>
@@ -25,7 +27,7 @@ const options = ref([
   { name: t('list'), value: 'list' },
   { name: t('table'), value: 'table' }
 ]);
-const selectedOption = ref(options.value[0]);
+const selectedOption = ref(null);
 
 
 watch(selectedOption, ({ value }) => {
@@ -33,13 +35,16 @@ watch(selectedOption, ({ value }) => {
 });
 
 onMounted(async () => {
+  await router.isReady();
+
   data.value = await api.getWorkflows();
   defs.value = await api.getEvalDefinitions();
 
-  selectedOption.value = options.value.map((option) => {
-    return (!route.query.view || route.query.view === option.value) ? option : options.value[0];
-  })[0];
-  
+  const filtered = options.value.filter((option) => {
+    return route.query.view && route.query.view === option.value;
+  });
+
+  selectedOption.value = filtered.length > 0 ? filtered[0] : options.value[0];
 });
 </script>
 
