@@ -1,13 +1,17 @@
 {
-  "projects": "Projekte",
-  "processors": "Prozessoren",
-  "workflows": "Workflows",
-  "list": "Liste",
-  "table": "Tabelle",
-  "sort_by": "Sortieren nach",
-  "group_by": "Gruppieren nach",
+  "details": "Details",
   "documents": "Dokumente",
+  "group_by": "Gruppieren nach",
+  "layout": "Layout",
+  "list": "Liste",
   "no_content": "Diese Ansicht befindet sich im Aufbau. Bitte schauen Sie später vorbei.",
   "no_description": "Keine Beschreibung verfügbar.",
-  "details": "Details"
+  "number_of_pages": "Anzahl der Seiten",
+  "processors": "Prozessoren",
+  "projects": "Projekte",
+  "publication_century": "Jahrhundert",
+  "publication_year": "Erscheinungsjahr",
+  "sort_by": "Sortieren nach",
+  "table": "Tabelle",
+  "workflows": "Workflows"
 }
