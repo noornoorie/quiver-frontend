@@ -15,6 +15,7 @@ import { useRouter, useRoute } from "vue-router";
 import WorkflowsList from "@/components/workflows/WorkflowsList.vue";
 import WorkflowsTable from "@/components/workflows/WorkflowsTable.vue";
 import { useI18n } from "vue-i18n";
+import { setEvalColors } from "../helpers/eval-colors";
 
 const { t } = useI18n();
 
@@ -39,6 +40,8 @@ onMounted(async () => {
 
   data.value = await api.getWorkflows();
   defs.value = await api.getEvalDefinitions();
+
+  setEvalColors(data.value);
 
   const filtered = options.value.filter((option) => {
     return route.query.view && route.query.view === option.value;
