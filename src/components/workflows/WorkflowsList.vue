@@ -5,38 +5,54 @@
         <div class="grid align-items-center gap-2">
           <h3 class="text-xl font-bold">{{ item.label }}</h3>
           <Tag :value="item.metadata.workflow_model" class="bg-gray-300 text-gray-700 ml-3"></Tag>
-          <Tag v-for="font in item.metadata.document_metadata.fonts" :key="font" :value="font" class="bg-gray-300 text-gray-700"></Tag>
+          <template v-if="item.metadata.document_metadata">
+            <Tag v-for="font in item.metadata.document_metadata.fonts" :key="font" :value="font" class="bg-gray-300 text-gray-700"></Tag>
+          </template>
         </div>
       </template>
       <template #content>
         <div class="grid">
           <div class="col-7 grid">
-            <Accordion class="text-sm mr-3 flex-1">
-              <AccordionTab :header="item.metadata.gt_workspace.label">
-                <div class="grid">
-                  <div class="col">
-                    <p class="font-bold">{{ $t('number_of_pages') }}:</p>
-                    <p>{{ item.metadata.document_metadata.number_of_pages }}</p>
-                    <p class="mt-2 font-bold">{{ $t('publication_year') }}:</p>
-                    <p> {{ item.metadata.document_metadata.publication_year }}</p>
-                  </div>
-                  <div class="col">
-                    <p class="font-bold">{{ $t('layout') }}:</p>
-                    <p>{{ item.metadata.document_metadata.layout }}</p>
-                    <p class="mt-2 font-bold">{{ $t('publication_century') }}:</p>
-                    <p> {{ item.metadata.document_metadata.publication_century }}</p>
-                  </div>
-                </div>
+            <div class="mr-3">
+              <template v-if="item.metadata.gt_workspace">
+                <Accordion class="text-sm">
+                  <AccordionTab :header="item.metadata.gt_workspace.label">
+                    <div class="grid">
+                      <div class="col">
+                        <p class="font-bold">{{ $t('number_of_pages') }}:</p>
+                        <p>{{ item.metadata.document_metadata.number_of_pages }}</p>
+                        <p class="mt-2 font-bold">{{ $t('publication_year') }}:</p>
+                        <p> {{ item.metadata.document_metadata.publication_year }}</p>
+                      </div>
+                      <div class="col">
+                        <p class="font-bold">{{ $t('layout') }}:</p>
+                        <p>{{ item.metadata.document_metadata.layout }}</p>
+                        <p class="mt-2 font-bold">{{ $t('publication_century') }}:</p>
+                        <p> {{ item.metadata.document_metadata.publication_century }}</p>
+                      </div>
+                    </div>
 
-              </AccordionTab>
-            </Accordion>
-            <Accordion class="text-sm flex-1">
-              <AccordionTab :header="item.metadata.ocr_workflow.label">
-                <div class="flex gap-2">
-                  <div v-for="step in item.metadata.workflow_steps" :key="step"><Chip :label="step" class="text-sm" /></div>
-                </div>
-              </AccordionTab>
-            </Accordion>
+                  </AccordionTab>
+                </Accordion>
+              </template>
+              <template v-else>
+                <p class="font-bold text-gray-400 mt-3">{{$t('no_gt_workspace')}}</p>
+              </template>
+            </div>
+            <div class="flex-1">
+              <Accordion class="text-sm">
+                <AccordionTab :header="item.metadata.ocr_workflow?.label || $t('unknown_workflow')">
+                  <div class="flex gap-2" v-if="item.metadata.workflow_steps">
+                    <div v-for="step in item.metadata.workflow_steps" :key="step">
+                      <Chip :label="step" class="text-sm" />
+                    </div>
+                  </div>
+                  <template v-else>
+                    <span class="font-bold text-gray-400">{{$t('no_ocr_workflow')}}</span>
+                  </template>
+                </AccordionTab>
+              </Accordion>
+            </div>
           </div>
           <div class="col-5 py-0 ml-auto">
             <div class="grid mb-1">
@@ -45,11 +61,11 @@
               </div>
             </div>
             <div class="grid">
-              <div v-for="(evaluation, i) in item.evaluations" :key="i" class="col text-center">
+              <div v-for="({ name, value }, i) in item.evaluations" :key="i" class="col text-center">
               <span
-                  class="border-round-3xl py-1 px-3"
-                  :class="getEvalColor(evaluation.name, evaluation.value)">
-                {{ evaluation.value }}
+                  class="border-round-3xl py-1 px-3 cursor-pointer"
+                  :class="getEvalColor(name, value)" :title="value">
+                {{ name === 'cer' ? shortenCER(value) : value }}
               </span>
               </div>
             </div>
@@ -63,25 +79,58 @@
 <script setup>
 import { ref, onMounted, watch } from "vue";
 import { getEvalColor } from "@/helpers/eval-colors";
+import { useI18n } from "vue-i18n";
 
 const props = defineProps(['data', 'defs']);
 const list = ref([]);
 const evals = ref([]);
+const { t } = useI18n();
 
+const mapMetadata = ({
+  workflow_model = t('no_workflow_model'),
+  document_metadata = {
+    fonts: []
+  },
+  gt_workspace = null,
+  ocr_workflow = null,
+  workflow_steps = null
+}) => {
+
+  return {
+    workflow_model,
+    document_metadata,
+    gt_workspace,
+    ocr_workflow,
+    workflow_steps
+  };
+};
+
+const mapEvaluationResults = ({ document_wide = [] }) => {
+  return Object.keys(document_wide).map(key => ({
+    name: key,
+    value: document_wide[key]
+  }));
+};
 
 const setListData = (data) => {
-  list.value = data.map(({ label, evaluation, metadata }) => ({
+  list.value = data.map(({ label, evaluation_results = [], metadata }) => ({
     label,
-    metadata,
-    evaluations: Object.keys(evaluation.document_wide).map(key => ({
-      name: key,
-      value: evaluation.document_wide[key]
-    }))
+    metadata: mapMetadata(metadata),
+    evaluations: mapEvaluationResults(evaluation_results[0])
   }));
 };
 
 const setEvals = (data) => {
-  evals.value = data && data.length > 0 ? Object.keys(data[0].evaluation.document_wide) : [];
+  evals.value =
+      data &&
+      data.length > 0 &&
+      data[0].evaluation_results
+          ? Object.keys(data[0].evaluation_results[0].document_wide) || []
+          : [];
+};
+
+const shortenCER = (value) => {
+  return Math.round(value * 1000) / 1000;
 };
 
  onMounted(() => {

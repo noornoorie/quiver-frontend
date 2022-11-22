@@ -11,6 +11,7 @@ import Accordion from 'primevue/accordion';
 import AccordionTab from 'primevue/accordiontab';
 import Chip from 'primevue/chip';
 import Tag from 'primevue/tag';
+import Panel from 'primevue/panel';
 
 import { createI18n } from "vue-i18n";
 
@@ -43,6 +44,7 @@ app.component('SelectButton', SelectButton);
 app.component('Chip', Chip);
 app.component('Accordion', Accordion);
 app.component('AccordionTab', AccordionTab);
+app.component('Panel', Panel);
 app.component('Tag', Tag);
 
 app.mount('#app');

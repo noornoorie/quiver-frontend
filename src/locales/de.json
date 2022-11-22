@@ -13,5 +13,8 @@
   "publication_year": "Erscheinungsjahr",
   "sort_by": "Sortieren nach",
   "table": "Tabelle",
-  "workflows": "Workflows"
+  "workflows": "Workflows",
+  "no_gt_workspace": "Keine Informationen zum Ground Truth Workspace vorhanden",
+  "no_ocr_workflow": "Keine Informationen zum OCR Workflow vorhanden",
+  "unknown_workflow": "Unbekannter Workflow"
 }
