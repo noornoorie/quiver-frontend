@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <div class="grid mb-4">
+    <div class="grid mb-4" v-if="evals.length > 0">
       <div class="flex align-items-center ml-auto">
         <p class="mr-2">{{ $t('group_by')}}:</p>
         <Dropdown
@@ -11,7 +11,7 @@
         />
       </div>
     </div>
-    <table class="w-full" style="border-spacing: 0">
+    <table v-if="evals.length > 0" class="w-full" style="border-spacing: 0">
       <tr>
         <th class="border-gray-400"></th>
         <th class="border-gray-400"></th>
@@ -52,6 +52,7 @@
         </tr>
       </template>
     </table>
+    <div>{{ $t('no_table_data') }}</div>
   </div>
 </template>
 
@@ -79,7 +80,7 @@ const onChange = ({ value }) => {
 };
 
 const groupByWorkflows = () => {
-  groupedData.value = props.data.reduce((acc, cur) => {
+  groupedData.value = props.data.filter(item => !!(item.metadata.ocr_workflow)).reduce((acc, cur) => {
     const ocrWorkflowId = cur.metadata.ocr_workflow['@id'];
     const label = cur.metadata.ocr_workflow.label;
 
@@ -105,7 +106,7 @@ const groupByWorkflows = () => {
 };
 
 const groupByDocuments = () => {
-  groupedData.value = props.data.reduce((acc, cur) => {
+  groupedData.value = props.data.filter(item => !!(item.metadata.gt_workspace)).reduce((acc, cur) => {
     const gtWorkspaceId = cur.metadata.gt_workspace['@id'];
     const label = cur.metadata.gt_workspace.label;
     evals.value = Object.keys(cur.evaluation.document_wide);

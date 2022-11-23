@@ -18,5 +18,6 @@
   "cer_min_asc": "CER Min ascending",
   "cer_min_desc": "CER Min descending",
   "cer_max_asc": "CER Max ascending",
-  "cer_max_desc": "CER Max descending"
+  "cer_max_desc": "CER Max descending",
+  "no_table_data": "No table data available"
 }
