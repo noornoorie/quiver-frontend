@@ -10,5 +10,13 @@
   "no_content": "This view is not created yet. Please try again later. ",
   "no_gt_workspace": "No information about Ground Truth Workspace available",
   "no_ocr_workflow": "No information about OCR Workflow available",
-  "unknown_workflow": "Unknown workflow"
+  "unknown_workflow": "Unknown workflow",
+  "wall_time_asc": "Wall Time ascending",
+  "wall_time_desc": "Wall Time descending",
+  "cer_asc": "CER ascending",
+  "cer_desc": "CER descending",
+  "cer_min_asc": "CER Min ascending",
+  "cer_min_desc": "CER Min descending",
+  "cer_max_asc": "CER Max ascending",
+  "cer_max_desc": "CER Max descending"
 }

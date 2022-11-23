@@ -16,5 +16,14 @@
   "workflows": "Workflows",
   "no_gt_workspace": "Keine Informationen zum Ground Truth Workspace vorhanden",
   "no_ocr_workflow": "Keine Informationen zum OCR Workflow vorhanden",
-  "unknown_workflow": "Unbekannter Workflow"
+  "unknown_workflow": "Unbekannter Workflow",
+  "wall_time_asc": "Wall Time aufsteigend",
+  "wall_time_desc": "Wall Time absteigend",
+  "cer_asc": "CER aufsteigend",
+  "cer_desc": "CER absteigend",
+  "cer_min_asc": "CER Min aufsteigend",
+  "cer_min_desc": "CER Min absteigend",
+  "cer_max_asc": "CER Max aufsteigend",
+  "cer_max_desc": "CER Max absteigend",
+
 }

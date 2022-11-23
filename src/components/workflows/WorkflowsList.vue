@@ -1,12 +1,28 @@
 <template>
-  <div>
+  <div class="container">
+    <div class="grid mb-4">
+      <div class="flex align-items-center ml-auto">
+        <p class="mr-2">{{ $t('sort_by')}}:</p>
+        <Dropdown
+            v-model="sortBy"
+            :options="sortOptions"
+            option-label="label"
+            @change="onChange($event.value)"
+        />
+      </div>
+    </div>
     <Card v-for="(item, i) in list" :key="i" class="mb-3 shadow-3 border-gray-200 p-4">
       <template #header>
         <div class="grid align-items-center gap-2">
           <h3 class="text-xl font-bold">{{ item.label }}</h3>
           <Tag :value="item.metadata.workflow_model" class="bg-gray-300 text-gray-700 ml-3"></Tag>
           <template v-if="item.metadata.document_metadata">
-            <Tag v-for="font in item.metadata.document_metadata.fonts" :key="font" :value="font" class="bg-gray-300 text-gray-700"></Tag>
+            <Tag
+              v-for="font in item.metadata.document_metadata.fonts"
+              :key="font"
+              :value="font"
+              class="bg-gray-300 text-gray-700">
+            </Tag>
           </template>
         </div>
       </template>
@@ -65,7 +81,9 @@
               <span
                   class="border-round-3xl py-1 px-3 cursor-pointer"
                   :class="getEvalColor(name, value)" :title="value">
-                {{ name === 'cer' ? shortenCER(value) : value }}
+                <template v-if=" name === 'cer'">{{ shortenCER(value) }}</template>
+                <template v-else-if="name === 'cer_min_max'">{{ shortenCER(value[0]) + '/' + shortenCER(value[1])}}</template>
+                <template v-else>{{ value }}</template>
               </span>
               </div>
             </div>
@@ -85,6 +103,102 @@ const props = defineProps(['data', 'defs']);
 const list = ref([]);
 const evals = ref([]);
 const { t } = useI18n();
+
+const sortOptions = ref([
+  {
+    value: 'none',
+    label: t('-')
+  },
+  {
+    value: 'wall_time_asc',
+    label: t('wall_time_asc')
+  },
+  {
+    value: 'wall_time_desc',
+    label: t('wall_time_desc')
+  },
+  {
+    value: 'cer_asc',
+    label: t('cer_asc')
+  },
+  {
+    value: 'cer_desc',
+    label: t('cer_desc')
+  },
+  {
+    value: 'cer_min_asc',
+    label: t('cer_min_asc')
+  },
+  {
+    value: 'cer_min_desc',
+    label: t('cer_min_desc')
+  },
+  {
+    value: 'cer_max_asc',
+    label: t('cer_max_asc')
+  },
+  {
+    value: 'cer_max_desc',
+    label: t('cer_max_desc')
+  }
+]);
+
+const sortBy = ref(sortOptions.value[0]);
+
+const onChange = ({ value }) => {
+  if (value === 'wall_time_asc') sortByWallTime('asc');
+  else if (value === 'wall_time_desc') sortByWallTime('desc');
+  else if (value === 'cer_asc') sortByCER('asc');
+  else if (value === 'cer_desc') sortByCER('desc');
+  else if (value === 'cer_min_asc') sortByCERMin('asc');
+  else if (value === 'cer_min_desc') sortByCERMin('desc');
+  else if (value === 'cer_max_asc') sortByCERMax('asc');
+  else if (value === 'cer_max_desc') sortByCERMax('desc');
+};
+
+const sortByWallTime = (order = 'asc') => {
+  list.value.sort((a, b) => {
+    const wallTimeA = a.evaluations.find(e => e.name === 'wall_time')?.value || 0;
+    const wallTimeB = b.evaluations.find(e => e.name === 'wall_time')?.value || 0;
+
+    if (order === 'asc') return wallTimeA > wallTimeB ? 1 : -1;
+    if (order === 'desc') return wallTimeA < wallTimeB ? 1 : -1;
+    return 0;
+  });
+};
+
+const sortByCER = (order = 'asc') => {
+  list.value.sort((a, b) => {
+    const cerA = a.evaluations.find(e => e.name === 'cer')?.value || 0;
+    const cerB = b.evaluations.find(e => e.name === 'cer')?.value || 0;
+
+    if (order === 'asc') return cerA > cerB ? 1 : -1;
+    if (order === 'desc') return cerA < cerB ? 1 : -1;
+    return 0;
+  });
+};
+
+const sortByCERMin = (order = 'asc') => {
+  list.value.sort((a, b) => {
+    const cerMinA = a.evaluations.find(e => e.name === 'cer_min_max')?.value[0] || 0;
+    const cerMinB = b.evaluations.find(e => e.name === 'cer_min_max')?.value[0] || 0;
+
+    if (order === 'asc') return cerMinA > cerMinB ? 1 : -1;
+    if (order === 'desc') return cerMinA < cerMinB ? 1 : -1;
+    return 0;
+  });
+};
+
+const sortByCERMax = (order = 'asc') => {
+  list.value.sort((a, b) => {
+    const cerMaxA = a.evaluations.find(e => e.name === 'cer_min_max')?.value[1] || 0;
+    const cerMaxB = b.evaluations.find(e => e.name === 'cer_min_max')?.value[1] || 0;
+
+    if (order === 'asc') return cerMaxA > cerMaxB ? 1 : -1;
+    if (order === 'desc') return cerMaxA < cerMaxB ? 1 : -1;
+    return 0;
+  });
+};
 
 const mapMetadata = ({
   workflow_model = t('no_workflow_model'),

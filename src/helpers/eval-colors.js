@@ -66,8 +66,6 @@ const setEvalColors = (data) => {
     evalColors.value.wall_time["eval-positive"] = minWallTime + stepWallTime;
     evalColors.value.wall_time["eval-medium"] = minWallTime + 2 * stepWallTime;
     evalColors.value.wall_time["eval-negative"] = minWallTime + 3 * stepWallTime;
-
-    console.log(evalColors.value);
 };
 
 export {
