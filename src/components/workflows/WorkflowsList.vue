@@ -230,7 +230,7 @@ const setListData = (data) => {
   list.value = data.map(({ label, evaluation_results = [], metadata }) => ({
     label,
     metadata: mapMetadata(metadata),
-    evaluations: mapEvaluationResults(evaluation_results[0])
+    evaluations: mapEvaluationResults(evaluation_results)
   }));
 };
 
@@ -239,7 +239,7 @@ const setEvals = (data) => {
       data &&
       data.length > 0 &&
       data[0].evaluation_results
-          ? Object.keys(data[0].evaluation_results[0].document_wide) || []
+          ? Object.keys(data[0].evaluation_results.document_wide) || []
           : [];
 };
 

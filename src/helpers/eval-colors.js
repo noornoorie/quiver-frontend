@@ -37,7 +37,7 @@ const setEvalColors = (data) => {
     data
       .filter(({ evaluation_results }) => !!(evaluation_results))
       .forEach(({ evaluation_results }) => {
-        const { document_wide: evals } = evaluation_results[0];
+        const { document_wide: evals } = evaluation_results;
 
         if (!evals) return;
 
