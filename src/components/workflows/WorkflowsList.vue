@@ -18,7 +18,7 @@
           <Tag :value="item.metadata.workflow_model" class="bg-gray-300 text-gray-700 ml-3"></Tag>
           <template v-if="item.metadata.document_metadata">
             <Tag
-              v-for="font in item.metadata.document_metadata.fonts"
+              v-for="font in item.metadata.document_metadata.data_properties.fonts"
               :key="font"
               :value="font"
               class="bg-gray-300 text-gray-700">
@@ -36,18 +36,15 @@
                     <div class="grid">
                       <div class="col">
                         <p class="font-bold">{{ $t('number_of_pages') }}:</p>
-                        <p>{{ item.metadata.document_metadata.number_of_pages }}</p>
+                        <p>{{ item.metadata.document_metadata.data_properties.number_of_pages }}</p>
                         <p class="mt-2 font-bold">{{ $t('publication_year') }}:</p>
-                        <p> {{ item.metadata.document_metadata.publication_year }}</p>
+                        <p> {{ item.metadata.document_metadata.data_properties.publication_year }}</p>
                       </div>
                       <div class="col">
                         <p class="font-bold">{{ $t('layout') }}:</p>
-                        <p>{{ item.metadata.document_metadata.layout }}</p>
-                        <p class="mt-2 font-bold">{{ $t('publication_century') }}:</p>
-                        <p> {{ item.metadata.document_metadata.publication_century }}</p>
+                        <p>{{ item.metadata.document_metadata.data_properties.layout }}</p>
                       </div>
                     </div>
-
                   </AccordionTab>
                 </Accordion>
               </template>
