@@ -38,15 +38,16 @@
           </td>
           <td class="vertical-align-top pt-2">{{ subject.label }}</td>
           <td
-            v-for="(evaluation, k) in subject.evaluations"
+            v-for="({ name, value }, k) in subject.evaluations"
             :key="k"
             class="text-center border-left-1 border-gray-400 pt-2"
             :class="(j === groupedData[key].subjects.length - 1) ? 'pb-5' : ''"
           >
             <span
-                class="border-round-3xl py-1 px-3"
-                :class="getEvalColor(evaluation.name, evaluation.value)">
-              {{ evaluation.value }}
+              class="border-round-3xl py-1 px-3" :class="getEvalColor(name, value)">
+                <template v-if=" name === 'cer'">{{ shortenCER(value) }}</template>
+                <template v-else-if="name === 'cer_min_max'">{{ shortenCER(value[0]) + '/' + shortenCER(value[1])}}</template>
+                <template v-else>{{ value }}</template>
             </span>
           </td>
         </tr>
@@ -60,6 +61,7 @@
 import { watch, ref } from "vue";
 import { useI18n } from "vue-i18n";
 import { getEvalColor } from "@/helpers/eval-colors";
+import { shortenCER } from "@/helpers/shorten-cer";
 
 const { t } = useI18n();
 const props = defineProps(['data', 'defs']);
@@ -84,13 +86,13 @@ const groupByWorkflows = () => {
     const ocrWorkflowId = cur.metadata.ocr_workflow['@id'];
     const label = cur.metadata.ocr_workflow.label;
 
-    evals.value = Object.keys(cur.evaluation.document_wide);
+    evals.value = Object.keys(cur.evaluation_results.document_wide);
 
     const subject = {
       label: cur.metadata.gt_workspace.label,
-      evaluations: Object.keys(cur.evaluation.document_wide).map(key => ({
+      evaluations: Object.keys(cur.evaluation_results.document_wide).map(key => ({
         name: key,
-        value: cur.evaluation.document_wide[key]
+        value: cur.evaluation_results.document_wide[key]
       }))
     };
     if (!acc[ocrWorkflowId]) {
@@ -100,6 +102,10 @@ const groupByWorkflows = () => {
       };
     } else {
       acc[ocrWorkflowId].subjects.push(subject);
+      acc[ocrWorkflowId].subjects.sort((a, b) => {
+        if (a.label > b.label) return 1;
+        else return -1;
+      });
     }
     return acc;
   }, {});
@@ -109,12 +115,12 @@ const groupByDocuments = () => {
   groupedData.value = props.data.filter(item => !!(item.metadata.gt_workspace)).reduce((acc, cur) => {
     const gtWorkspaceId = cur.metadata.gt_workspace['@id'];
     const label = cur.metadata.gt_workspace.label;
-    evals.value = Object.keys(cur.evaluation.document_wide);
+    evals.value = Object.keys(cur.evaluation_results.document_wide);
     const subject = {
       label: cur.metadata.ocr_workflow.label,
-      evaluations: Object.keys(cur.evaluation.document_wide).map(key => ({
+      evaluations: Object.keys(cur.evaluation_results.document_wide).map(key => ({
         name: key,
-        value: cur.evaluation.document_wide[key]
+        value: cur.evaluation_results.document_wide[key]
       }))
     };
     if (!acc[gtWorkspaceId]) {
@@ -124,6 +130,10 @@ const groupByDocuments = () => {
       };
     } else {
       acc[gtWorkspaceId].subjects.push(subject);
+      acc[gtWorkspaceId].subjects.sort((a, b) => {
+        if (a.label > b.label) return 1;
+        else return -1;
+      });
     }
     return acc;
   }, {});
