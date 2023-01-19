@@ -8,19 +8,20 @@
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore"
   },
   "dependencies": {
-    "primeflex": "^3.2.1",
-    "primeicons": "^5.0.0",
-    "primevue": "^3.17.0",
     "vue": "^3.2.38",
     "vue-i18n": "^9.2.2",
     "vue-router": "^4.1.5"
   },
   "devDependencies": {
-    "@intlify/vite-plugin-vue-i18n": "^6.0.1",
-    "@vitejs/plugin-vue": "^3.0.3",
+    "@inkline/inkline": "^3.2.0",
+    "@intlify/unplugin-vue-i18n": "^0.8.1",
+    "@vitejs/plugin-vue": "^4.0.0",
     "eslint": "8.22.0",
     "eslint-plugin-vue": "^9.3.0",
+    "feather-icons": "^4.29.0",
+    "postcss": "^8.4.21",
+    "postcss-preset-env": "^7.8.3",
     "sass": "^1.54.9",
-    "vite": "^3.0.9"
+    "vite": "^4.0.4"
   }
 }

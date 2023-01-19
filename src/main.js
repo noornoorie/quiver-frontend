@@ -1,26 +1,12 @@
 import { createApp } from 'vue';
 import App from './App.vue';
 import router from './router';
-import PrimeVue from 'primevue/config';
-import TabMenu from 'primevue/tabmenu';
-import Button from 'primevue/button';
-import Card from 'primevue/card';
-import Dropdown from 'primevue/dropdown';
-import SelectButton from 'primevue/selectbutton';
-import Accordion from 'primevue/accordion';
-import AccordionTab from 'primevue/accordiontab';
-import Chip from 'primevue/chip';
-import Tag from 'primevue/tag';
-import Panel from 'primevue/panel';
 
 import { createI18n } from "vue-i18n";
 
-
-import 'primevue/resources/themes/lara-light-indigo/theme.css';
-import 'primevue/resources/primevue.min.css';
-import 'primeicons/primeicons.css';
-import './assets/main.scss';
-
+import { Inkline, components } from '@inkline/inkline';
+import '@inkline/inkline/inkline.scss';
+import './assets/app.scss';
 
 import en from './locales/en.json';
 import de from './locales/de.json';
@@ -32,19 +18,12 @@ const i18n = createI18n({
 
 const app = createApp(App);
 
-app.use(PrimeVue);
+app.use(Inkline, {
+  components
+});
+
 app.use(router);
 app.use(i18n);
 
-app.component('TabMenu', TabMenu);
-app.component('Button', Button);
-app.component('Card', Card);
-app.component('Dropdown', Dropdown);
-app.component('SelectButton', SelectButton);
-app.component('Chip', Chip);
-app.component('Accordion', Accordion);
-app.component('AccordionTab', AccordionTab);
-app.component('Panel', Panel);
-app.component('Tag', Tag);
 
 app.mount('#app');

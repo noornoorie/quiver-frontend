@@ -1,93 +1,101 @@
 <template>
-  <div class="container">
-    <div class="grid mb-4">
-      <div class="flex align-items-center ml-auto">
-        <p class="mr-2">{{ $t('sort_by')}}:</p>
-        <Dropdown
+  <div>
+    <div class="_display:flex _margin-bottom:4">
+      <div class="_display:flex _align-items:center _margin-left:auto">
+        <p class="_margin-right:2">{{ $t('sort_by')}}:</p>
+        <i-select
             v-model="sortBy"
             :options="sortOptions"
-            option-label="label"
-            @change="onChange($event.value)"
+            label="label"
+            idField="value"
+            placeholder="Choose something.."
+            @update:modelValue="onChange($event.value)"
         />
       </div>
     </div>
-    <Card v-for="(item, i) in list" :key="i" class="mb-3 shadow-3 border-gray-200 p-4">
+    <i-card v-for="(item, i) in list" :key="i" class="_margin-bottom:5 shadow-3 border-gray-200">
       <template #header>
-        <div class="grid align-items-center gap-2">
-          <h3 class="text-xl font-bold">{{ item.label }}</h3>
-          <Tag :value="item.metadata.workflow_model" class="bg-gray-300 text-gray-700 ml-3"></Tag>
+        <div class="_display:flex _align-items:center">
+          <h3 class="_font-size:lg _font-weight:bold">{{ item.label }}</h3>
+          <i-badge class="bg-gray-300 text-gray-700 _margin-left:2">Model: {{ item.metadata.workflow_model }}</i-badge>
           <template v-if="item.metadata.document_metadata">
-            <Tag
+            <i-badge
               v-for="font in item.metadata.document_metadata.data_properties.fonts"
               :key="font"
-              :value="font"
-              class="bg-gray-300 text-gray-700">
-            </Tag>
+              class="_margin-left:1 bg-gray-300 text-gray-700">
+              {{font}}
+            </i-badge>
           </template>
         </div>
       </template>
-      <template #content>
-        <div class="grid">
-          <div class="col-7 grid">
-            <div class="mr-3">
-              <template v-if="item.metadata.gt_workspace">
-                <Accordion class="text-sm">
-                  <AccordionTab :header="item.metadata.gt_workspace.label">
-                    <div class="grid">
-                      <div class="col">
-                        <p class="font-bold">{{ $t('number_of_pages') }}:</p>
-                        <p>{{ item.metadata.document_metadata.data_properties.number_of_pages }}</p>
-                        <p class="mt-2 font-bold">{{ $t('publication_year') }}:</p>
-                        <p> {{ item.metadata.document_metadata.data_properties.publication_year }}</p>
-                      </div>
-                      <div class="col">
-                        <p class="font-bold">{{ $t('layout') }}:</p>
-                        <p>{{ item.metadata.document_metadata.data_properties.layout }}</p>
-                      </div>
+      <template #default>
+        <i-row>
+          <i-column xs="7">
+            <i-row class="_margin-top:2">
+              <i-column>
+                <template v-if="item.metadata.gt_workspace">
+                  <i-collapsible class="_font-size:sm">
+                    <i-collapsible-item :title="item.metadata.gt_workspace.label">
+                      <i-row>
+                        <i-column>
+                          <p class="_font-weight:bold">{{ $t('number_of_pages') }}:</p>
+                          <p>{{ item.metadata.document_metadata.data_properties.number_of_pages }}</p>
+                          <p class="mt-2 _font-weight:bold">{{ $t('publication_year') }}:</p>
+                          <p> {{ item.metadata.document_metadata.data_properties.publication_year }}</p>
+                        </i-column>
+                        <i-column>
+                          <p class="_font-weight:bold">{{ $t('layout') }}:</p>
+                          <p>{{ item.metadata.document_metadata.data_properties.layout }}</p>
+                        </i-column>
+                      </i-row>
+                    </i-collapsible-item>
+                  </i-collapsible>
+                </template>
+                <template v-else>
+                  <p class="_font-weight:bold text-gray-400 mt-3">{{$t('no_gt_workspace')}}</p>
+                </template>
+              </i-column>
+              <i-column class="_display:flex-1">
+                <i-collapsible class="_font-size:sm">
+                  <i-collapsible-item :title="item.metadata.ocr_workflow?.label || $t('unknown_workflow')">
+                    <div class="_display:flex _flex-direction:column" v-if="item.metadata.workflow_steps">
+                      <span class="_margin-bottom:1">{{ $t('workflow_steps')}}:</span>
+                      <span v-for="(step, i) in item.metadata.workflow_steps" :key="step">
+                        <span>{{ i + 1 }}. </span>
+                        <i-badge size="lg" class="_font-size:sm _margin-bottom:1/2">{{ step }}</i-badge>
+<!--                        <span class="arrow-icon _margin-x:1/2" v-html="feather.icons['arrow-right'].toSvg()"></span>-->
+                      </span>
                     </div>
-                  </AccordionTab>
-                </Accordion>
-              </template>
-              <template v-else>
-                <p class="font-bold text-gray-400 mt-3">{{$t('no_gt_workspace')}}</p>
-              </template>
-            </div>
-            <div class="flex-1">
-              <Accordion class="text-sm">
-                <AccordionTab :header="item.metadata.ocr_workflow?.label || $t('unknown_workflow')">
-                  <div class="flex gap-2" v-if="item.metadata.workflow_steps">
-                    <div v-for="step in item.metadata.workflow_steps" :key="step">
-                      <Chip :label="step" class="text-sm" />
-                    </div>
-                  </div>
-                  <template v-else>
-                    <span class="font-bold text-gray-400">{{$t('no_ocr_workflow')}}</span>
-                  </template>
-                </AccordionTab>
-              </Accordion>
-            </div>
-          </div>
-          <div class="col-5 py-0 ml-auto">
-            <div class="grid mb-1">
-              <div class="col py-0 text-center" v-for="(evalKey, i) in evals" :key="i">
-                <span class="font-bold">{{defs[evalKey] ? defs[evalKey].label : evalKey}}</span>
-              </div>
-            </div>
-            <div class="grid">
-              <div v-for="({ name, value }, i) in item.evaluations" :key="i" class="col text-center">
-              <span
-                  class="border-round-3xl py-1 px-3 cursor-pointer"
+                    <template v-else>
+                      <span class="_font-weight:bold">{{$t('no_ocr_workflow')}}</span>
+                    </template>
+                  </i-collapsible-item>
+                </i-collapsible>
+              </i-column>
+            </i-row>
+          </i-column>
+          <i-column xs="5" class="_margin-left:auto">
+            <i-row>
+              <i-column class="_display:flex _justify-content:center" v-for="(evalKey, i) in evals" :key="i">
+                <span class="_font-weight:bold _font-size:xs">{{defs[evalKey] ? defs[evalKey].label : evalKey}}</span>
+              </i-column>
+            </i-row>
+            <i-row>
+              <i-column v-for="({ name, value }, i) in item.evaluations" :key="i" class="_text-align:center">
+              <i-badge
+                  size="lg"
+                  class="metric _cursor:pointer _padding-x:1"
                   :class="getEvalColor(name, value)" :title="value">
                 <template v-if=" name === 'cer'">{{ shortenCER(value) }}</template>
                 <template v-else-if="name === 'cer_min_max'">{{ shortenCER(value[0]) + '/' + shortenCER(value[1])}}</template>
                 <template v-else>{{ value }}</template>
-              </span>
-              </div>
-            </div>
-          </div>
-        </div>
+              </i-badge>
+              </i-column>
+            </i-row>
+          </i-column>
+        </i-row>
       </template>
-    </Card>
+    </i-card>
   </div>
 </template>
 
@@ -142,7 +150,7 @@ const sortOptions = ref([
 
 const sortBy = ref(sortOptions.value[0]);
 
-const onChange = ({ value }) => {
+const onChange = (value) => {
   if (value === 'wall_time_asc') sortByWallTime('asc');
   else if (value === 'wall_time_desc') sortByWallTime('desc');
   else if (value === 'cer_asc') sortByCER('asc');
@@ -258,14 +266,27 @@ watch(() => props.data, () => {
 </script>
 
 <style scoped lang="scss">
-@import 'primeflex/primeflex.scss';
 
-.p-card {
-  :deep(.p-card-content) {
-    padding: 0;
-  }
-  :deep(.p-card-body) {
-    @include styleclass('p-0 pt-5')
+.metric {
+  --border-radius: 8px;
+}
+
+.card {
+  ----header--padding-left: 1rem;
+  ----header--padding-right: 1rem;
+  ----body--padding-top: 1rem;
+  ----body--padding-bottom: 1rem;
+  ----body--padding-left: 1rem;
+  ----body--padding-right: 1rem;
+}
+
+.arrow-icon {
+  width: 16px;
+  height: 16px;
+
+  :deep(svg) {
+    width: 100%;
+    height: 100%;
   }
 }
 </style>

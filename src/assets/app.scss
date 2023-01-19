@@ -1,0 +1,73 @@
+@import "./base.scss";
+
+@import '@inkline/inkline/css/variables';
+@import '@inkline/inkline/css/mixins';
+
+:root {
+  --color--primary--h: 195deg;
+  --color--primary--s: 77%;
+  --color--primary--l: 39%;
+  --contrast-color-for-light-background: var(--color--gray-75);
+  --contrast-color-for-dark-background: var(--color--gray-10);
+  --body--color: var(--color--gray-75);
+}
+
+h3 {
+  margin: 0;
+}
+
+.grid {
+  margin: 0;
+}
+
+.eval-negative {
+  background-color: var(--color--red-20);
+
+  .-dark & {
+    background-color: hsl(var(--color--red-70-h), 40%, var(--color--red-60-l));
+  }
+
+}
+
+.eval-medium {
+  background-color: var(--color--yellow-20);
+
+  .-dark & {
+    background-color: hsl(var(--color--yellow-70-h), 60%, var(--color--yellow-70-l));
+  }
+}
+
+.eval-positive {
+  background-color: var(--color--green-20);
+
+  .-dark & {
+    background-color: hsl(var(--color--green-70-h), 50%, var(--color--green-60-l));
+
+  }
+}
+
+.p-tooltip-text {
+  white-space: nowrap;
+}
+
+.badge {
+  ----border-width: 0;
+  ----font-weight: var(--font-weight--normal);
+  &.-lg {
+    ----font-size: var(--font-size--sm);
+    ----padding-top: 0.3rem;
+    ----padding-bottom: 0.3rem;
+    ----padding-left: 0.5rem;
+    ----padding-right: 0.5rem;
+  }
+}
+
+.button {
+  &.-lg {
+    font-size: var(--font-size--md);
+    ----padding-top: 0.5rem;
+    ----padding-bottom: 0.5rem;
+    ----padding-left: 1rem;
+    ----padding-right: 1rem;
+  }
+}
