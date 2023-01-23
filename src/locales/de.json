@@ -16,6 +16,7 @@
   "workflows": "Workflows",
   "no_gt_workspace": "Keine Informationen zum Ground Truth Workspace vorhanden",
   "no_ocr_workflow": "Keine Informationen zum OCR Workflow vorhanden",
+  "no_document_metadata": "Keine Informationen zum Dokument vorhanden",
   "unknown_workflow": "Unbekannter Workflow",
   "wall_time_asc": "Wall Time aufsteigend",
   "wall_time_desc": "Wall Time absteigend",
@@ -26,5 +27,6 @@
   "cer_max_asc": "CER Max aufsteigend",
   "cer_max_desc": "CER Max absteigend",
   "no_table_data": "Keine Tabellendaten verfügbar",
-  "workflow_steps": "Workflowschritte"
+  "workflow_steps": "Workflowschritte",
+  "external_repo_url": "Externer Link zum Repository"
 }

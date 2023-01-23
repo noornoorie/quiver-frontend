@@ -36,7 +36,7 @@
                 <template v-if="item.metadata.gt_workspace">
                   <i-collapsible class="_font-size:sm">
                     <i-collapsible-item :title="item.metadata.gt_workspace.label">
-                      <i-row>
+                      <i-row v-if="item.metadata.document_metadata.data_properties">
                         <i-column>
                           <p class="_font-weight:bold">{{ $t('number_of_pages') }}:</p>
                           <p>{{ item.metadata.document_metadata.data_properties.number_of_pages }}</p>
@@ -48,6 +48,7 @@
                           <p>{{ item.metadata.document_metadata.data_properties.layout }}</p>
                         </i-column>
                       </i-row>
+                      <i-row v-else><i-column>{{ $t('no_document_metadata')}}</i-column></i-row>
                     </i-collapsible-item>
                   </i-collapsible>
                 </template>
@@ -60,10 +61,15 @@
                   <i-collapsible-item :title="item.metadata.ocr_workflow?.label || $t('unknown_workflow')">
                     <div class="_display:flex _flex-direction:column" v-if="item.metadata.workflow_steps">
                       <span class="_margin-bottom:1">{{ $t('workflow_steps')}}:</span>
-                      <span v-for="(step, i) in item.metadata.workflow_steps" :key="step">
+                      <span v-for="({id, url}, i) in item.metadata.workflow_steps" :key="id">
                         <span>{{ i + 1 }}. </span>
-                        <i-badge size="lg" class="_font-size:sm _margin-bottom:1/2">{{ step }}</i-badge>
-<!--                        <span class="arrow-icon _margin-x:1/2" v-html="feather.icons['arrow-right'].toSvg()"></span>-->
+                        <i-badge size="lg" class="_font-size:sm _margin-bottom:1/2">
+                          <a v-if="url" :href="url" target="_blank" :title="$t('external_repo_url')" class="_display:flex _align-items:flex-end">
+                            {{ id }}
+                            <i class="repo-icon _margin-left:1/3" v-html="getIcon('external-link')"></i>
+                          </a>
+                          <template v-else>{{ id }}</template>
+                        </i-badge>
                       </span>
                     </div>
                     <template v-else>
@@ -103,6 +109,8 @@
 import { ref, onMounted, watch } from "vue";
 import { getEvalColor } from "@/helpers/eval-colors";
 import { useI18n } from "vue-i18n";
+import { getIcon } from "@/helpers/icon";
+import { store } from "@/helpers/store";
 
 const props = defineProps(['data', 'defs']);
 const list = ref([]);
@@ -214,7 +222,7 @@ const mapMetadata = ({
   ocr_workflow = null,
   workflow_steps = null
 }) => {
-
+  workflow_steps = workflow_steps.map(step => ({ id: step, url: getRepoUrl(step) }));
   return {
     workflow_model,
     document_metadata,
@@ -237,6 +245,14 @@ const setListData = (data) => {
     metadata: mapMetadata(metadata),
     evaluations: mapEvaluationResults(evaluation_results)
   }));
+};
+
+const getRepoUrl = (needleId) => {
+  const repo = store.repos.find(({ ocrd_tool }) => {
+    return ocrd_tool && ocrd_tool.tools[needleId];
+  });
+  if (!repo) return null;
+  return repo.url;
 };
 
 const setEvals = (data) => {
@@ -280,7 +296,7 @@ watch(() => props.data, () => {
   ----body--padding-right: 1rem;
 }
 
-.arrow-icon {
+.arrow-icon, .repo-icon {
   width: 16px;
   height: 16px;
 

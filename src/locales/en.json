@@ -10,6 +10,7 @@
   "no_content": "This view is not created yet. Please try again later. ",
   "no_gt_workspace": "No information about Ground Truth Workspace available",
   "no_ocr_workflow": "No information about OCR Workflow available",
+  "no_document_metadata": "No information about the document available",
   "unknown_workflow": "Unknown workflow",
   "wall_time_asc": "Wall Time ascending",
   "wall_time_desc": "Wall Time descending",
@@ -20,5 +21,6 @@
   "cer_max_asc": "CER Max ascending",
   "cer_max_desc": "CER Max descending",
   "no_table_data": "No table data available",
-  "workflow_steps": "Workflow steps"
+  "workflow_steps": "Workflow steps",
+  "external_repo_url": "External link to the repository"
 }

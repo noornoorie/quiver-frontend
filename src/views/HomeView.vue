@@ -12,7 +12,7 @@
         <a
           class="_margin-left:auto _display:flex _align-items:center _cursor:pointer _color:gray-50"
           @click="setColorMode"
-          v-html="colorMode === 'dark' ? feather.icons.sun.toSvg() : feather.icons.moon.toSvg()"
+          v-html="colorMode === 'dark' ? getIcon('sun') : getIcon('moon')"
         >
         </a>
       </div>
@@ -27,7 +27,7 @@ import { onMounted, ref, watch, inject } from "vue";
 import { useRouter } from "vue-router";
 import { useI18n } from "vue-i18n";
 
-import feather from 'feather-icons';
+import { getIcon } from '@/helpers/icon';
 
 const router = useRouter();
 const { t } = useI18n();

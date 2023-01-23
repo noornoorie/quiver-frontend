@@ -19,7 +19,8 @@
   import WorkflowsList from "@/components/workflows/WorkflowsList.vue";
   import WorkflowsTable from "@/components/workflows/WorkflowsTable.vue";
   import { useI18n } from "vue-i18n";
-  import { setEvalColors } from "../helpers/eval-colors";
+  import { setEvalColors } from "@/helpers/eval-colors";
+  import { store } from "@/helpers/store";
 
   const { t } = useI18n();
 
@@ -49,6 +50,8 @@
 
   onMounted(async () => {
     await router.isReady();
+
+    store.setRepos(await api.getProjects());
 
     data.value = await api.getWorkflows();
     defs.value = await api.getEvalDefinitions();
