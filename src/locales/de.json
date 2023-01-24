@@ -28,5 +28,9 @@
   "cer_max_desc": "CER Max absteigend",
   "no_table_data": "Keine Tabellendaten verfügbar",
   "workflow_steps": "Workflowschritte",
-  "external_repo_url": "Externer Link zum Repository"
+  "external_repo_url": "Externer Link zum Repository",
+  "change": "Ändern",
+  "datasets_selected": "Datasets ausgewählt",
+  "of": "von",
+  "select_all": "Alle auswählen"
 }

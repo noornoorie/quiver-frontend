@@ -1,14 +1,20 @@
 <template>
-  <div class="_margin-bottom:3">
+  <div class="_display:flex _margin-bottom:3">
 <!--    <SelectButton v-model="selectedOption" :options="options" optionLabel="name"></SelectButton>-->
     <i-button-group>
       <i-button color="primary" size="lg" :outline="!isList" @click="selectedOption = options[0]">{{options[0].name}}</i-button>
       <i-button color="primary" size="lg" :outline="!isTable" @click="selectedOption = options[1]">{{options[1].name}}</i-button>
     </i-button-group>
+    <MultiFilter
+      class="_margin-left:auto"
+      :amount-label="$t('datasets_selected')"
+      v-model="datasetsFilterOptions"
+      @update:model-value="onChangeDatasetFilter"
+    />
   </div>
   <div v-if="selectedOption">
-    <WorkflowsList v-if="selectedOption.value === 'list'" :data="data" :defs="defs" />
-    <WorkflowsTable v-else :data="data" :defs="defs" />
+    <WorkflowsList v-if="selectedOption.value === 'list'" :data="filteredData" :defs="defs" />
+    <WorkflowsTable v-else :data="filteredData" :defs="defs" />
   </div>
 </template>
 
@@ -21,10 +27,12 @@
   import { useI18n } from "vue-i18n";
   import { setEvalColors } from "@/helpers/eval-colors";
   import { store } from "@/helpers/store";
+  import MultiFilter from "@/components/workflows/MultiFilter.vue";
 
   const { t } = useI18n();
 
   const data = ref([]);
+  const filteredData = ref([]);
   const defs = ref({});
   const router = useRouter();
   const route = useRoute();
@@ -34,7 +42,13 @@
     { name: t('table'), value: 'table' }
   ]);
   const selectedOption = ref(null);
+  const datasetsFilterOptions = ref([]);
 
+  const onChangeDatasetFilter = (value) => {
+    value = value.filter(({ selected }) => !!(selected));
+    filteredData.value = data.value
+      .filter(item => value.find(({ id }) => item.metadata.gt_workspace['@id'] === id));
+  };
 
   watch(selectedOption, ({ value }) => {
     router.push({ query: { view: value } });
@@ -55,6 +69,22 @@
 
     data.value = await api.getWorkflows();
     defs.value = await api.getEvalDefinitions();
+
+    filteredData.value = data.value;
+
+    const datasetsMap = data.value
+      .filter(item => !!(item.metadata.gt_workspace))
+      .reduce((acc, cur) => {
+        const gtWorkspaceId = cur.metadata.gt_workspace['@id'];
+        acc[gtWorkspaceId] = cur.metadata.gt_workspace.label;
+        return acc;
+      }, {});
+
+    datasetsFilterOptions.value = Object.keys(datasetsMap).map(id => ({
+      id,
+      label: datasetsMap[id],
+      selected: true
+    }));
 
     setEvalColors(data.value);
 

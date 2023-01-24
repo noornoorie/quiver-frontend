@@ -268,11 +268,10 @@ const shortenCER = (value) => {
   return Math.round(value * 1000) / 1000;
 };
 
- onMounted(() => {
-   setEvals(props.data);
-   setListData(props.data);
- });
-
+onMounted(() => {
+ setEvals(props.data);
+ setListData(props.data);
+});
 
 watch(() => props.data, () => {
   setEvals(props.data);
