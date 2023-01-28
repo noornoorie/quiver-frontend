@@ -32,5 +32,7 @@
   "change": "Ändern",
   "datasets_selected": "Datasets ausgewählt",
   "of": "von",
-  "select_all": "Alle auswählen"
+  "select_all": "Alle auswählen",
+  "document": "Dokument",
+  "workflow": "Workflow"
 }

@@ -2,7 +2,7 @@
   <div>
     <div class="_display:flex _margin-bottom:4">
       <div class="_display:flex _align-items:center _margin-left:auto">
-        <p class="_margin-right:2">{{ $t('sort_by')}}:</p>
+        <p class="_margin-right:2">{{ $t('sort_by') }}:</p>
         <i-select
             v-model="sortBy"
             :options="sortOptions"
@@ -20,82 +20,94 @@
           <i-badge class="bg-gray-300 text-gray-700 _margin-left:2">Model: {{ item.metadata.workflow_model }}</i-badge>
           <template v-if="item.metadata.document_metadata">
             <i-badge
-              v-for="font in item.metadata.document_metadata.data_properties.fonts"
-              :key="font"
-              class="_margin-left:1 bg-gray-300 text-gray-700">
-              {{font}}
+                v-for="font in item.metadata.document_metadata.data_properties.fonts"
+                :key="font"
+                class="_margin-left:1 bg-gray-300 text-gray-700">
+              {{ font }}
             </i-badge>
           </template>
         </div>
       </template>
       <template #default>
         <i-row>
-          <i-column xs="7">
-            <i-row class="_margin-top:2">
-              <i-column>
-                <template v-if="item.metadata.gt_workspace">
-                  <i-collapsible class="_font-size:sm">
-                    <i-collapsible-item :title="item.metadata.gt_workspace.label">
-                      <i-row v-if="item.metadata.document_metadata.data_properties">
-                        <i-column>
-                          <p class="_font-weight:bold">{{ $t('number_of_pages') }}:</p>
-                          <p>{{ item.metadata.document_metadata.data_properties.number_of_pages }}</p>
-                          <p class="mt-2 _font-weight:bold">{{ $t('publication_year') }}:</p>
-                          <p> {{ item.metadata.document_metadata.data_properties.publication_year }}</p>
-                        </i-column>
-                        <i-column>
-                          <p class="_font-weight:bold">{{ $t('layout') }}:</p>
-                          <p>{{ item.metadata.document_metadata.data_properties.layout }}</p>
-                        </i-column>
-                      </i-row>
-                      <i-row v-else><i-column>{{ $t('no_document_metadata')}}</i-column></i-row>
-                    </i-collapsible-item>
-                  </i-collapsible>
-                </template>
-                <template v-else>
-                  <p class="_font-weight:bold text-gray-400 mt-3">{{$t('no_gt_workspace')}}</p>
-                </template>
+          <i-column xs="5">
+            <i-row>
+              <i-column xs="3" class="_font-weight:semibold">{{ $t('document') }}:</i-column>
+              <i-column xs="9" v-if="item.metadata.gt_workspace">
+                <i-collapsible size="md" class="_font-size:sm _flex-grow:1">
+                  <i-collapsible-item :title="item.metadata.gt_workspace.label">
+                    <i-row v-if="item.metadata.document_metadata.data_properties">
+                      <i-column>
+                        <p class="_font-weight:bold">{{ $t('number_of_pages') }}:</p>
+                        <p>{{ item.metadata.document_metadata.data_properties.number_of_pages }}</p>
+                        <p class="mt-2 _font-weight:bold">{{ $t('publication_year') }}:</p>
+                        <p> {{ item.metadata.document_metadata.data_properties.publication_year }}</p>
+                      </i-column>
+                      <i-column>
+                        <p class="_font-weight:bold">{{ $t('layout') }}:</p>
+                        <p>{{ item.metadata.document_metadata.data_properties.layout }}</p>
+                      </i-column>
+                    </i-row>
+                    <i-row v-else>
+                      <i-column>{{ $t('no_document_metadata') }}</i-column>
+                    </i-row>
+                  </i-collapsible-item>
+                </i-collapsible>
               </i-column>
-              <i-column class="_display:flex-1">
-                <i-collapsible class="_font-size:sm">
+              <template v-else>
+                <p class="_font-weight:bold text-gray-400 mt-3">{{ $t('no_gt_workspace') }}</p>
+              </template>
+            </i-row>
+
+            <i-row class="_display:flex _margin-top:1">
+              <i-column xs="3" class="_font-weight:semibold">{{ $t('workflow') }}:</i-column>
+              <i-column xs="9">
+                <i-collapsible size="md" class="_font-size:sm _flex-grow:1">
                   <i-collapsible-item :title="item.metadata.ocr_workflow?.label || $t('unknown_workflow')">
                     <div class="_display:flex _flex-direction:column" v-if="item.metadata.workflow_steps">
-                      <span class="_margin-bottom:1">{{ $t('workflow_steps')}}:</span>
-                      <span v-for="({id, url}, i) in item.metadata.workflow_steps" :key="id">
-                        <span>{{ i + 1 }}. </span>
-                        <i-badge size="lg" class="_font-size:sm _margin-bottom:1/2">
-                          <a v-if="url" :href="url" target="_blank" :title="$t('external_repo_url')" class="_display:flex _align-items:flex-end">
-                            {{ id }}
+                      <div class="_margin-bottom:2" v-for="({id, url, params }, i) in item.metadata.workflow_steps" :key="id">
+                        <div class="_display:flex _align-items:center">
+                          <span class="_margin-right:1">{{ i + 1 }}. </span>
+                          <a v-if="url" :href="url" target="_blank" :title="$t('external_repo_url')"
+                             class="_display:flex _align-items:center _flex-shrink:0">
+                            <span class="_font-weight:semibold _font-size:md">{{ id }}</span>
                             <i class="repo-icon _margin-left:1/3" v-html="getIcon('external-link')"></i>
-                          </a>
-                          <template v-else>{{ id }}</template>
-                        </i-badge>
-                      </span>
+                          </a></div>
+                        <div class="_display:flex _flex-wrap:wrap _align-items:flex-start _margin-top:1">
+                          <div
+                            v-for="{ name, value } in params"
+                            :key="name"
+                            class="_margin-bottom:1 _margin-right:1 _display:flex _align-items:flex-start"
+                            style="line-height:1.2"
+                          >
+                            <span class="_border-top-left-radius _border-bottom-left-radius _background:gray-20 _color:gray-70 _font-weight:semibold _padding-x:1 _padding-y:1/2">{{name }}</span>
+                            <span class="_border-top-right-radius _border-bottom-right-radius _background:gray-10 _color:gray-70 _padding-x:1 _padding-y:1/2">{{value }}</span>
+                          </div>
+                        </div>
+                      </div>
                     </div>
                     <template v-else>
-                      <span class="_font-weight:bold">{{$t('no_ocr_workflow')}}</span>
+                      <span class="_font-weight:bold">{{ $t('no_ocr_workflow') }}</span>
                     </template>
                   </i-collapsible-item>
                 </i-collapsible>
               </i-column>
             </i-row>
           </i-column>
-          <i-column xs="5" class="_margin-left:auto">
+          <i-column xs="7" class="_margin-left:auto">
             <i-row>
-              <i-column class="_display:flex _justify-content:center" v-for="(evalKey, i) in evals" :key="i">
-                <span class="_font-weight:bold _font-size:xs">{{defs[evalKey] ? defs[evalKey].label : evalKey}}</span>
-              </i-column>
-            </i-row>
-            <i-row>
-              <i-column v-for="({ name, value }, i) in item.evaluations" :key="i" class="_text-align:center">
-              <i-badge
-                  size="lg"
-                  class="metric _cursor:pointer _padding-x:1"
-                  :class="getEvalColor(name, value)" :title="value">
-                <template v-if=" name === 'cer'">{{ shortenCER(value) }}</template>
-                <template v-else-if="name === 'cer_min_max'">{{ shortenCER(value[0]) + '/' + shortenCER(value[1])}}</template>
-                <template v-else>{{ value }}</template>
-              </i-badge>
+              <i-column v-for="({ name, value }, i) in item.evaluations" :key="i"
+                        class="_display:flex _flex-direction:column _align-items:center _padding-x:1/2">
+                <span
+                    class="_font-weight:bold _font-size:xs _margin-bottom:1">{{
+                    defs[name] ? defs[name].label : name
+                  }}</span>
+                <i-badge
+                    size="lg"
+                    class="metric _cursor:pointer _padding-x:1"
+                    :class="getEvalColor(name, value)" :title="value">
+                  {{ createReadableMetricValue(name, value) }}
+                </i-badge>
               </i-column>
             </i-row>
           </i-column>
@@ -107,10 +119,11 @@
 
 <script setup>
 import { ref, onMounted, watch } from "vue";
-import { getEvalColor } from "@/helpers/eval-colors";
 import { useI18n } from "vue-i18n";
 import { getIcon } from "@/helpers/icon";
 import { store } from "@/helpers/store";
+import { createReadableMetricValue, getEvalColor } from "@/helpers/utils";
+
 
 const props = defineProps(['data', 'defs']);
 const list = ref([]);
@@ -215,14 +228,18 @@ const sortByCERMax = (order = 'asc') => {
 
 const mapMetadata = ({
   workflow_model = t('no_workflow_model'),
-  document_metadata = {
-    fonts: []
-  },
+  document_metadata = { fonts: [] },
   gt_workspace = null,
   ocr_workflow = null,
-  workflow_steps = null
+  workflow_steps = {}
 }) => {
-  workflow_steps = workflow_steps.map(step => ({ id: step, url: getRepoUrl(step) }));
+  workflow_steps = workflow_steps
+      .map(step => {
+        const id = Object.keys(step)[0];
+        const params = Object.keys(step[id]).map(paramKey => ({ name: paramKey, value: step[id][paramKey] }));
+
+        return { id, url: getRepoUrl(id), params };
+      });
   return {
     workflow_model,
     document_metadata,
@@ -240,7 +257,7 @@ const mapEvaluationResults = ({ document_wide = [] }) => {
 };
 
 const setListData = (data) => {
-  list.value = data.map(({ label, evaluation_results = [], metadata }) => ({
+  list.value = data.map(({ label, evaluation_results = {}, metadata }) => ({
     label,
     metadata: mapMetadata(metadata),
     evaluations: mapEvaluationResults(evaluation_results)
@@ -264,13 +281,9 @@ const setEvals = (data) => {
           : [];
 };
 
-const shortenCER = (value) => {
-  return Math.round(value * 1000) / 1000;
-};
-
 onMounted(() => {
- setEvals(props.data);
- setListData(props.data);
+  setEvals(props.data);
+  setListData(props.data);
 });
 
 watch(() => props.data, () => {
@@ -296,6 +309,7 @@ watch(() => props.data, () => {
 }
 
 .arrow-icon, .repo-icon {
+  position: relative;
   width: 16px;
   height: 16px;
 

@@ -80,3 +80,24 @@ h3 {
     ----margin-right: 0.5rem;
   }
 }
+
+.collapsible {
+  .collapsible-item {
+    display: flex;
+    flex-direction: column;
+  }
+  .collapsible-header {
+    font-size: var(--font-size--md);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    padding-right: 32px !important;
+    display: inline !important;
+    overflow: hidden;
+
+    .icon {
+      position: absolute !important;
+      right: 10px;
+      top: 12px;
+    }
+  }
+}

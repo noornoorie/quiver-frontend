@@ -26,5 +26,8 @@
   "change": "Change",
   "datasets_selected": "datasets selected",
   "of": "of",
-  "select_all": "Select all"
+  "select_all": "Select all",
+  "document": "Document",
+  "workflow": "Workflow"
+
 }

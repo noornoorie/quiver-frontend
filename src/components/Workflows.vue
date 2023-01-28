@@ -25,7 +25,7 @@
   import WorkflowsList from "@/components/workflows/WorkflowsList.vue";
   import WorkflowsTable from "@/components/workflows/WorkflowsTable.vue";
   import { useI18n } from "vue-i18n";
-  import { setEvalColors } from "@/helpers/eval-colors";
+  import { setEvalColors } from "@/helpers/utils";
   import { store } from "@/helpers/store";
   import MultiFilter from "@/components/workflows/MultiFilter.vue";
 
@@ -68,7 +68,10 @@
     store.setRepos(await api.getProjects());
 
     data.value = await api.getWorkflows();
+    store.setEvaluations(data.value);
+
     defs.value = await api.getEvalDefinitions();
+    store.setMetricDefinitions(defs.value);
 
     filteredData.value = data.value;
 

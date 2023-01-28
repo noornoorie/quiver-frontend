@@ -1,5 +1,11 @@
-const shortenCER = (value) => {
-  return Math.round(value * 1000) / 1000;
+const createReadableMetricValue = (key, value) => {
+  if (['cer_mean', 'cer_median', 'wer', 'pages_per_minute', 'cer_standard_deviation'].includes(key)) {
+    return shortenMetricValue(value);
+  } else if (key === 'cer_range') {
+    return shortenMetricValue(value[0]) + ' / ' + shortenMetricValue(value[1]);
+  }
+
+  return value;
 };
 
 export {

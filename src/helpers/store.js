@@ -1,8 +1,16 @@
 import { reactive } from 'vue';
 
 export const store = reactive({
-    repos: [],
-    setRepos(repos) {
-        this.repos = repos;
-    }
+  repos: [],
+  evaluations: [],
+  metricDefinitions: {},
+  setRepos(repos) {
+    this.repos = repos;
+  },
+  setEvaluations(evaluations) {
+    this.evaluations = evaluations;
+  },
+  setMetricDefinitions(defs) {
+    this.metricDefinitions = defs;
+  }
 });
