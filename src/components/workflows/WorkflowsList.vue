@@ -214,8 +214,9 @@ const mapMetadata = ({
 }) => {
   workflow_steps = workflow_steps
       .map(step => {
-        const id = Object.keys(step)[0];
-        const params = Object.keys(step[id]).map(paramKey => ({ name: paramKey, value: step[id][paramKey] }));
+        console.log(step);
+        const id = step.id;
+        const params = Object.keys(step.params).map(paramKey => ({ name: paramKey, value: step.params[paramKey] }));
 
         return { id, url: getRepoUrl(id), params };
       });
