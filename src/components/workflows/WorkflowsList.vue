@@ -214,7 +214,6 @@ const mapMetadata = ({
 }) => {
   workflow_steps = workflow_steps
       .map(step => {
-        console.log(step);
         const id = step.id;
         const params = Object.keys(step.params).map(paramKey => ({ name: paramKey, value: step.params[paramKey] }));
 

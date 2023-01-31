@@ -1,4 +1,4 @@
-const baseUrl = 'https://raw.githubusercontent.com/mweidling/quiver-back-end/add-missing-metrics/data';
+const baseUrl = 'https://raw.githubusercontent.com/OCR-D/quiver-back-end/main/data';
 
 async function getProjects() {
     return await request(baseUrl + '/repos.json');
