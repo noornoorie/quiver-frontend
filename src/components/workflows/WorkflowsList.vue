@@ -75,7 +75,7 @@
             </div>
           </i-column>
           <i-column xs="7" class="_margin-left:auto">
-            <i-row>
+            <i-row class="_align-items:flex-end" style="margin-top: -16px">
               <i-column v-for="({ name, value }, i) in item.evaluations" :key="i"
                         class="_display:flex _flex-direction:column _align-items:center _padding-x:1/2">
                 <span
@@ -277,6 +277,12 @@ watch(() => props.data, () => {
   setEvals(props.data);
   setListData(props.data);
 });
+
+// watch(() => props.defs, () => {
+//     if (props.defs['cer_standard_deviation']) {
+//       props.defs['cer_standard_deviation'].label = 'CER (std. deviation)';
+//     }
+// });
 
 </script>
 
