@@ -35,5 +35,13 @@
   "select_all": "Alle auswählen",
   "document": "Dokument",
   "workflow": "Workflow",
-  "fastest": "Am schnellsten"
+  "fastest": "Am schnellsten",
+  "unreleased_changes": "unveröffentliche Änderungen",
+  "version": "Version",
+  "is_valid": "ist gültig",
+  "is_not_valid": "ist ungültig",
+  "dependency_conflicts": "Konflikte mit Abhängigkeiten",
+  "no_dependency_conflicts": "Keine Konflikte mit Abhängigkeiten",
+  "additional_info": "Zusätzliche Info",
+  "error_repo_not_found": "Keine Daten zum Repository gefunden."
 }

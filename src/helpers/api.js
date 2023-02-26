@@ -4,6 +4,10 @@ async function getProjects() {
     return await request(baseUrl + '/repos.json');
 }
 
+async function getOcrdAllReleases() {
+    return await request(baseUrl + '/ocrd_all_releases.json');
+}
+
 async function getWorkflows() {
     return await request(baseUrl + '/workflows.json');
     // return Promise.resolve(workflowsJson);
@@ -21,5 +25,6 @@ async function request (url) {
 export default {
     getProjects,
     getWorkflows,
-    getEvalDefinitions
+    getEvalDefinitions,
+    getOcrdAllReleases
 };
