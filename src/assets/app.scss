@@ -10,6 +10,19 @@
   --contrast-color-for-light-background: var(--color--gray-75);
   --contrast-color-for-dark-background: var(--color--gray-10);
   --body--color: var(--color--gray-75);
+  --h3--font-size: 1.4rem;
+  --color--negative-background: var(--color--red-20);
+  --color--negative-text: var(--color--red-65);
+  --color--negative-text-dark: var(--color--red-25);
+  --color--negative-background-dark: hsl(var(--color--red-70-h), 40%, var(--color--red-60-l));
+  --color--medium-background: var(--color--yellow-20);
+  --color--medium-text: var(--color--yellow-70);
+  --color--medium-text-dark: var(--color--yellow-50);
+  --color--medium-background-dark: hsl(var(--color--yellow-70-h), 60%, var(--color--yellow-70-l));
+  --color--positive-background: var(--color--green-20);
+  --color--positive-text: var(--color--green-50);
+  --color--positive-text-dark: var(--color--green-50);
+  --color--positive-background-dark: hsl(var(--color--green-70-h), 50%, var(--color--green-60-l));
 }
 
 h3 {
@@ -21,28 +34,45 @@ h3 {
 }
 
 .eval-negative {
-  background-color: var(--color--red-20);
-
+  background-color: var(--color--negative-background);
   .-dark & {
-    background-color: hsl(var(--color--red-70-h), 40%, var(--color--red-60-l));
+    background-color: var(--color--negative-background-dark);
   }
 
 }
 
 .eval-medium {
-  background-color: var(--color--yellow-20);
-
+  background-color: var(--color--medium-background);
   .-dark & {
-    background-color: hsl(var(--color--yellow-70-h), 60%, var(--color--yellow-70-l));
+    background-color: var(--color--negative-dark-background);
   }
 }
 
 .eval-positive {
-  background-color: var(--color--green-20);
-
+  background-color: var(--color--positive-background);
   .-dark & {
-    background-color: hsl(var(--color--green-70-h), 50%, var(--color--green-60-l));
+    background-color: var(--color--positive-dark-background);
+  }
+}
 
+.text-negative {
+  color: var(--color--negative-text);
+  .-dark & {
+    color: var(--color--negative-text-dark);
+  }
+}
+
+.text-medium {
+  color: var(--color--medium-text);
+  .-dark & {
+    color: var(--color--medium-text-dark);
+  }
+}
+
+.text-positive {
+  color: var(--color--positive-text);
+  .-dark & {
+    color: var(--color--positive-text-dark);
   }
 }
 
@@ -101,3 +131,24 @@ h3 {
     }
   }
 }
+
+.popover-wrapper {
+  ----footer--background: var(----body--background) !important;
+  .popover-body, .popover-footer, .popover-header {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+}
+
+.card {
+  .card-header {
+    padding-left: 16px;
+    padding-right: 0px;
+  }
+  .card-body {
+    padding-left: 16px;
+    padding-right: 16px;
+    min-height: 120px;
+  }
+}
+

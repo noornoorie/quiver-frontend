@@ -24,12 +24,14 @@
 </template>
 <script setup>
 import { onMounted, ref, watch, inject } from "vue";
-import { useRouter } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import { useI18n } from "vue-i18n";
 
 import { getIcon } from '@/helpers/icon';
 
 const router = useRouter();
+const route = useRoute();
+
 const { t } = useI18n();
 const activeTab = ref('/workflows');
 
@@ -57,6 +59,7 @@ const items = ref([
 
 onMounted(async () => {
   await router.isReady();
+  activeTab.value = '/' + route.name;
 });
 
 const inkline = inject('inkline', {});
