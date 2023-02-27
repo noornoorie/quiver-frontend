@@ -38,20 +38,19 @@ h3 {
   .-dark & {
     background-color: var(--color--negative-background-dark);
   }
-
 }
 
 .eval-medium {
   background-color: var(--color--medium-background);
   .-dark & {
-    background-color: var(--color--negative-dark-background);
+    background-color: var(--color--medium-background-dark);
   }
 }
 
 .eval-positive {
   background-color: var(--color--positive-background);
   .-dark & {
-    background-color: var(--color--positive-dark-background);
+    background-color: var(--color--positive-background-dark);
   }
 }
 
