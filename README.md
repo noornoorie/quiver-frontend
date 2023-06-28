@@ -29,3 +29,17 @@ npm run build
 ```sh
 npm run lint
 ```
+
+## Project Setup with Docker
+
+Build the Docker image:
+
+```sh
+docker build -t qfa .
+```
+
+Run a container based on this image:
+
+```sh
+docker run --rm -d --name qfa-server -p 8083:80 qfa
+```
