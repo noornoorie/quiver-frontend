@@ -14,37 +14,37 @@
 </template>
 
 <script setup>
-import { computed, ref, watch } from "vue";
-import { useI18n } from "vue-i18n";
+import { computed, ref, watch } from "vue"
+import { useI18n } from "vue-i18n"
 
-const { t } = useI18n();
-const props = defineProps(['amount-label', 'modelValue']);
-const emit = defineEmits(['update:modelValue']);
+const { t } = useI18n()
+const props = defineProps(['amount-label', 'modelValue'])
+const emit = defineEmits(['update:modelValue'])
 
-const totalAmount = ref(0);
-const filteredOptions = ref([]);
-const allSelected = ref(true);
+const totalAmount = ref(0)
+const filteredOptions = ref([])
+const allSelected = ref(true)
 
 const amount = computed(() => {
-  return filteredOptions.value.filter(({ selected }) => !!(selected)).length + ` ${t('of')} ` + totalAmount.value + ' ' + props.amountLabel;
-});
+  return filteredOptions.value.filter(({ selected }) => !!(selected)).length + ` ${t('of')} ` + totalAmount.value + ' ' + props.amountLabel
+})
 
 watch(() => props.modelValue, (value) => {
-  totalAmount.value = value.length;
+  totalAmount.value = value.length
   filteredOptions.value = value.map(({ id, label, selected = false }) => ({
     id, label, selected
-  }));
-}, { immediate: true });
+  }))
+}, { immediate: true })
 
 const onChange = () => {
-  allSelected.value = filteredOptions.value.filter(({ selected }) => !(selected)).length === 0;
-  emit('update:modelValue', filteredOptions.value);
-};
+  allSelected.value = filteredOptions.value.filter(({ selected }) => !(selected)).length === 0
+  emit('update:modelValue', filteredOptions.value)
+}
 
 const onSelectAll = (isChecked) => {
-  filteredOptions.value.forEach((option, i) => filteredOptions.value[i].selected = isChecked);
-  emit('update:modelValue', filteredOptions.value);
-};
+  filteredOptions.value.forEach((option, i) => filteredOptions.value[i].selected = isChecked)
+  emit('update:modelValue', filteredOptions.value)
+}
 
 </script>
 

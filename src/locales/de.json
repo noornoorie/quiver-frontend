@@ -43,5 +43,13 @@
   "dependency_conflicts": "Konflikte mit Abhängigkeiten",
   "no_dependency_conflicts": "Keine Konflikte mit Abhängigkeiten",
   "additional_info": "Zusätzliche Info",
-  "error_repo_not_found": "Keine Daten zum Repository gefunden."
+  "error_repo_not_found": "Keine Daten zum Repository gefunden.",
+  "timeline": "Chronik",
+  "cer_mean": "CER Durchschnitt",
+  "cer_median": "CER Median",
+  "wall_time": "Wall Time",
+  "cpu_time": "CPU Zeit",
+  "wer": "WER",
+  "pages_per_minute": "Seiten pro Minute",
+  "cpu_standard_deviation": "CPU Standardabweichung"
 }

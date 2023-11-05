@@ -22,19 +22,19 @@
 
 <script setup>
 
-import { onMounted, ref } from "vue";
-import { store } from "@/helpers/store";
-import api from "@/helpers/api";
-import Project from "@/components/projects/Project.vue";
+import { onMounted, ref } from "vue"
+import { store } from "@/helpers/store"
+import api from "@/helpers/api"
+import Project from "@/components/projects/Project.vue"
 
-const releases = ref([]);
+const releases = ref([])
 
 onMounted(async () => {
-  store.setRepos(await api.getProjects());
+  store.setRepos(await api.getProjects())
 
-  releases.value = await api.getOcrdAllReleases();
-  store.setReleases(releases.value);
-});
+  releases.value = await api.getOcrdAllReleases()
+  store.setReleases(releases.value)
+})
 </script>
 
 <style lang="scss" scoped>

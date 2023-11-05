@@ -98,16 +98,16 @@
 </template>
 
 <script setup>
-import { ref, onMounted, watch } from "vue";
-import { useI18n } from "vue-i18n";
-import { store } from "@/helpers/store";
-import { createReadableMetricValue, getEvalColor } from "@/helpers/utils";
-import Icon from "@/components/Icon.vue";
+import { ref, onMounted, watch } from "vue"
+import { useI18n } from "vue-i18n"
+import { store } from "@/helpers/store"
+import { createReadableMetricValue, getEvalColor } from "@/helpers/utils"
+import Icon from "@/components/Icon.vue"
 
-const props = defineProps(['data', 'defs']);
-const list = ref([]);
-const evals = ref([]);
-const { t } = useI18n();
+const props = defineProps(['data', 'defs'])
+const list = ref([])
+const evals = ref([])
+const { t } = useI18n()
 
 const sortOptions = ref([
   {
@@ -146,64 +146,64 @@ const sortOptions = ref([
     value: 'cer_max_desc',
     label: t('cer_max_desc')
   }
-]);
+])
 
-const sortBy = ref(sortOptions.value[0]);
+const sortBy = ref(sortOptions.value[0])
 
 const onChange = (value) => {
-  if (value === 'wall_time_asc') sortByWallTime('asc');
-  else if (value === 'wall_time_desc') sortByWallTime('desc');
-  else if (value === 'cer_asc') sortByCER('asc');
-  else if (value === 'cer_desc') sortByCER('desc');
-  else if (value === 'cer_min_asc') sortByCERMin('asc');
-  else if (value === 'cer_min_desc') sortByCERMin('desc');
-  else if (value === 'cer_max_asc') sortByCERMax('asc');
-  else if (value === 'cer_max_desc') sortByCERMax('desc');
-};
+  if (value === 'wall_time_asc') sortByWallTime('asc')
+  else if (value === 'wall_time_desc') sortByWallTime('desc')
+  else if (value === 'cer_asc') sortByCER('asc')
+  else if (value === 'cer_desc') sortByCER('desc')
+  else if (value === 'cer_min_asc') sortByCERMin('asc')
+  else if (value === 'cer_min_desc') sortByCERMin('desc')
+  else if (value === 'cer_max_asc') sortByCERMax('asc')
+  else if (value === 'cer_max_desc') sortByCERMax('desc')
+}
 
 const sortByWallTime = (order = 'asc') => {
   list.value.sort((a, b) => {
-    const wallTimeA = a.evaluations.find(e => e.name === 'wall_time')?.value || 0;
-    const wallTimeB = b.evaluations.find(e => e.name === 'wall_time')?.value || 0;
+    const wallTimeA = a.evaluations.find(e => e.name === 'wall_time')?.value || 0
+    const wallTimeB = b.evaluations.find(e => e.name === 'wall_time')?.value || 0
 
-    if (order === 'asc') return wallTimeA > wallTimeB ? 1 : -1;
-    if (order === 'desc') return wallTimeA < wallTimeB ? 1 : -1;
-    return 0;
-  });
-};
+    if (order === 'asc') return wallTimeA > wallTimeB ? 1 : -1
+    if (order === 'desc') return wallTimeA < wallTimeB ? 1 : -1
+    return 0
+  })
+}
 
 const sortByCER = (order = 'asc') => {
   list.value.sort((a, b) => {
-    const cerA = a.evaluations.find(e => e.name === 'cer')?.value || 0;
-    const cerB = b.evaluations.find(e => e.name === 'cer')?.value || 0;
+    const cerA = a.evaluations.find(e => e.name === 'cer')?.value || 0
+    const cerB = b.evaluations.find(e => e.name === 'cer')?.value || 0
 
-    if (order === 'asc') return cerA > cerB ? 1 : -1;
-    if (order === 'desc') return cerA < cerB ? 1 : -1;
-    return 0;
-  });
-};
+    if (order === 'asc') return cerA > cerB ? 1 : -1
+    if (order === 'desc') return cerA < cerB ? 1 : -1
+    return 0
+  })
+}
 
 const sortByCERMin = (order = 'asc') => {
   list.value.sort((a, b) => {
-    const cerMinA = a.evaluations.find(e => e.name === 'cer_min_max')?.value[0] || 0;
-    const cerMinB = b.evaluations.find(e => e.name === 'cer_min_max')?.value[0] || 0;
+    const cerMinA = a.evaluations.find(e => e.name === 'cer_min_max')?.value[0] || 0
+    const cerMinB = b.evaluations.find(e => e.name === 'cer_min_max')?.value[0] || 0
 
-    if (order === 'asc') return cerMinA > cerMinB ? 1 : -1;
-    if (order === 'desc') return cerMinA < cerMinB ? 1 : -1;
-    return 0;
-  });
-};
+    if (order === 'asc') return cerMinA > cerMinB ? 1 : -1
+    if (order === 'desc') return cerMinA < cerMinB ? 1 : -1
+    return 0
+  })
+}
 
 const sortByCERMax = (order = 'asc') => {
   list.value.sort((a, b) => {
-    const cerMaxA = a.evaluations.find(e => e.name === 'cer_min_max')?.value[1] || 0;
-    const cerMaxB = b.evaluations.find(e => e.name === 'cer_min_max')?.value[1] || 0;
+    const cerMaxA = a.evaluations.find(e => e.name === 'cer_min_max')?.value[1] || 0
+    const cerMaxB = b.evaluations.find(e => e.name === 'cer_min_max')?.value[1] || 0
 
-    if (order === 'asc') return cerMaxA > cerMaxB ? 1 : -1;
-    if (order === 'desc') return cerMaxA < cerMaxB ? 1 : -1;
-    return 0;
-  });
-};
+    if (order === 'asc') return cerMaxA > cerMaxB ? 1 : -1
+    if (order === 'desc') return cerMaxA < cerMaxB ? 1 : -1
+    return 0
+  })
+}
 
 const mapMetadata = ({
   workflow_model = t('no_workflow_model'),
@@ -214,31 +214,31 @@ const mapMetadata = ({
 }) => {
   workflow_steps = workflow_steps
       .map(step => {
-        const id = step.id;
-        const params = Object.keys(step.params).map(paramKey => ({ name: paramKey, value: step.params[paramKey] }));
+        const id = step.id
+        const params = Object.keys(step.params).map(paramKey => ({ name: paramKey, value: step.params[paramKey] }))
 
-        return { id, url: getRepoUrl(id), params };
-      });
+        return { id, url: getRepoUrl(id), params }
+      })
   return {
     workflow_model,
     document_metadata,
     gt_workspace,
     ocr_workflow,
     workflow_steps
-  };
-};
+  }
+}
 
 const mapEvaluationResults = ({ document_wide = [] }) => {
   return Object.keys(document_wide).map(key => ({
     name: key,
     value: document_wide[key]
-  }));
-};
+  }))
+}
 
 const setListData = (data) => {
   const fastest = data.reduce(
       (prev, curr) => prev.evaluation_results.document_wide.wall_time < curr.evaluation_results.document_wide.wall_time ? prev : curr
-  );
+  )
 
   list.value = data.map(({ eval_workflow_id, label, evaluation_results = {}, metadata }) => {
 
@@ -247,17 +247,17 @@ const setListData = (data) => {
       metadata: mapMetadata(metadata),
       evaluations: mapEvaluationResults(evaluation_results),
       isFastest: fastest.eval_workflow_id === eval_workflow_id
-    };
-  });
-};
+    }
+  })
+}
 
 const getRepoUrl = (needleId) => {
   const repo = store.repos.find(({ ocrd_tool }) => {
-    return ocrd_tool && ocrd_tool.tools[needleId];
-  });
-  if (!repo) return null;
-  return repo.url;
-};
+    return ocrd_tool && ocrd_tool.tools[needleId]
+  })
+  if (!repo) return null
+  return repo.url
+}
 
 const setEvals = (data) => {
   evals.value =
@@ -265,18 +265,18 @@ const setEvals = (data) => {
       data.length > 0 &&
       data[0].evaluation_results
           ? Object.keys(data[0].evaluation_results.document_wide) || []
-          : [];
-};
+          : []
+}
 
 onMounted(() => {
-  setEvals(props.data);
-  setListData(props.data);
-});
+  setEvals(props.data)
+  setListData(props.data)
+})
 
 watch(() => props.data, () => {
-  setEvals(props.data);
-  setListData(props.data);
-});
+  setEvals(props.data)
+  setListData(props.data)
+})
 
 // watch(() => props.defs, () => {
 //     if (props.defs['cer_standard_deviation']) {

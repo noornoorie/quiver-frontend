@@ -3,7 +3,8 @@ module.exports = {
   root: true,
   'extends': [
     'plugin:vue/vue3-essential',
-    'eslint:recommended'
+    'eslint:recommended',
+    '@vue/eslint-config-typescript'
   ],
   parserOptions: {
     ecmaVersion: 'latest'
@@ -15,7 +16,7 @@ module.exports = {
 
     // allow debugger during development only
     'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
-    'semi': ['error', 'always'],
+    'semi': ['error', 'never'],
     'object-curly-spacing': ['error', 'always']
   }
-};
+}

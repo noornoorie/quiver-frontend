@@ -37,5 +37,13 @@
   "dependency_conflicts": "Dependency conflicts",
   "no_dependency_conflicts": "No dependency conflicts",
   "additional_info": "Additional Info",
-  "error_repo_not_found": "No repository data found."
+  "error_repo_not_found": "No repository data found.",
+  "timeline": "Timeline",
+  "cer_mean": "CER Mean",
+  "cer_median": "CER Median",
+  "wall_time": "Wall Time",
+  "cpu_time": "CPU Time",
+  "wer": "WER",
+  "pages_per_minute": "Pages per minute",
+  "cpu_standard_deviation": "CPU Standard Deviation"
 }

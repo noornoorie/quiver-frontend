@@ -3,14 +3,14 @@
 </template>
 
 <script setup>
-import { computed } from "vue";
-import { getIcon } from '@/helpers/icon';
+import { computed } from "vue"
+import { getIcon } from '@/helpers/icon'
 
-const props = defineProps(['name', 'size']);
+const props = defineProps(['name', 'size'])
 
 const getSvg = computed(() => {
-  return getIcon(props.name);
-});
+  return getIcon(props.name)
+})
 
 </script>
 

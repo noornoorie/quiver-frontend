@@ -23,21 +23,21 @@
   </main>
 </template>
 <script setup>
-import { onMounted, ref, watch, inject } from "vue";
-import { useRoute, useRouter } from "vue-router";
-import { useI18n } from "vue-i18n";
+import { onMounted, ref, watch, inject } from "vue"
+import { useRoute, useRouter } from "vue-router"
+import { useI18n } from "vue-i18n"
 
-import { getIcon } from '@/helpers/icon';
+import { getIcon } from '@/helpers/icon'
 
-const router = useRouter();
-const route = useRoute();
+const router = useRouter()
+const route = useRoute()
 
-const { t } = useI18n();
-const activeTab = ref('/workflows');
+const { t } = useI18n()
+const activeTab = ref('/workflows')
 
 watch(activeTab, (value) => {
-  router.push(value);
-});
+  router.push(value)
+})
 
 const items = ref([
   {
@@ -55,28 +55,33 @@ const items = ref([
     icon: 'pi pi-fw pi-pencil',
     to: '/workflows'
   },
-]);
+  {
+    label: t('timeline'),
+    icon: 'pi pi-fw pi-pencil',
+    to: '/timeline'
+  },
+])
 
 onMounted(async () => {
-  await router.isReady();
-  activeTab.value = '/' + route.name;
-});
+  await router.isReady()
+  activeTab.value = '/' + route.name
+})
 
-const inkline = inject('inkline', {});
-const colorMode = ref(inkline.options.colorMode);
+const inkline = inject('inkline', {})
+const colorMode = ref(inkline.options.colorMode)
 
 // Set the initial color mode value to determine the icon to be displayed
 if (colorMode.value === 'system' && typeof window !== 'undefined') {
-  colorMode.value = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  colorMode.value = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
 }
 
 // Toggle between light and dark mode
 const setColorMode = () => {
-  const mode = colorMode.value === 'dark' ? 'light' : 'dark';
+  const mode = colorMode.value === 'dark' ? 'light' : 'dark'
 
-  inkline.options.colorMode = mode;
-  colorMode.value = mode;
-};
+  inkline.options.colorMode = mode
+  colorMode.value = mode
+}
 
 </script>
 <style scoped>

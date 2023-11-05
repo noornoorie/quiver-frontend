@@ -61,34 +61,34 @@
 </template>
 
 <script setup>
-import { watch, ref } from "vue";
-import { useI18n } from "vue-i18n";
-import { createReadableMetricValue, getEvalColor } from "@/helpers/utils";
+import { watch, ref } from "vue"
+import { useI18n } from "vue-i18n"
+import { createReadableMetricValue, getEvalColor } from "@/helpers/utils"
 
-const { t } = useI18n();
-const props = defineProps(['data', 'defs']);
-const groupedData = ref({});
-const evals = ref([]);
+const { t } = useI18n()
+const props = defineProps(['data', 'defs'])
+const groupedData = ref({})
+const evals = ref([])
 const sortOptions = ref([{
   value: 'documents',
   label: t('documents')
 }, {
   value: 'workflows',
   label: t('workflows')
-}]);
-const sortBy = ref(sortOptions.value[0]);
+}])
+const sortBy = ref(sortOptions.value[0])
 
 const onChange = (value) => {
-  if (value === 'workflows') groupByWorkflows();
-  else if (value === 'documents') groupByDocuments();
-};
+  if (value === 'workflows') groupByWorkflows()
+  else if (value === 'documents') groupByDocuments()
+}
 
 const groupByWorkflows = () => {
   groupedData.value = props.data.filter(item => !!(item.metadata.ocr_workflow)).reduce((acc, cur) => {
-    const ocrWorkflowId = cur.metadata.ocr_workflow['@id'];
-    const label = cur.metadata.ocr_workflow.label;
+    const ocrWorkflowId = cur.metadata.ocr_workflow['@id']
+    const label = cur.metadata.ocr_workflow.label
 
-    evals.value = Object.keys(cur.evaluation_results.document_wide);
+    evals.value = Object.keys(cur.evaluation_results.document_wide)
 
     const subject = {
       label: cur.metadata.gt_workspace.label,
@@ -96,52 +96,52 @@ const groupByWorkflows = () => {
         name: key,
         value: cur.evaluation_results.document_wide[key]
       }))
-    };
+    }
     if (!acc[ocrWorkflowId]) {
       acc[ocrWorkflowId] = {
         label,
         subjects: [subject]
-      };
+      }
     } else {
-      acc[ocrWorkflowId].subjects.push(subject);
+      acc[ocrWorkflowId].subjects.push(subject)
       acc[ocrWorkflowId].subjects.sort((a, b) => {
-        if (a.label > b.label) return 1;
-        else return -1;
-      });
+        if (a.label > b.label) return 1
+        else return -1
+      })
     }
-    return acc;
-  }, {});
-};
+    return acc
+  }, {})
+}
 
 const groupByDocuments = () => {
   groupedData.value = props.data.filter(item => !!(item.metadata.gt_workspace)).reduce((acc, cur) => {
-    const gtWorkspaceId = cur.metadata.gt_workspace['@id'];
-    const label = cur.metadata.gt_workspace.label;
-    evals.value = Object.keys(cur.evaluation_results.document_wide);
+    const gtWorkspaceId = cur.metadata.gt_workspace['@id']
+    const label = cur.metadata.gt_workspace.label
+    evals.value = Object.keys(cur.evaluation_results.document_wide)
     const subject = {
       label: cur.metadata.ocr_workflow.label,
       evaluations: Object.keys(cur.evaluation_results.document_wide).map(key => ({
         name: key,
         value: cur.evaluation_results.document_wide[key]
       }))
-    };
+    }
     if (!acc[gtWorkspaceId]) {
       acc[gtWorkspaceId] = {
         label,
         subjects: [subject]
-      };
+      }
     } else {
-      acc[gtWorkspaceId].subjects.push(subject);
+      acc[gtWorkspaceId].subjects.push(subject)
       acc[gtWorkspaceId].subjects.sort((a, b) => {
-        if (a.label > b.label) return 1;
-        else return -1;
-      });
+        if (a.label > b.label) return 1
+        else return -1
+      })
     }
-    return acc;
-  }, {});
-};
+    return acc
+  }, {})
+}
 
-watch(() => props.data, groupByDocuments, { immediate: true });
+watch(() => props.data, groupByDocuments, { immediate: true })
 </script>
 
 <style scoped lang="scss">

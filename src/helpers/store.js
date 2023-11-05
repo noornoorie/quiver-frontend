@@ -1,4 +1,4 @@
-import { reactive } from 'vue';
+import { reactive } from 'vue'
 
 export const store = reactive({
   repos: [],
@@ -6,20 +6,20 @@ export const store = reactive({
   evaluations: [],
   metricDefinitions: {},
   setRepos(repos) {
-    this.repos = repos;
+    this.repos = repos
   },
   setReleases(releases) {
-    this.releases = releases;
+    this.releases = releases
   },
   setEvaluations(evaluations) {
-    this.evaluations = evaluations;
+    this.evaluations = evaluations
   },
   setMetricDefinitions(defs) {
-    this.metricDefinitions = defs;
+    this.metricDefinitions = defs
   },
   getRepoById(id) {
     return this.repos.find(repo => {
-      return repo.id === id;
-    });
+      return repo.id === id
+    })
   }
-});
+})

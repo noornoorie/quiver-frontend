@@ -49,20 +49,20 @@
 </template>
 
 <script setup>
-import { computed, ref, watch } from "vue";
-import { store } from "@/helpers/store";
-import Icon from "@/components/Icon.vue";
-import { useI18n } from "vue-i18n";
+import { computed, ref, watch } from "vue"
+import { store } from "@/helpers/store"
+import Icon from "@/components/Icon.vue"
+import { useI18n } from "vue-i18n"
 
 
-const { t } = useI18n();
+const { t } = useI18n()
 
-const props = defineProps(['id']);
-const repo = ref(null);
+const props = defineProps(['id'])
+const repo = ref(null)
 
 watch(() => props.id, (id) => {
-  repo.value = store.getRepoById(id);
-}, { immediate: true });
+  repo.value = store.getRepoById(id)
+}, { immediate: true })
 
 const statusList = computed(() => {
   return repo.value ? [
@@ -78,23 +78,23 @@ const statusList = computed(() => {
             ? [{ icon: 'alert-triangle', label: t('dependency_conflicts') }]
             : [{ icon: 'check-circle', label: t('no_dependency_conflicts') }]
     )
-  ] : [];
-});
+  ] : []
+})
 
 const readmeUrl = computed(() => {
-  if (!repo.value) return '';
-  return repo.value.additional_info.links['README.md'];
-});
+  if (!repo.value) return ''
+  return repo.value.additional_info.links['README.md']
+})
 
 const changeLogUrl = computed(() => {
-  if (!repo.value) return '';
-  return repo.value.additional_info.links['README.md'];
-});
+  if (!repo.value) return ''
+  return repo.value.additional_info.links['README.md']
+})
 
 const projectType = computed(() => {
-  if (!repo.value) return null;
-  return repo.value.project_type;
-});
+  if (!repo.value) return null
+  return repo.value.project_type
+})
 
 </script>
 
