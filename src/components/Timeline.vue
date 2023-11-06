@@ -3,7 +3,7 @@ import api from '@/helpers/api'
 import TimelineItem from "@/components/timeline/TimelineItem.vue"
 import Dropdown from 'primevue/dropdown'
 import { computed, onMounted, ref } from "vue"
-import Metrics from '@/helpers/metrics'
+import { EvaluationMetrics } from '@/helpers/metrics'
 import { useI18n } from "vue-i18n"
 import type { DropdownOption } from "@/types"
 import { DropdownPassThroughStyles } from '@/helpers/pt'
@@ -12,8 +12,8 @@ const { t } = useI18n()
 const gtList = ref([])
 const workflows = ref([])
 const selectedMetric = ref<DropdownOption | null>(null)
-const metrics = computed<DropdownOption[]>(() => Object.keys(Metrics).map(key => ({ value: Metrics[key], label: t(Metrics[key]) })))
-const selectedMetricValue = computed<string>(() => selectedMetric.value?.value || Metrics.CER_MEAN)
+const metrics = computed<DropdownOption[]>(() => Object.keys(EvaluationMetrics).map(key => ({ value: EvaluationMetrics[key], label: t(EvaluationMetrics[key]) })))
+const selectedMetricValue = computed<string>(() => selectedMetric.value?.value || EvaluationMetrics.CER_MEAN)
 onMounted(async () => {
   gtList.value = await api.getGroundTruth()
   workflows.value = await api.getWorkflows()

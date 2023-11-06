@@ -3,7 +3,7 @@ import { onMounted, ref, watch } from "vue"
 import api from "@/helpers/api"
 import TimelineChart from "@/components/timeline/TimelineChart.vue"
 import type {EvaluationResultsDocumentWide, EvaluationRun, TimelineChartDataPoint, Workflow} from "@/types"
-import Metrics from '@/helpers/metrics'
+import { getMaxValueOfMetric } from '@/helpers/metrics'
 
 const props = defineProps<{
   gtId: string,
@@ -24,12 +24,12 @@ onMounted(async () => {
   runs.value = await api.getRuns(gtId)
 
   data.value = getTimelineData(runs.value, metric)
-  maxY.value = getMaxYByMetric(metric)
+  maxY.value = getMaxValueOfMetric(metric)
 })
 
 watch(() => props.metric, async (value) => {
   data.value = getTimelineData(runs.value, value)
-  maxY.value = getMaxYByMetric(value)
+  maxY.value = getMaxValueOfMetric(value)
 })
 
 function getTimelineData(runs: EvaluationRun[], metric: string): TimelineChartDataPoint[] {
@@ -55,19 +55,6 @@ function getTimelineData(runs: EvaluationRun[], metric: string): TimelineChartDa
         }
       })
 }
-
-function getMaxYByMetric(metric: string) {
-  if (metric === Metrics.CER_MEAN) return 2
-  if (metric === Metrics.CER_MEDIAN) return 2
-  if (metric === Metrics.CER_STANDARD_DEVIATION) return 2
-  if (metric === Metrics.WER) return 1
-  if (metric === Metrics.WALL_TIME) return 2
-  if (metric === Metrics.PAGES_PER_MINUTE) return 100
-  if (metric === Metrics.CPU_TIME) return 100
-
-  else return 1
-}
-
 </script>
 
 <template>
