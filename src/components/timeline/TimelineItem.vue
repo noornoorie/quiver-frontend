@@ -17,6 +17,8 @@ const props = defineProps<{
 
 const op = ref<OverlayPanel>()
 const selectedStep = ref<WorkflowStep | null>(null)
+const startDate = ref<Date>(new Date('2023-10-01'))
+const endDate = ref<Date>(new Date())
 
 function getStepAcronym(stepId) {
   return StepsAcronyms[stepId]
@@ -52,7 +54,14 @@ function hideParametersOverlay() {
         <h2 class="w-1/2 text-xl font-bold flex-shrink-0">{{ gt.label }}</h2>
         <div class="w-1/2 flex justify-end">
           <div class="flex overflow-x-auto">
-            <MetricAverageChart :gt-id="gt.id" :metric="metric" class="" :width="400" />
+            <MetricAverageChart
+              :gt-id="gt.id"
+              :metric="metric"
+              class=""
+              :width="400"
+              :start-date="startDate"
+              :end-date="endDate"
+            />
           </div>
         </div>
       </div>
@@ -63,7 +72,6 @@ function hideParametersOverlay() {
           <tr v-for="workflow in workflows" :key="workflow.id">
             <td class="font-semibold pe-2">{{ workflow.label }}</td>
             <td class="p-1 overflow-x-auto">
-              <!--            <Icon :icon="getStepIcon(step.id)" v-for="step in workflow.workflow_steps" :key="step.id"/>-->
               <span
                 v-for="step in workflow.steps"
                 :key="step.id"
@@ -75,7 +83,15 @@ function hideParametersOverlay() {
             </span>
             </td>
             <td class="overflow-x-auto">
-              <MetricChart :gt-id="gt.id" :workflow-id="workflow.id" :metric="metric" :width="400" class="flex justify-end"/>
+              <MetricChart
+                :gt-id="gt.id"
+                :workflow-id="workflow.id"
+                :metric="metric"
+                :width="400"
+                :start-date="startDate"
+                :end-date="endDate"
+                class="flex justify-end"
+              />
             </td>
           </tr>
         </table>

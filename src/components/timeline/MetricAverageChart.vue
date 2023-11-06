@@ -7,7 +7,9 @@ import Metrics from '@/helpers/metrics'
 
 const props = defineProps<{
   gtId: string,
-  metric: string
+  metric: string,
+  startDate: Date,
+  endDate: Date
 }>()
 
 const data = ref<TimelineChartDataPoint[]>([])
@@ -69,7 +71,7 @@ function getMaxYByMetric(metric: string) {
 </script>
 
 <template>
-  <TimelineChart :data="data" :max-y="maxY" />
+  <TimelineChart :data="data" :max-y="maxY" :start-date="startDate" :end-date="endDate"/>
 </template>
 
 <style scoped lang="scss">

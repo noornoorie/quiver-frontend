@@ -1,15 +1,16 @@
-<script setup>
+<script setup lang="ts">
 import { onMounted, ref, watch } from "vue"
 import api from "@/helpers/api"
 import TimelineChart from "@/components/timeline/TimelineChart.vue"
 import Metrics from '@/helpers/metrics'
+import type { EvaluationResultsDocumentWide, EvaluationRun } from "@/types"
 
-const props = defineProps(['gtId', 'workflowId', 'metric'])
-const runs = ref([])
+const props = defineProps(['gtId', 'workflowId', 'metric', 'startDate', 'endDate'])
+const runs = ref<EvaluationRun[]>([])
 const data = ref([])
 const maxY = ref(2)
 
-function getMaxYByMetric(metric) {
+function getMaxYByMetric(metric: string) {
   if (metric === Metrics.CER_MEAN) return 2
   if (metric === Metrics.CER_MEDIAN) return 2
   if (metric === Metrics.CER_STANDARD_DEVIATION) return 2
@@ -36,7 +37,7 @@ watch(() => props.metric,
     }, { immediate: true }
 )
 
-function getTimelineData(runs, metric) {
+function getTimelineData(runs: EvaluationRun[], metric: keyof EvaluationResultsDocumentWide) {
   return runs.map(({ metadata, evaluation_results }) => {
     const value = evaluation_results.document_wide[metric]
     return {
@@ -49,7 +50,7 @@ function getTimelineData(runs, metric) {
 </script>
 
 <template>
-  <TimelineChart :data="data" :max-y="maxY" />
+  <TimelineChart :data="data" :max-y="maxY" :start-date="startDate" :end-date="endDate" />
 </template>
 
 <style scoped lang="scss">

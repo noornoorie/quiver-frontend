@@ -1,14 +1,15 @@
 <script setup lang="ts">
 import * as d3 from "d3"
-import { onMounted, ref, watch, withDefaults, defineProps, computed } from "vue"
+import { ref, watch, computed } from "vue"
 import type { TimelineChartDataPoint } from "@/types"
 import { createTooltip, setEventListeners } from "@/helpers/d3/d3-tooltip"
-
 
 interface Props {
   data: TimelineChartDataPoint[],
   maxY?: number,
-  width?: number
+  width?: number,
+  startDate: Date,
+  endDate: Date
 }
 
 const props = defineProps<Props>()
@@ -37,14 +38,14 @@ function isUp(data: TimelineChartDataPoint[], higherIsUp = true) {
   else return -1
 }
 
-watch(() => props.data, (value) => {
-  let data = value
+watch([() => props.data, () => props.startDate, () => props.endDate], ([data, startDate, endDate]) => {
+  if (!data || !startDate || !endDate) return
 
   if (data.length === 0) return
 
   // Declare the x (horizontal position) scale.
   const x = d3.scaleTime()
-    .domain([data[0].date, data[data.length -1].date])
+    .domain([startDate, endDate])
     .range([marginLeft, _width.value - marginRight])
 
 // Declare the y (vertical position) scale.
@@ -83,8 +84,6 @@ watch(() => props.data, (value) => {
         .y(function(d) { return y(d.value) })
     )
 
-
-
   const pointGroups = pathGroup.selectAll("myCircles")
     .data(data)
     .enter()
@@ -113,6 +112,7 @@ watch(() => props.data, (value) => {
   setEventListeners(svg.selectAll('.chart-point'), tooltip, { useData: (d) => d.value })
 
   // Append the SVG element.
+  if (!container.value) return
   container.value.replaceChildren()
   container.value.append(svg.node())
 })
