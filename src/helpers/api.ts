@@ -26,8 +26,13 @@ async function getGroundTruth(): Promise<GroundTruth[]> {
     return await request(baseUrl + '/gt')
 }
 
-async function getRuns(gtId: string, workflowId: string): Promise<EvaluationRun[]> {
-    return await request(baseUrl + `/runs/${gtId}/${workflowId}`)
+async function getRuns(gtId?: string, workflowId?: string): Promise<EvaluationRun[]> {
+    let path = `${baseUrl}/runs`
+
+    if (gtId) path += `/${gtId}`
+    if (workflowId) path += `/${workflowId}`
+
+    return await request(path)
 }
 
 async function request (url: string) {

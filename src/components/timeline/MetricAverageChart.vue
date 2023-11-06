@@ -2,7 +2,7 @@
 import { onMounted, ref, watch } from "vue"
 import api from "@/helpers/api"
 import TimelineChart from "@/components/timeline/TimelineChart.vue"
-import type {EvaluationRun, TimelineChartDataPoint, Workflow} from "@/types"
+import type {EvaluationResultsDocumentWide, EvaluationRun, TimelineChartDataPoint, Workflow} from "@/types"
 import Metrics from '@/helpers/metrics'
 
 const props = defineProps<{
@@ -13,16 +13,13 @@ const props = defineProps<{
 const data = ref<TimelineChartDataPoint[]>([])
 const maxY = ref(2)
 const workflows = ref<Workflow[] | null>(null)
-const runs = ref<EvaluationRun[][]>([])
+const runs = ref<EvaluationRun[]>([])
 
 onMounted(async () => {
   const { gtId, metric } = props
   workflows.value = await api.getWorkflows()
 
-  for (const workflow of workflows.value) {
-    const workflowsRuns = await api.getRuns(gtId, workflow.id)
-    runs.value.push(workflowsRuns)
-  }
+  runs.value = await api.getRuns(gtId)
 
   data.value = getTimelineData(runs.value, metric)
   maxY.value = getMaxYByMetric(metric)
@@ -33,18 +30,17 @@ watch(() => props.metric, async (value) => {
   maxY.value = getMaxYByMetric(value)
 })
 
-function getTimelineData(runs: EvaluationRun[][], metric: string): TimelineChartDataPoint[] {
+function getTimelineData(runs: EvaluationRun[], metric: string): TimelineChartDataPoint[] {
   const datesValues = runs.reduce((acc, cur) => {
-    cur.forEach(run => {
-      const date = new Date(new Date(run.metadata.timestamp).setHours(0, 0,0,0)).toDateString()
-      const value = <number>run.evaluation_results.document_wide[metric]
-      if (!value && Array.isArray(value)) return acc
+      const date = new Date(new Date(cur.metadata.timestamp).setHours(0, 0, 0, 0)).toDateString()
+      const value = cur.evaluation_results.document_wide[<keyof EvaluationResultsDocumentWide>metric]
+      if (!value || Array.isArray(value)) return acc
 
       if (!acc[date]) acc[date] = [value]
       else acc[date] = [...acc[date], value]
-    })
-    return acc
-  }, <{ [key: string]: number[]}>{})
+      return acc
+    },
+    <{ [key: string]: number[] }>{})
 
   return Object
       .keys(datesValues)
@@ -77,5 +73,4 @@ function getMaxYByMetric(metric: string) {
 </template>
 
 <style scoped lang="scss">
-
 </style>
