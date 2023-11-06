@@ -3,6 +3,8 @@ import * as d3 from "d3"
 import { ref, watch, computed } from "vue"
 import type { TimelineChartDataPoint } from "@/types"
 import { createTooltip, setEventListeners } from "@/helpers/d3/d3-tooltip"
+import colors from 'tailwindcss/colors'
+
 
 interface Props {
   data: TimelineChartDataPoint[],
@@ -60,13 +62,23 @@ watch([() => props.data, () => props.startDate, () => props.endDate], ([data, st
 
 // Add the x-axis.
   svg.append("g")
+    .classed('x-axis-group', true)
     .attr("transform", `translate(0,${height - marginBottom})`)
-    .call(d3.axisBottom(x).ticks(3).tickFormat(d3.utcFormat("%d.%m.%Y")))
+    .call(d3.axisBottom(x).ticks(0).tickSize(0).tickFormat(d3.utcFormat("%d.%m.%Y")))
+
+  svg.select('.x-axis-group .domain').attr('stroke', colors.gray['400'])
+  svg.selectAll('.x-axis-group .tick text').attr('fill', colors.gray['400'])
 
 // Add the y-axis.
   svg.append("g")
+    .classed('y-axis-group', true)
     .attr("transform", `translate(${marginLeft},0)`)
-    .call(d3.axisLeft(y).ticks(1))
+    .call(d3.axisLeft(y).ticks(1).tickSize(0).tickPadding(5))
+
+  svg.select('.y-axis-group .domain').attr('stroke', colors.gray['400'])
+  svg.selectAll('.y-axis-group .tick text').attr('fill', colors.gray['400'])
+
+
 
   const trend = isUp(data, false)
 
@@ -153,6 +165,19 @@ watch([() => props.data, () => props.startDate, () => props.endDate], ([data, st
 
     circle {
       fill: var(--color--negative-text);
+    }
+  }
+}
+
+.y-axis-group {
+  .tick {
+    &:first-of-type {
+      text {
+        transform: translateY(-3px);
+      }
+    }
+    text {
+      @apply text-[9px];
     }
   }
 }
