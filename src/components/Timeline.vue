@@ -15,9 +15,14 @@ const selectedMetric = ref<DropdownOption | null>(null)
 const metrics = computed<DropdownOption[]>(() => Object.keys(EvaluationMetrics).map(key => ({ value: EvaluationMetrics[key], label: t(EvaluationMetrics[key]) })))
 const selectedMetricValue = computed<string>(() => selectedMetric.value?.value || EvaluationMetrics.CER_MEAN)
 onMounted(async () => {
-  gtList.value = await api.getGroundTruth()
-  workflows.value = await api.getWorkflows()
-  selectedMetric.value = metrics.value[0]
+  try {
+    gtList.value = await api.getGroundTruth()
+    workflows.value = await api.getWorkflows()
+    selectedMetric.value = metrics.value[0]
+  } catch {
+
+  }
+
 })
 
 </script>
@@ -30,13 +35,18 @@ onMounted(async () => {
         :options="metrics"
         :pt="DropdownPassThroughStyles"
         optionLabel="label"
-        placeholder="Select a City"
+        placeholder="Select a metric"
         class="ml-auto md:w-14rem"
         unstyled
       />
     </div>
     <div class="flex flex-col space-y-4">
-      <TimelineItem v-for="gt in gtList" :key="gt.id" :gt="gt" :workflows="workflows" :metric="selectedMetricValue" />
+      <template v-if="gtList.length > 0">
+        <TimelineItem v-for="gt in gtList" :key="gt.id" :gt="gt" :workflows="workflows" :metric="selectedMetricValue" />
+      </template>
+      <template v-else>
+        <div class="my-6">An error has occurred. Please try again later!</div>
+      </template>
     </div>
   </div>
 
