@@ -10,14 +10,9 @@ import PrimeVue from 'primevue/config'
 import '@inkline/inkline/inkline.scss'
 import './assets/main.css'
 import './assets/app.scss'
+import i18n from "@/i18n"
 
-import en from './locales/en.json'
-import de from './locales/de.json'
 
-const i18n = createI18n({
-  locale: 'en',
-  messages: { en, de }
-})
 
 const app = createApp(App)
 
@@ -26,6 +21,5 @@ app.use(PrimeVue, { /* options */ })
 
 app.use(router)
 app.use(i18n)
-
 
 app.mount('#app')

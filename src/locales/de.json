@@ -51,5 +51,6 @@
   "cpu_time": "CPU Zeit",
   "wer": "WER",
   "pages_per_minute": "Seiten pro Minute",
-  "cpu_standard_deviation": "CPU Standardabweichung"
+  "cpu_standard_deviation": "CPU Standardabweichung",
+  "date": "Datum"
 }

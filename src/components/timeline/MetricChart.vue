@@ -4,6 +4,8 @@ import api from "@/helpers/api"
 import TimelineChart from "@/components/timeline/TimelineChart.vue"
 import { getMaxValueOfMetric } from '@/helpers/metrics'
 import type { EvaluationResultsDocumentWide, EvaluationRun } from "@/types"
+import { TimelineChartDataPoint } from "@/types"
+import { metricChartTooltipContent } from "@/helpers/metric-chart-tooltip-content"
 
 const props = defineProps(['gtId', 'workflowId', 'metric', 'startDate', 'endDate'])
 const runs = ref<EvaluationRun[]>([])
@@ -36,10 +38,14 @@ function getTimelineData(runs: EvaluationRun[], metric: keyof EvaluationResultsD
   })
 }
 
+function tooltipContent(d: TimelineChartDataPoint) {
+  return metricChartTooltipContent(d, props.metric)
+}
+
 </script>
 
 <template>
-  <TimelineChart :data="data" :max-y="maxY" :start-date="startDate" :end-date="endDate" />
+  <TimelineChart :data="data" :max-y="maxY" :start-date="startDate" :end-date="endDate" :tooltip-content="tooltipContent" />
 </template>
 
 <style scoped lang="scss">

@@ -45,5 +45,6 @@
   "cpu_time": "CPU Time",
   "wer": "WER",
   "pages_per_minute": "Pages per minute",
-  "cpu_standard_deviation": "CPU Standard Deviation"
+  "cpu_standard_deviation": "CPU Standard Deviation",
+  "date": "Date"
 }
