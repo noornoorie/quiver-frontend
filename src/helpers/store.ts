@@ -1,10 +1,26 @@
 import { reactive } from 'vue'
+import type { GroundTruth, Workflow } from "@/types"
 
-export const store = reactive({
+interface State {
+  gtList: GroundTruth[],
+  workflows: Workflow[],
+  setGTList: (gt: GroundTruth[]) => void,
+  setWorkflows: (workflows: Workflow[]) => void,
+}
+
+export const store = reactive<State>({
   repos: [],
   releases: [],
   evaluations: [],
   metricDefinitions: {},
+  gtList: [],
+  workflows: [],
+  setGTList(gtList) {
+    this.gtList = gtList
+  },
+  setWorkflows(workflows) {
+    this.workflows = workflows
+  },
   setRepos(repos) {
     this.repos = repos
   },

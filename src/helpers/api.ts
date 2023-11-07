@@ -10,10 +10,6 @@ async function getOcrdAllReleases() {
     return await request(baseUrlOld + '/ocrd_all_releases.json')
 }
 
-async function getLatestWorkflows() {
-    return await request(baseUrlOld + '/workflows.json')
-    // return Promise.resolve(workflowsJson);
-}
 async function getEvalDefinitions() {
     return await request(baseUrlOld + '/metrics_definitions.json')
 }
@@ -35,6 +31,17 @@ async function getRuns(gtId?: string, workflowId?: string): Promise<EvaluationRu
     return await request(path)
 }
 
+async function getLatestRuns(gtId?: string, workflowId?: string): Promise<EvaluationRun[]> {
+    let path = `${baseUrl}/runs`
+
+    if (gtId) path += `/${gtId}`
+    if (workflowId) path += `/${workflowId}`
+
+    path += '/latest'
+
+    return await request(path)
+}
+
 async function request (url: string) {
     const response = await fetch(url)
     return await response.json()
@@ -44,8 +51,8 @@ export default {
     getProjects,
     getWorkflows,
     getGroundTruth,
-    getLatestWorkflows,
     getEvalDefinitions,
     getOcrdAllReleases,
-    getRuns
+    getRuns,
+    getLatestRuns
 }

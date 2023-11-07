@@ -66,8 +66,14 @@ const createReadableMetricValue = (key, value) => {
   return value
 }
 
+const mapGtId = (id: string) => {
+  const arr = id.split('/')
+  return arr[arr.length - 1].split('.')[0]
+}
+
 export {
   getEvalColor,
   setEvalColors,
-  createReadableMetricValue
+  createReadableMetricValue,
+  mapGtId
 }

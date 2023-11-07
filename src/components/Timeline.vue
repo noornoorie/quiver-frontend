@@ -5,24 +5,33 @@ import Dropdown from 'primevue/dropdown'
 import { computed, onMounted, ref } from "vue"
 import { EvaluationMetrics } from '@/helpers/metrics'
 import { useI18n } from "vue-i18n"
-import type { DropdownOption } from "@/types"
+import type { DropdownOption, GroundTruth, Workflow } from "@/types"
 import { DropdownPassThroughStyles } from '@/helpers/pt'
+import { store } from '@/helpers/store'
 
 const { t } = useI18n()
-const gtList = ref([])
-const workflows = ref([])
+const gtList = ref<GroundTruth[]>([])
+const workflows = ref<Workflow[]>([])
 const selectedMetric = ref<DropdownOption | null>(null)
 const metrics = computed<DropdownOption[]>(() => Object.keys(EvaluationMetrics).map(key => ({ value: EvaluationMetrics[key], label: t(EvaluationMetrics[key]) })))
 const selectedMetricValue = computed<string>(() => selectedMetric.value?.value || EvaluationMetrics.CER_MEAN)
-onMounted(async () => {
-  try {
-    gtList.value = await api.getGroundTruth()
-    workflows.value = await api.getWorkflows()
-    selectedMetric.value = metrics.value[0]
-  } catch {
 
+onMounted(async () => {
+  selectedMetric.value = metrics.value[0]
+
+  gtList.value = store.gtList
+
+  if (!gtList.value.length) {
+    gtList.value = await api.getGroundTruth()
+    store.setGTList(gtList.value)
   }
 
+  workflows.value = store.workflows
+
+  if (!workflows.value.length) {
+    workflows.value = await api.getWorkflows()
+    store.setWorkflows(workflows.value)
+  }
 })
 
 </script>
