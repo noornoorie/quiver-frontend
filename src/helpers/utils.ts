@@ -1,4 +1,5 @@
 import { ref } from 'vue'
+import type { EvaluationResultsDocumentWide } from "@/types"
 
 const utils = ref({})
 
@@ -56,7 +57,7 @@ const shortenMetricValue = (value) => {
   return Math.round(value * 1000) / 1000
 }
 
-const createReadableMetricValue = (key, value) => {
+const createReadableMetricValue = (key: keyof EvaluationResultsDocumentWide, value: number | number[]) => {
   if (['cer_mean', 'cer_median', 'wer', 'pages_per_minute', 'cer_standard_deviation', 'wall_time', 'cpu_time'].includes(key)) {
     return shortenMetricValue(value)
   } else if (key === 'cer_range') {

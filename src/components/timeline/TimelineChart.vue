@@ -11,7 +11,8 @@ interface Props {
   maxY?: number,
   width?: number,
   startDate: Date,
-  endDate: Date
+  endDate: Date,
+  tooltipContent: (d: TimelineChartDataPoint) => string
 }
 
 const props = defineProps<Props>()
@@ -113,6 +114,7 @@ watch([() => props.data, () => props.startDate, () => props.endDate], ([data, st
   pointGroups
     .append("circle")
     .attr("r", 2)
+    .classed('pointer-events-none', true)
     .attr("cx", function(d) { return x(d.date) })
     .attr("cy", function(d) { return y(d.value) })
 
@@ -121,7 +123,7 @@ watch([() => props.data, () => props.startDate, () => props.endDate], ([data, st
     classes: 'border border-gray-300 bg-white p-2 rounded-md'
   })
 
-  setEventListeners(svg.selectAll('.chart-point'), tooltip, { useData: (d) => d.value })
+  setEventListeners(svg.selectAll('.chart-point'), tooltip, { useData: props.tooltipContent })
 
   // Append the SVG element.
   if (!container.value) return

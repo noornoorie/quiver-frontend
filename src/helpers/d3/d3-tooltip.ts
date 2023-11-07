@@ -32,13 +32,11 @@ export function setEventListeners(
   container
     .on("mouseover", function(e, d) {
       const content = useData(d)
-      tooltip.html('<div>' + content + '</div>')
-      return tooltip.style("visibility", "visible")
-    })
-    .on("mousemove", function() {
       const { top, left } = this.getBoundingClientRect()
+      tooltip.html('<div>' + content + '</div>')
       return tooltip
-        .style("top", (top - 40) +"px")
+        .style("visibility", "visible")
+        .style("top", (top - 60) +"px")
         .style("left",left+"px")
     })
     .on("mouseout", function(){ return tooltip.style("visibility", "hidden") })
