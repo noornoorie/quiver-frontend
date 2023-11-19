@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onMounted, ref, watch } from "vue"
 import api from "@/helpers/api"
-import TimelineChart from "@/components/timeline/TimelineChart.vue"
+import BaseTimelineChart from "@/components/timeline/BaseTimelineChart.vue"
 import type {EvaluationResultsDocumentWide, EvaluationRun, TimelineChartDataPoint, Workflow} from "@/types"
 import { getMaxValueOfMetric } from '@/helpers/metrics'
 import {useI18n} from "vue-i18n";
@@ -66,7 +66,7 @@ function tooltipContent(d: TimelineChartDataPoint) {
 </script>
 
 <template>
-  <TimelineChart :data="data" :max-y="maxY" :start-date="startDate" :end-date="endDate" :tooltip-content="tooltipContent"/>
+  <BaseTimelineChart :data="data" :max-y="maxY" :start-date="startDate" :end-date="endDate" :tooltip-content="tooltipContent"/>
 </template>
 
 <style scoped lang="scss">

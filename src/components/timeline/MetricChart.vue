@@ -1,16 +1,18 @@
 <script setup lang="ts">
 import { onMounted, ref, watch } from "vue"
 import api from "@/helpers/api"
-import TimelineChart from "@/components/timeline/TimelineChart.vue"
+import BaseTimelineChart from "@/components/timeline/BaseTimelineChart.vue"
 import { getMaxValueOfMetric } from '@/helpers/metrics'
 import type { EvaluationResultsDocumentWide, EvaluationRun } from "@/types"
 import { TimelineChartDataPoint } from "@/types"
 import { metricChartTooltipContent } from "@/helpers/metric-chart-tooltip-content"
+import OverlayPanel from 'primevue/overlaypanel'
 
 const props = defineProps(['gtId', 'workflowId', 'metric', 'startDate', 'endDate'])
 const runs = ref<EvaluationRun[]>([])
 const data = ref([])
 const maxY = ref(2)
+const op = ref<OverlayPanel | null>(null)
 
 
 onMounted(async () => {
@@ -45,7 +47,27 @@ function tooltipContent(d: TimelineChartDataPoint) {
 </script>
 
 <template>
-  <TimelineChart :data="data" :max-y="maxY" :start-date="startDate" :end-date="endDate" :tooltip-content="tooltipContent" />
+  <div @click="op?.toggle($event)" class="cursor-pointer">
+    <BaseTimelineChart :data="data" :max-y="maxY" :start-date="startDate" :end-date="endDate" :tooltip-content="tooltipContent" />
+  </div>
+  <OverlayPanel
+    ref="op"
+    :pt="{
+      root: {
+        class: 'z-[9999] bg-white border rounded-md shadow-md'
+      }
+    }"
+  >
+    <BaseTimelineChart
+      :data="data"
+      :max-y="maxY"
+      :start-date="startDate"
+      :end-date="endDate"
+      :tooltip-content="tooltipContent"
+      :height="400"
+      :width="660"
+    />
+  </OverlayPanel>
 </template>
 
 <style scoped lang="scss">
