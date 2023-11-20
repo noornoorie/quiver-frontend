@@ -46,8 +46,15 @@ function tooltipContent(d: TimelineChartDataPoint) {
 </script>
 
 <template>
-  <div @click="op?.toggle($event)" class="cursor-pointer">
-    <BaseTimelineChart :data="data" :max-y="maxY" :start-date="startDate" :end-date="endDate" :tooltip-content="tooltipContent" />
+  <div @click="op?.toggle($event)" class="cursor-pointer flex justify-end">
+    <BaseTimelineChart
+      :data="data"
+      :max-y="maxY"
+      :start-date="startDate"
+      :end-date="endDate"
+      :tooltip-content="tooltipContent"
+      :width="400"
+    />
   </div>
   <OverlayPanel
     ref="op"
