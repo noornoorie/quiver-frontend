@@ -3,8 +3,7 @@ import { onMounted, ref, watch } from "vue"
 import api from "@/helpers/api"
 import BaseTimelineChart from "@/components/timeline/BaseTimelineChart.vue"
 import { getMaxValueOfMetric } from '@/helpers/metrics'
-import type { EvaluationResultsDocumentWide, EvaluationRun } from "@/types"
-import { TimelineChartDataPoint } from "@/types"
+import type { EvaluationResultsDocumentWide, EvaluationRun, TimelineChartDataPoint } from "@/types"
 import { metricChartTooltipContent } from "@/helpers/metric-chart-tooltip-content"
 import OverlayPanel from 'primevue/overlaypanel'
 
