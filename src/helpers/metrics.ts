@@ -1,3 +1,5 @@
+import type { EvaluationResultsDocumentWide, EvaluationRun } from "@/types"
+
 const EvaluationMetrics = {
   CER_MEAN: 'cer_mean',
   CER_MEDIAN: 'cer_median',
@@ -8,7 +10,7 @@ const EvaluationMetrics = {
   CPU_TIME: 'cpu_time'
 }
 
-function getMaxValueOfMetric(metric: string): number {
+function getDefaultMaxValueOfMetric(metric: string): number {
   if (metric === EvaluationMetrics.CER_MEAN) return 2
   if (metric === EvaluationMetrics.CER_MEDIAN) return 2
   if (metric === EvaluationMetrics.CER_STANDARD_DEVIATION) return 2
@@ -20,7 +22,22 @@ function getMaxValueOfMetric(metric: string): number {
   else return 1
 }
 
+function getMaxValueByMetric(metric: keyof EvaluationResultsDocumentWide, runs: EvaluationRun[] = []): number {
+  const values = runs.map((run) => {
+    const value = run.evaluation_results.document_wide[metric]
+    return Array.isArray(value) ? Math.max(...value) : value ?? 0
+  }) ?? []
+
+  return Math.max(...values)
+}
+
+function extendMaxValue(value: number): number {
+  return Math.floor(value + value * 0.2)
+}
+
 export {
   EvaluationMetrics,
-  getMaxValueOfMetric
+  getMaxValueByMetric,
+  getDefaultMaxValueOfMetric,
+  extendMaxValue
 }

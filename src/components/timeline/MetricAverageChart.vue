@@ -1,43 +1,40 @@
 <script setup lang="ts">
-import { onMounted, ref, watch } from "vue"
+import {computed, onMounted, ref, watch} from "vue"
 import api from "@/helpers/api"
 import BaseTimelineChart from "@/components/timeline/BaseTimelineChart.vue"
-import type {EvaluationResultsDocumentWide, EvaluationRun, TimelineChartDataPoint, Workflow} from "@/types"
-import { getMaxValueOfMetric } from '@/helpers/metrics'
+import type {EvaluationResultsDocumentWide, EvaluationRun, TimelineChartDataPoint} from "@/types"
 import {useI18n} from "vue-i18n";
 import { metricChartTooltipContent } from "@/helpers/metric-chart-tooltip-content";
 import OverlayPanel from "primevue/overlaypanel";
 import BaseTimelineDetailedChart from "@/components/timeline/BaseTimelineDetailedChart.vue";
+import timelineStore from "@/store/timeline-store";
 
 const { t } = useI18n()
 
 const props = defineProps<{
   gtId: string,
-  metric: string,
+  metric: keyof EvaluationResultsDocumentWide,
   startDate: Date,
   endDate: Date
 }>()
 
 const data = ref<TimelineChartDataPoint[]>([])
-const maxY = ref(2)
-const workflows = ref<Workflow[] | null>(null)
+const maxY = computed(() => timelineStore.maxValues[props.metric] ?? 0)
 const runs = ref<EvaluationRun[]>([])
 const op = ref<OverlayPanel | null>(null)
 
 onMounted(async () => {
-  const { gtId, metric } = props
-  workflows.value = await api.getWorkflows()
-
+  const { gtId } = props
   runs.value = await api.getRuns(gtId)
-
-  data.value = getTimelineData(runs.value, metric)
-  maxY.value = getMaxValueOfMetric(metric)
+  init()
 })
 
-watch(() => props.metric, async (value) => {
-  data.value = getTimelineData(runs.value, value)
-  maxY.value = getMaxValueOfMetric(value)
-})
+watch(() => props.metric, init)
+
+function init() {
+  if (!runs.value) return
+  data.value = getTimelineData(runs.value, props.metric)
+}
 
 function getTimelineData(runs: EvaluationRun[], metric: string): TimelineChartDataPoint[] {
   const datesValues = runs.reduce((acc, cur) => {

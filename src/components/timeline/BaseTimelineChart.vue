@@ -18,13 +18,12 @@ interface Props {
 
 const props = defineProps<Props>()
 
-const height = props.height || 60
+const height = props.height || 45
 const marginTop = 10
 const marginRight = 10
-const marginBottom = 30
+const marginBottom = 5
 const marginLeft = 40
 const _width = computed(() => props.width ?? 300)
-const _maxY = computed(() => props.maxY ?? 2)
 
 const container = ref<HTMLDivElement>()
 
@@ -42,10 +41,13 @@ function isUp(data: TimelineChartDataPoint[], higherIsUp = true) {
   else return -1
 }
 
-function render([data, startDate, endDate]) {
+function render([data, startDate, endDate, maxY]) {
   if (!data || !startDate || !endDate) return
 
   if (data.length === 0) return
+
+  if (!container.value) return
+  container.value.replaceChildren()
 
   // Declare the x (horizontal position) scale.
   const x = d3.scaleTime()
@@ -54,8 +56,10 @@ function render([data, startDate, endDate]) {
 
 // Declare the y (vertical position) scale.
   const y = d3.scaleLinear()
-      .domain([0, _maxY.value])
+      .domain([0, maxY])
       .range([height - marginBottom, marginTop])
+      .nice()
+
 
 // Create the SVG container.
   const svg = d3.create("svg")
@@ -75,7 +79,7 @@ function render([data, startDate, endDate]) {
   svg.append("g")
       .classed('y-axis-group', true)
       .attr("transform", `translate(${marginLeft},0)`)
-      .call(d3.axisLeft(y).ticks(1).tickSize(0).tickPadding(5))
+      .call(d3.axisLeft(y).tickValues([0, maxY]).tickSize(0).tickPadding(5))
 
   svg.select('.y-axis-group .domain').attr('stroke', colors.gray['400'])
   svg.selectAll('.y-axis-group .tick text').attr('fill', colors.gray['400'])
@@ -126,18 +130,14 @@ function render([data, startDate, endDate]) {
   setEventListeners(svg.selectAll('.chart-point'), tooltip, { useData: props.tooltipContent })
 
   // Append the SVG element.
-  if (!container.value) return
-  container.value.replaceChildren()
   container.value.append(svg.node())
 }
 
 onMounted(() => {
-  render([props.data, props.startDate, props.endDate])
+  render([props.data, props.startDate, props.endDate, props.maxY])
 })
 
-watch([() => props.data, () => props.startDate, () => props.endDate], render)
-
-
+watch([() => props.data, () => props.startDate, () => props.endDate, () => props.maxY], render)
 </script>
 
 <template>

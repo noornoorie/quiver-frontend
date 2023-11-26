@@ -3,7 +3,7 @@ import Panel from "primevue/panel"
 import OverlayPanel from 'primevue/overlaypanel'
 import StepsAcronyms from '@/helpers/workflow-steps-acronyms'
 import MetricChart from "@/components/timeline/MetricChart.vue"
-import type { GroundTruth, Workflow, WorkflowStep } from "@/types"
+import type { EvaluationResultsDocumentWide, GroundTruth, Workflow, WorkflowStep } from "@/types"
 import MetricAverageChart from "@/components/timeline/MetricAverageChart.vue"
 import { Icon } from '@iconify/vue'
 import { ref } from "vue"
@@ -12,7 +12,7 @@ import { OverlayPanelDropdownStyles } from "@/helpers/pt"
 const props = defineProps<{
   gt: GroundTruth,
   workflows: Workflow[],
-  metric: string
+  metric: keyof EvaluationResultsDocumentWide
 }>()
 
 const op = ref<OverlayPanel>()
@@ -67,7 +67,7 @@ function hideParametersOverlay() {
       </div>
     </template>
     <template v-slot:default>
-      <div class="flex border-t border-gray-300 pt-4 px-4">
+      <div class="flex border-t border-gray-300 py-4 px-4">
         <table class="table-fixed w-full">
           <tr v-for="workflow in workflows" :key="workflow.id">
             <td class="font-semibold pe-2">{{ workflow.label }}</td>

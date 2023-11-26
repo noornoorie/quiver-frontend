@@ -5,7 +5,7 @@ import Dropdown from 'primevue/dropdown'
 import { computed, onMounted, ref } from "vue"
 import { EvaluationMetrics } from '@/helpers/metrics'
 import { useI18n } from "vue-i18n"
-import type { DropdownOption, GroundTruth, Workflow } from "@/types"
+import type {DropdownOption, EvaluationResultsDocumentWide, GroundTruth, Workflow} from "@/types"
 import { DropdownPassThroughStyles } from '@/helpers/pt'
 import { store } from '@/helpers/store'
 
@@ -14,7 +14,7 @@ const gtList = ref<GroundTruth[]>([])
 const workflows = ref<Workflow[]>([])
 const selectedMetric = ref<DropdownOption | null>(null)
 const metrics = computed<DropdownOption[]>(() => Object.keys(EvaluationMetrics).map(key => ({ value: EvaluationMetrics[key], label: t(EvaluationMetrics[key]) })))
-const selectedMetricValue = computed<string>(() => selectedMetric.value?.value || EvaluationMetrics.CER_MEAN)
+const selectedMetricValue = computed<keyof EvaluationResultsDocumentWide>(() => <keyof EvaluationResultsDocumentWide>selectedMetric.value?.value || EvaluationMetrics.CER_MEAN)
 
 onMounted(async () => {
   selectedMetric.value = metrics.value[0]

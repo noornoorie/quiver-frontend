@@ -1,34 +1,37 @@
 <script setup lang="ts">
-import { onMounted, ref, watch } from "vue"
+import { computed, onMounted, ref, watch } from "vue"
 import api from "@/helpers/api"
 import BaseTimelineChart from "@/components/timeline/BaseTimelineChart.vue"
-import { getMaxValueOfMetric } from '@/helpers/metrics'
+import { extendMaxValue, getMaxValueByMetric } from '@/helpers/metrics'
 import type { EvaluationResultsDocumentWide, EvaluationRun, TimelineChartDataPoint } from "@/types"
 import { metricChartTooltipContent } from "@/helpers/metric-chart-tooltip-content"
 import OverlayPanel from 'primevue/overlaypanel'
 import BaseTimelineDetailedChart from "@/components/timeline/BaseTimelineDetailedChart.vue"
+import timelineStore from "@/store/timeline-store"
 
 const props = defineProps(['gtId', 'workflowId', 'metric', 'startDate', 'endDate'])
 const runs = ref<EvaluationRun[]>([])
 const data = ref([])
-const maxY = ref(2)
+const maxY = computed(() => timelineStore.maxValues[props.metric] ?? 0 )
 const op = ref<OverlayPanel | null>(null)
 
-
 onMounted(async () => {
-  const { gtId, workflowId, metric } = props
+  const { gtId, workflowId } = props
   runs.value = await api.getRuns(gtId, workflowId)
-  data.value = getTimelineData(runs.value, metric)
-  maxY.value = getMaxValueOfMetric(metric)
+  init()
 })
 
-watch(() => props.metric,
-    (value) => {
-      if (!runs.value) return
-      data.value = getTimelineData(runs.value, value)
-      maxY.value = getMaxValueOfMetric(value)
-    }, { immediate: true }
-)
+watch(() => props.metric, init)
+
+function init() {
+  if (!runs.value) return
+  data.value = getTimelineData(runs.value, props.metric)
+
+  const maxValueByMetric = getMaxValueByMetric(props.metric, runs.value)
+  if (maxValueByMetric > maxY.value) {
+    timelineStore.setMaxValue(props.metric, extendMaxValue(maxValueByMetric))
+  }
+}
 
 function getTimelineData(runs: EvaluationRun[], metric: keyof EvaluationResultsDocumentWide) {
   return runs.map(({ metadata, evaluation_results }) => {
@@ -43,6 +46,8 @@ function getTimelineData(runs: EvaluationRun[], metric: keyof EvaluationResultsD
 function tooltipContent(d: TimelineChartDataPoint) {
   return metricChartTooltipContent(d, props.metric)
 }
+
+
 
 </script>
 
