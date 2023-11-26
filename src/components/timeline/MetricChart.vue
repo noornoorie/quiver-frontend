@@ -6,6 +6,7 @@ import { getMaxValueOfMetric } from '@/helpers/metrics'
 import type { EvaluationResultsDocumentWide, EvaluationRun, TimelineChartDataPoint } from "@/types"
 import { metricChartTooltipContent } from "@/helpers/metric-chart-tooltip-content"
 import OverlayPanel from 'primevue/overlaypanel'
+import BaseTimelineDetailedChart from "@/components/timeline/BaseTimelineDetailedChart.vue"
 
 const props = defineProps(['gtId', 'workflowId', 'metric', 'startDate', 'endDate'])
 const runs = ref<EvaluationRun[]>([])
@@ -64,7 +65,7 @@ function tooltipContent(d: TimelineChartDataPoint) {
       }
     }"
   >
-    <BaseTimelineChart
+    <BaseTimelineDetailedChart
       :data="data"
       :max-y="maxY"
       :start-date="startDate"

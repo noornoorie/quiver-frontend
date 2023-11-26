@@ -7,6 +7,7 @@ import { getMaxValueOfMetric } from '@/helpers/metrics'
 import {useI18n} from "vue-i18n";
 import { metricChartTooltipContent } from "@/helpers/metric-chart-tooltip-content";
 import OverlayPanel from "primevue/overlaypanel";
+import BaseTimelineDetailedChart from "@/components/timeline/BaseTimelineDetailedChart.vue";
 
 const { t } = useI18n()
 
@@ -81,13 +82,14 @@ function tooltipContent(d: TimelineChartDataPoint) {
       ref="op"
       :pt="{
       root: {
-        class: 'z-[9999] bg-white border rounded-md shadow-md'
+        class: 'z-[9999] bg-white border rounded-md shadow-md p-6'
       }
     }"
   >
-    <BaseTimelineChart
+    <BaseTimelineDetailedChart
         :data="data"
         :max-y="maxY"
+        :y-axis-title="$t(metric)"
         :start-date="startDate"
         :end-date="endDate"
         :tooltip-content="tooltipContent"

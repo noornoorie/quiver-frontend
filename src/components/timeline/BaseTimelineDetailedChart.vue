@@ -13,7 +13,8 @@ interface Props {
   startDate: Date,
   endDate: Date,
   height?: number,
-  tooltipContent: (d: TimelineChartDataPoint) => string
+  tooltipContent: (d: TimelineChartDataPoint) => string,
+  yAxisTitle?: string
 }
 
 const props = defineProps<Props>()
@@ -59,14 +60,15 @@ function render([data, startDate, endDate]) {
 
 // Create the SVG container.
   const svg = d3.create("svg")
-      .attr("width", _width.value)
+      .attr("width", _width.value - marginRight)
       .attr("height", height)
+      .classed('!overflow-visible', true)
 
 // Add the x-axis.
   svg.append("g")
       .classed('x-axis-group', true)
       .attr("transform", `translate(0,${height - marginBottom})`)
-      .call(d3.axisBottom(x).ticks(0).tickSize(0).tickFormat(d3.utcFormat("%d.%m.%Y")))
+      .call(d3.axisBottom(x).ticks(6).tickSize(4).tickFormat(d3.utcFormat("%d.%m.%Y")))
 
   svg.select('.x-axis-group .domain').attr('stroke', colors.gray['400'])
   svg.selectAll('.x-axis-group .tick text').attr('fill', colors.gray['400'])
@@ -75,7 +77,16 @@ function render([data, startDate, endDate]) {
   svg.append("g")
       .classed('y-axis-group', true)
       .attr("transform", `translate(${marginLeft},0)`)
-      .call(d3.axisLeft(y).ticks(1).tickSize(0).tickPadding(5))
+      .call(d3.axisLeft(y).ticks(6).tickSize(0).tickPadding(5))
+
+  svg.append("text")
+      .attr("text-anchor", "end")
+      .attr("transform", "rotate(-90)")
+      .attr("y", marginLeft - 30)
+      .attr("x", marginTop - 50)
+      .text(props.yAxisTitle ?? '')
+      .attr('fill', colors.gray['400'])
+
 
   svg.select('.y-axis-group .domain').attr('stroke', colors.gray['400'])
   svg.selectAll('.y-axis-group .tick text').attr('fill', colors.gray['400'])
@@ -145,6 +156,7 @@ watch([() => props.data, () => props.startDate, () => props.endDate], render)
 </template>
 
 <style lang="scss">
+
 
 .path-group {
   path {
