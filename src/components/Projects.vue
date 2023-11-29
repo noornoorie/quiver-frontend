@@ -6,16 +6,16 @@
     <div
       v-for="{ tag, projects } in releases"
       :key="tag"
-      class="_border-left _border-left-color:gray-40 _padding-bottom:5"
+      class="border-l border-gray-400 pb-8"
     >
-      <div class="timeline-item _font-weight:bold _padding-left:3">
-        <i-badge size="lg" class="_padding:1 _font-weight:bold">ocrd_all {{tag}}</i-badge>
+      <div class="timeline-item pl-5 flex">
+        <div class="bg-gray-300 rounded-md px-2 font-bold">ocrd_all {{tag}}</div>
       </div>
-      <i-row class="projects-container _margin-left:2 _margin-top:3 _display:flex">
-        <i-column v-for="projectId in projects" :key="projectId" sm="3" class="_margin-bottom:2 _display:flex">
-          <Project :id="projectId" class="_flex-grow:1"></Project>
-        </i-column>
-      </i-row>
+      <div class="projects-container ml-6 mt-3 flex flex-wrap gap-4">
+        <div v-for="projectId in projects" :key="projectId" class="flex sm:w-3/12">
+          <Project :id="projectId" class="flex-grow"></Project>
+        </div>
+      </div>
     </div>
   </template>
 </template>
@@ -45,25 +45,27 @@ onMounted(async () => {
     display: block;
     width: 18px;
     height: 18px;
-    background: var(--color--gray-40);
+    background: theme('colors.gray.300');
     left: -10px;
     top: 50%;
     transform: translateY(-50%);
     border-radius: 50%;
   }
-}
 
-.badge {
-  &:before {
-    content: "";
-    position: absolute;
-    display: block;
-    width: 8px;
-    height: 8px;
-    background: var(----background);
-    left: -4px;
-    top: 50%;
-    transform: translateY(-50%) rotate(45deg);
+  div {
+    position: relative;
+    &:before {
+      content: '';
+      position: absolute;
+      display: block;
+      width: 8px;
+      height: 8px;
+      top: 50%;
+      left: -4px;
+      transform: translateY(-50%) rotate(45deg);
+      background: theme('colors.gray.300');
+      z-index: -1;
+    }
   }
 }
 </style>
