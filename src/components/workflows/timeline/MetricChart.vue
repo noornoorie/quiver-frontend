@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { computed, onMounted, ref, watch } from "vue"
 import api from "@/helpers/api"
-import BaseTimelineChart from "@/components/timeline/BaseTimelineChart.vue"
+import BaseTimelineChart from "@/components/workflows/timeline/BaseTimelineChart.vue"
 import { extendMaxValue, getMaxValueByMetric } from '@/helpers/metrics'
 import type { EvaluationResultsDocumentWide, EvaluationRun, TimelineChartDataPoint } from "@/types"
 import { metricChartTooltipContent } from "@/helpers/metric-chart-tooltip-content"
 import OverlayPanel from 'primevue/overlaypanel'
-import BaseTimelineDetailedChart from "@/components/timeline/BaseTimelineDetailedChart.vue"
+import BaseTimelineDetailedChart from "@/components/workflows/timeline/BaseTimelineDetailedChart.vue"
 import timelineStore from "@/store/timeline-store"
 
 const props = defineProps(['gtId', 'workflowId', 'metric', 'startDate', 'endDate'])

@@ -2,9 +2,9 @@
 import Panel from "primevue/panel"
 import OverlayPanel from 'primevue/overlaypanel'
 import StepsAcronyms from '@/helpers/workflow-steps-acronyms'
-import MetricChart from "@/components/timeline/MetricChart.vue"
+import MetricChart from "@/components/workflows/timeline/MetricChart.vue"
 import type { EvaluationResultsDocumentWide, GroundTruth, Workflow, WorkflowStep } from "@/types"
-import MetricAverageChart from "@/components/timeline/MetricAverageChart.vue"
+import MetricAverageChart from "@/components/workflows/timeline/MetricAverageChart.vue"
 import { Icon } from '@iconify/vue'
 import { ref } from "vue"
 import { OverlayPanelDropdownStyles } from "@/helpers/pt"

@@ -8,7 +8,7 @@
       :key="tag"
       class="border-l border-gray-400 pb-8"
     >
-      <div class="timeline-item pl-5 flex">
+      <div class="timeline-item relative pl-5 flex">
         <div class="bg-gray-300 rounded-md px-2 font-bold">ocrd_all {{tag}}</div>
       </div>
       <div class="projects-container ml-6 mt-3 flex flex-wrap gap-4">

@@ -3,6 +3,7 @@ import { watch, ref } from "vue"
 import { useI18n } from "vue-i18n"
 import { createReadableMetricValue, getEvalColor, mapGtId } from "@/helpers/utils"
 import type { EvaluationRun } from "@/types"
+import Dropdown from 'primevue/dropdown'
 
 const { t } = useI18n()
 const props = defineProps<{
@@ -11,6 +12,7 @@ const props = defineProps<{
 }>()
 const groupedData = ref({})
 const evals = ref([])
+
 const sortOptions = ref([{
   value: 'documents',
   label: t('documents')
@@ -18,12 +20,13 @@ const sortOptions = ref([{
   value: 'workflows',
   label: t('workflows')
 }])
+
 const sortBy = ref(sortOptions.value[0])
 
-const onChange = (value) => {
+watch(sortBy, ({ value }) => {
   if (value === 'workflows') groupByWorkflows()
   else if (value === 'documents') groupByDocuments()
-}
+})
 
 const groupByWorkflows = () => {
   groupedData.value = props.data.filter(item => !!(item.metadata.ocr_workflow)).reduce((acc, cur) => {
@@ -91,30 +94,23 @@ watch(() => props.data, groupByDocuments, { immediate: true })
     <div class="flex mb-4" v-if="evals.length > 0">
       <div class="flex items-center ml-auto">
         <p class="mr-2">{{ $t('group_by') }}:</p>
-        <i-select
-            v-model="sortBy"
-            :options="sortOptions"
-            modelValue="value"
-            idField="label"
-            placeholder="Choose something.."
-            @update:modelValue="onChange($event.value)"
-        />
+        <Dropdown v-model="sortBy" :options="sortOptions" optionLabel="label" placeholder="Choose something.." class="" />
       </div>
     </div>
-    <i-table v-if="evals.length > 0" class="w-full" condensed border="true">
+    <table v-if="evals.length > 0" class="w-full border border-collapse text-sm">
       <thead>
       <tr>
-        <th class="pl-2">{{ sortBy.value === 'documents' ? $t('documents') : $t('workflows') }}</th>
-        <th class="pl-2">{{ sortBy.value === 'documents' ? $t('workflows') : $t('documents') }}</th>
-        <th v-for="(evalKey, i) in evals" :key="i">
+        <th class="p-2 border">{{ sortBy.value === 'documents' ? $t('documents') : $t('workflows') }}</th>
+        <th class="p-2 border">{{ sortBy.value === 'documents' ? $t('workflows') : $t('documents') }}</th>
+        <th v-for="(evalKey, i) in evals" :key="i" class="p-2 border">
           <span class="def-label flex items-center justify-center cursor-pointer">
             {{ defs[evalKey] ? defs[evalKey].label : evalKey }}
             <i-icon name="ink-info"/>
             <div class="def-tooltip">
-              <i-card>
+              <div class="flex p-2 bg-white border rounded">
                 {{ defs[evalKey] ? defs[evalKey].short_descr : $t('no_description') }}.
                 <a v-if="defs[evalKey]" :href="defs[evalKey].url">{{ $t('details') }}</a>
-              </i-card>
+              </div>
             </div>
           </span>
         </th>
@@ -123,31 +119,29 @@ watch(() => props.data, groupByDocuments, { immediate: true })
       <tbody>
       <template v-for="(key, i) in Object.keys(groupedData)" :key="i">
         <tr v-for="(subject, j) in groupedData[key].subjects" :key="j">
-          <td v-if="j === 0" :rowspan="groupedData[key].subjects.length" class="align-top pl-2">
+          <td v-if="j === 0" :rowspan="groupedData[key].subjects.length" class="align-top pl-2 border">
             <span class="font-bold">{{ groupedData[key].label }}</span>
           </td>
-          <td class="align-top pl-2">{{ subject.label }}</td>
+          <td class="align-top pl-2 border">{{ subject.label }}</td>
           <td
-              v-for="({ name, value }, k) in subject.evaluations"
-              :key="k"
-              class="text-center"
-              :class="(j === groupedData[key].subjects.length - 1) ? 'pb-5' : ''"
+            v-for="({ name, value }, k) in subject.evaluations"
+            :key="k"
+            class="text-center pt-1 border"
+            :class="(j === groupedData[key].subjects.length - 1) ? 'pb-5' : 'pb-1'"
           >
-            <i-badge
-                size="lg"
-                class="metric cursor-pointer p-x-1"
-                :class="getEvalColor(name, value)">
+            <span
+              class="metric inline-block cursor-pointer text-sm leading-none p-1 rounded-lg min-w-[48px]"
+              :class="getEvalColor(name, value)">
               {{ createReadableMetricValue(name, value) }}
-            </i-badge>
+            </span>
           </td>
         </tr>
       </template>
       </tbody>
-    </i-table>
+    </table>
     <div v-else>{{ $t('no_table_data') }}</div>
   </div>
 </template>
-
 
 <style scoped lang="scss">
 

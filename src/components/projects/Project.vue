@@ -80,7 +80,7 @@ function toggleInfo(event) {
             class="mr-1"
             :class="{
                 'text-negative': icon === 'slash',
-                'text-medium': icon === 'alert-triangle',
+                'text-neutral': icon === 'alert-triangle',
                 'text-positive': icon === 'check-circle'
               }">
 
@@ -88,7 +88,7 @@ function toggleInfo(event) {
           <span>{{ label }}</span>
         </div>
         <div class="flex mt-2 mb-1">
-          <i-badge v-if="projectType">{{ projectType }}</i-badge>
+          <div class="bg-gray-200 rounded-lg px-2 py-1 text-sm" v-if="projectType">{{ projectType }}</div>
         </div>
       </div>
       <div v-else class="flex h-full items-center justify-center">

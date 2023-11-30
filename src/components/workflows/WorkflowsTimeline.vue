@@ -1,16 +1,17 @@
 <script setup lang="ts">
 import api from '@/helpers/api'
-import TimelineItem from "@/components/timeline/TimelineItem.vue"
+import TimelineItem from "@/components/workflows/timeline/TimelineItem.vue"
 import Dropdown from 'primevue/dropdown'
 import { computed, onMounted, ref } from "vue"
 import { EvaluationMetrics } from '@/helpers/metrics'
 import { useI18n } from "vue-i18n"
-import type {DropdownOption, EvaluationResultsDocumentWide, GroundTruth, Workflow} from "@/types"
+import type {DropdownOption, EvaluationResultsDocumentWide, Workflow} from "@/types"
 import { DropdownPassThroughStyles } from '@/helpers/pt'
-import { store } from '@/helpers/store'
+import workflowsStore from '@/store/workflows-store'
+import filtersStore from '@/store/filters-store'
 
 const { t } = useI18n()
-const gtList = ref<GroundTruth[]>([])
+const gtList = computed(() => workflowsStore.gt.filter(({ id }) => filtersStore.gt.findIndex(({ value }) => value === id) > -1))
 const workflows = ref<Workflow[]>([])
 const selectedMetric = ref<DropdownOption | null>(null)
 const metrics = computed<DropdownOption[]>(() => Object.keys(EvaluationMetrics).map(key => ({ value: EvaluationMetrics[key], label: t(EvaluationMetrics[key]) })))
@@ -19,21 +20,18 @@ const selectedMetricValue = computed<keyof EvaluationResultsDocumentWide>(() => 
 onMounted(async () => {
   selectedMetric.value = metrics.value[0]
 
-  gtList.value = store.gtList
-
   if (!gtList.value.length) {
-    gtList.value = await api.getGroundTruth()
-    store.setGTList(gtList.value)
+    workflowsStore.gt = await api.getGroundTruth()
+    filtersStore.gt = workflowsStore.gt.map(({ id, label }) => ({ value: id, label }))
   }
 
-  workflows.value = store.workflows
+  workflows.value = workflowsStore.workflows
 
   if (!workflows.value.length) {
     workflows.value = await api.getWorkflows()
-    store.setWorkflows(workflows.value)
+    workflowsStore.workflows = workflows.value
   }
 })
-
 </script>
 
 <template>

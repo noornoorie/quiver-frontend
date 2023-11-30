@@ -161,11 +161,11 @@ watch([() => props.data, () => props.startDate, () => props.endDate], render)
 .path-group {
   path {
     fill: none;
-    stroke: var(--color--medium-text);
+    stroke: var(--color--neutral-text);
   }
 
   circle {
-    fill: var(--color--medium-text);
+    fill: var(--color--neutral-text);
   }
 
   &.up {

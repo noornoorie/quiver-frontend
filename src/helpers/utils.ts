@@ -1,9 +1,9 @@
 import { ref } from 'vue'
-import type { EvaluationResultsDocumentWide } from "@/types"
+import type { EvaluationResultsDocumentWide, EvaluationRun } from "@/types"
 
 const utils = ref({})
 
-const getEvalColor = (name, value) => {
+const getEvalColor = (name: string, value) => {
   const colorMap = utils.value[name]
   if (colorMap) {
     const keys = Object.keys(colorMap)
@@ -15,10 +15,10 @@ const getEvalColor = (name, value) => {
   return null
 }
 
-const setEvalColors = (data) => {
+const setEvalColors = (runs: EvaluationRun[]) => {
   const allValues = []
 
-  data
+  runs
     .filter(({ evaluation_results }) => !!(evaluation_results))
     .forEach(({ evaluation_results }) => {
       const { document_wide: evals } = evaluation_results
@@ -48,18 +48,18 @@ const setEvalColors = (data) => {
       }
 
       utils.value[key]["eval-positive"] = min + step
-      utils.value[key]["eval-medium"] = min + 2 * step
+      utils.value[key]["eval-neutral"] = min + 2 * step
       utils.value[key]["eval-negative"] = min + 3 * step
     })
 }
 
-const shortenMetricValue = (value) => {
+const shortenMetricValue = (value: number) => {
   return Math.round(value * 1000) / 1000
 }
 
 const createReadableMetricValue = (key: keyof EvaluationResultsDocumentWide, value: number | number[]) => {
   if (['cer_mean', 'cer_median', 'wer', 'pages_per_minute', 'cer_standard_deviation', 'wall_time', 'cpu_time'].includes(key)) {
-    return shortenMetricValue(value)
+    return shortenMetricValue(<number>value)
   } else if (key === 'cer_range') {
     return shortenMetricValue(value[0]) + ' / ' + shortenMetricValue(value[1])
   }

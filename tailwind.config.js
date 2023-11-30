@@ -19,7 +19,10 @@ module.exports = {
     extend: {
       colors: {
         ...mapToPrimaryColor(colors.sky),
-        primary: colors.sky['500']
+        primary: colors.sky['500'],
+        positive: colors.green['500'],
+        neutral: colors.yellow['500'],
+        negative: colors.red['500'],
       }
     },
   },
