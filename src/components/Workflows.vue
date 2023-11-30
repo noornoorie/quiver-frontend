@@ -5,20 +5,20 @@
   import WorkflowsTable from "@/components/workflows/WorkflowsTable.vue"
   import { useI18n } from "vue-i18n"
   import { mapGtId, setEvalColors } from "@/helpers/utils"
-  import { store } from "@/helpers/store"
   import Filters from "@/components/workflows/filters/Filters.vue"
   import SelectButton from "primevue/selectbutton"
   import WorkflowsTimeline from "@/components/workflows/WorkflowsTimeline.vue"
   import filtersStore from "@/store/filters-store"
+  import workflowsStore from "@/store/workflows-store"
 
   const { t } = useI18n()
 
   const data = ref([])
 
   const filteredData = ref([])
-  const defs = ref({})
   const router = useRouter()
   const route = useRoute()
+  const loading = ref(false)
 
   const options = ref([
     { name: t('timeline'), value: 'timeline' },
@@ -37,54 +37,39 @@
   onMounted(async () => {
     await router.isReady()
 
-    const filtered = options.value.filter((option) => {
+    loading.value = true
+
+    const option = options.value.find((option) => {
       return route.query.view && route.query.view === option.value
     })
-    selectedOption.value = filtered.length > 0 ? filtered[0] : options.value[0]
 
-    let gtList = store.gtList
-
-    if (!gtList.length) {
-      gtList = await api.getGroundTruth()
-      store.setGTList(gtList)
+    if (option) {
+      selectedOption.value = option
     }
 
-    let workflows = store.workflows
+    workflowsStore.runs = await api.getRuns()
+    workflowsStore.gt = await api.getGroundTruth()
+    workflowsStore.workflows = await api.getWorkflows()
 
-    if (!workflows.length) {
-      workflows = await api.getWorkflows()
-      store.setWorkflows(workflows)
-    }
+    loading.value = false
 
-    const runs = []
-
-    for await (let gt of gtList) {
-      try {
-        const latestRuns = await api.getLatestRuns(gt.id,)
-        if (latestRuns.length > 0) {
-          runs.push(...latestRuns)
-        }
-      } catch (e) {
-      }
-    }
-    data.value = runs
-
-    defs.value = await api.getEvalDefinitions()
-
-    filteredData.value = data.value
-
-    setEvalColors(data.value)
+    setEvalColors(workflowsStore.runs)
   })
 </script>
 <template>
-  <div class="flex mb-3">
-    <SelectButton v-model="selectedOption" :options="options" optionLabel="name"></SelectButton>
-  </div>
-  <div><Filters /></div>
-  <div v-if="selectedOption">
-    <WorkflowsTimeline v-if="selectedOption.value === 'timeline'" />
-    <WorkflowsTable v-else :data="filteredData" :defs="defs" />
-  </div>
+  <template v-if="loading">
+    Loading...
+  </template>
+  <template v-else>
+    <div class="flex mb-3">
+      <SelectButton v-model="selectedOption" :options="options" optionLabel="name"></SelectButton>
+      <Filters class="ml-auto w-1/3"/>
+    </div>
+    <div v-if="selectedOption">
+      <WorkflowsTimeline v-if="selectedOption.value === 'timeline'" />
+      <WorkflowsTable v-else />
+    </div>
+  </template>
 </template>
 
 <style scoped>

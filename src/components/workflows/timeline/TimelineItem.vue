@@ -3,15 +3,15 @@ import Panel from "primevue/panel"
 import OverlayPanel from 'primevue/overlaypanel'
 import StepsAcronyms from '@/helpers/workflow-steps-acronyms'
 import MetricChart from "@/components/workflows/timeline/MetricChart.vue"
-import type { EvaluationResultsDocumentWide, GroundTruth, Workflow, WorkflowStep } from "@/types"
+import type { EvaluationResultsDocumentWide, EvaluationRun, GroundTruth, Workflow, WorkflowStep } from "@/types"
 import MetricAverageChart from "@/components/workflows/timeline/MetricAverageChart.vue"
 import { Icon } from '@iconify/vue'
-import { ref } from "vue"
+import { onMounted, ref } from "vue"
 import { OverlayPanelDropdownStyles } from "@/helpers/pt"
+import workflowsStore from "@/store/workflows-store"
 
 const props = defineProps<{
   gt: GroundTruth,
-  workflows: Workflow[],
   metric: keyof EvaluationResultsDocumentWide
 }>()
 
@@ -19,6 +19,11 @@ const op = ref<OverlayPanel>()
 const selectedStep = ref<WorkflowStep | null>(null)
 const startDate = ref<Date>(new Date('2023-10-01'))
 const endDate = ref<Date>(new Date())
+const workflows = ref<Workflow[]>([])
+
+onMounted(() => {
+  workflows.value = workflowsStore.workflows
+})
 
 function getStepAcronym(stepId) {
   return StepsAcronyms[stepId]
@@ -55,7 +60,7 @@ function hideParametersOverlay() {
         <div class="w-1/2 flex justify-end">
           <div class="flex overflow-x-auto">
             <MetricAverageChart
-              :gt-id="gt.id"
+              :runs="workflowsStore.getRuns(gt.id)"
               :metric="metric"
               class=""
               :width="400"
@@ -84,8 +89,7 @@ function hideParametersOverlay() {
             </td>
             <td class="overflow-x-auto">
               <MetricChart
-                :gt-id="gt.id"
-                :workflow-id="workflow.id"
+                :runs="workflowsStore.getRuns(gt.id, workflow.id)"
                 :metric="metric"
                 :width="400"
                 :start-date="startDate"

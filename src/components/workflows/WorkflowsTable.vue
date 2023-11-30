@@ -1,15 +1,15 @@
 <script setup lang="ts">
-import { watch, ref } from "vue"
+import { watch, ref, onMounted, computed } from "vue"
 import { useI18n } from "vue-i18n"
 import { createReadableMetricValue, getEvalColor, mapGtId } from "@/helpers/utils"
 import type { EvaluationRun } from "@/types"
 import Dropdown from 'primevue/dropdown'
+import workflowsStore from "@/store/workflows-store"
+import api from "@/helpers/api"
+import filtersStore from "@/store/filters-store"
 
 const { t } = useI18n()
-const props = defineProps<{
-  data: EvaluationRun[]
-  defs: any,
-}>()
+
 const groupedData = ref({})
 const evals = ref([])
 
@@ -22,21 +22,47 @@ const sortOptions = ref([{
 }])
 
 const sortBy = ref(sortOptions.value[0])
+const latestRuns = ref<EvaluationRun[]>([])
+const filteredRuns = ref<EvaluationRun[]>([])
+const evalDefinitions = ref([])
+const loading = ref(false)
 
-watch(sortBy, ({ value }) => {
-  if (value === 'workflows') groupByWorkflows()
-  else if (value === 'documents') groupByDocuments()
+onMounted(async () => {
+  loading.value = true
+  latestRuns.value = workflowsStore.getLatestRuns()
+  evalDefinitions.value = await api.getEvalDefinitions()
+  setFilteredRuns()
+  groupRuns(sortBy.value.value)
+  loading.value = false
 })
 
+watch(() => filtersStore.gt, () => {
+  setFilteredRuns()
+  groupRuns(sortBy.value.value)
+})
+
+watch(sortBy, () => {
+  groupRuns(sortBy.value.value)
+})
+
+function setFilteredRuns() {
+  filteredRuns.value = latestRuns.value.filter(({ metadata }) => filtersStore.gt.findIndex(({ value }) => value === mapGtId(metadata.gt_workspace.id)) > -1)
+}
+
+function groupRuns(groupBy: string) {
+  if (groupBy === 'workflows') groupByWorkflows()
+  else if (groupBy === 'documents') groupByDocuments()
+}
+
 const groupByWorkflows = () => {
-  groupedData.value = props.data.filter(item => !!(item.metadata.ocr_workflow)).reduce((acc, cur) => {
+  groupedData.value = filteredRuns.value.filter(item => !!(item.metadata.ocr_workflow)).reduce((acc, cur) => {
     const ocrWorkflowId = mapGtId(cur.metadata.ocr_workflow['id'])
-    const label = cur.metadata.ocr_workflow.label
+    const label = workflowsStore.getWorkflowById(ocrWorkflowId)?.label
 
     evals.value = Object.keys(cur.evaluation_results.document_wide)
 
     const subject = {
-      label: cur.metadata.gt_workspace.label,
+      label: workflowsStore.getGtById(mapGtId(cur.metadata.gt_workspace.id))?.label,
       evaluations: Object.keys(cur.evaluation_results.document_wide).map(key => ({
         name: key,
         value: cur.evaluation_results.document_wide[key]
@@ -59,12 +85,12 @@ const groupByWorkflows = () => {
 }
 
 const groupByDocuments = () => {
-  groupedData.value = props.data.filter(item => !!(item.metadata.gt_workspace)).reduce((acc, cur) => {
+  groupedData.value = filteredRuns.value.filter(item => !!(item.metadata.gt_workspace)).reduce((acc, cur) => {
     const gtWorkspaceId = mapGtId(cur.metadata.gt_workspace['id'])
-    const label = cur.metadata.gt_workspace.label
+    const label = workflowsStore.getGtById(gtWorkspaceId)?.label
     evals.value = Object.keys(cur.evaluation_results.document_wide)
     const subject = {
-      label: cur.metadata.ocr_workflow.label,
+      label: workflowsStore.getWorkflowById(mapGtId(cur.metadata.ocr_workflow['id']))?.label,
       evaluations: Object.keys(cur.evaluation_results.document_wide).map(key => ({
         name: key,
         value: cur.evaluation_results.document_wide[key]
@@ -85,31 +111,32 @@ const groupByDocuments = () => {
     return acc
   }, {})
 }
-
-watch(() => props.data, groupByDocuments, { immediate: true })
 </script>
 
 <template>
-  <div>
+  <template v-if="loading">
+    Loading...
+  </template>
+  <template v-else>
     <div class="flex mb-4" v-if="evals.length > 0">
       <div class="flex items-center ml-auto">
         <p class="mr-2">{{ $t('group_by') }}:</p>
         <Dropdown v-model="sortBy" :options="sortOptions" optionLabel="label" placeholder="Choose something.." class="" />
       </div>
     </div>
-    <table v-if="evals.length > 0" class="w-full border border-collapse text-sm">
+    <table v-if="evals.length > 0" class="w-full border border-collapse rounded text-sm">
       <thead>
       <tr>
         <th class="p-2 border">{{ sortBy.value === 'documents' ? $t('documents') : $t('workflows') }}</th>
         <th class="p-2 border">{{ sortBy.value === 'documents' ? $t('workflows') : $t('documents') }}</th>
         <th v-for="(evalKey, i) in evals" :key="i" class="p-2 border">
           <span class="def-label flex items-center justify-center cursor-pointer">
-            {{ defs[evalKey] ? defs[evalKey].label : evalKey }}
+            {{ evalDefinitions[evalKey] ? evalDefinitions[evalKey].label : evalKey }}
             <i-icon name="ink-info"/>
             <div class="def-tooltip">
               <div class="flex p-2 bg-white border rounded">
-                {{ defs[evalKey] ? defs[evalKey].short_descr : $t('no_description') }}.
-                <a v-if="defs[evalKey]" :href="defs[evalKey].url">{{ $t('details') }}</a>
+                {{ evalDefinitions[evalKey] ? evalDefinitions[evalKey].short_descr : $t('no_description') }}.
+                <a v-if="evalDefinitions[evalKey]" :href="evalDefinitions[evalKey].url">{{ $t('details') }}</a>
               </div>
             </div>
           </span>
@@ -119,7 +146,7 @@ watch(() => props.data, groupByDocuments, { immediate: true })
       <tbody>
       <template v-for="(key, i) in Object.keys(groupedData)" :key="i">
         <tr v-for="(subject, j) in groupedData[key].subjects" :key="j">
-          <td v-if="j === 0" :rowspan="groupedData[key].subjects.length" class="align-top pl-2 border">
+          <td v-if="j === 0" :rowspan="groupedData[key].subjects.length" class="align-top pl-2 border w-1/3">
             <span class="font-bold">{{ groupedData[key].label }}</span>
           </td>
           <td class="align-top pl-2 border">{{ subject.label }}</td>
@@ -140,7 +167,7 @@ watch(() => props.data, groupByDocuments, { immediate: true })
       </tbody>
     </table>
     <div v-else>{{ $t('no_table_data') }}</div>
-  </div>
+  </template>
 </template>
 
 <style scoped lang="scss">

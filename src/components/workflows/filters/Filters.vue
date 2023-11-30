@@ -18,8 +18,9 @@ onMounted(() => {
     :options="gtOptions"
     optionLabel="label"
     placeholder="Select Ground Truth"
-    panel-class="max-w-[400px]"
-    max-selected-labels="3"
+    panel-class="max-w-[500px]"
+    max-selected-labels="1"
+    filter
     class="relative"
   >
     <template #option="{ option }: { option: FilterOption }">

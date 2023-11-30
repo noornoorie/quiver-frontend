@@ -12,7 +12,7 @@ import timelineStore from "@/store/timeline-store";
 const { t } = useI18n()
 
 const props = defineProps<{
-  gtId: string,
+  runs: EvaluationRun[],
   metric: keyof EvaluationResultsDocumentWide,
   startDate: Date,
   endDate: Date
@@ -24,16 +24,14 @@ const runs = ref<EvaluationRun[]>([])
 const op = ref<OverlayPanel | null>(null)
 
 onMounted(async () => {
-  const { gtId } = props
-  runs.value = await api.getRuns(gtId)
   init()
 })
 
 watch(() => props.metric, init)
 
 function init() {
-  if (!runs.value) return
-  data.value = getTimelineData(runs.value, props.metric)
+  if (!props.runs) return
+  data.value = getTimelineData(props.runs, props.metric)
 }
 
 function getTimelineData(runs: EvaluationRun[], metric: string): TimelineChartDataPoint[] {

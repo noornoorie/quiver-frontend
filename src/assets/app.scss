@@ -72,3 +72,13 @@ h3 {
 .p-badge {
   background: theme('colors.gray.300');
 }
+
+.p-buttonset .p-button:first-of-type:not(:only-of-type) {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.p-buttonset .p-button:last-of-type:not(:only-of-type) {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
