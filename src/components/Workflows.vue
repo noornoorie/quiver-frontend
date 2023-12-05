@@ -74,7 +74,7 @@
     </div>
     <div class="flex mb-3">
       <SelectButton v-model="selectedOption" :options="options" optionLabel="name"></SelectButton>
-      <Filters class="ml-auto w-1/3"/>
+      <Filters class="ml-auto"/>
     </div>
     <div v-if="selectedOption">
       <WorkflowsTimeline v-if="selectedOption.value === 'timeline'" />

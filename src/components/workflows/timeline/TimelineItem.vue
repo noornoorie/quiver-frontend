@@ -60,6 +60,7 @@ function hideParametersOverlay() {
         <div class="w-1/2 flex justify-end">
           <div class="flex overflow-x-auto">
             <MetricAverageChart
+              :workflow-name="$t('average')"
               :runs="workflowsStore.getRuns(gt.id)"
               :metric="metric"
               class=""
@@ -90,6 +91,7 @@ function hideParametersOverlay() {
             <td class="overflow-x-auto">
               <MetricChart
                 :runs="workflowsStore.getRuns(gt.id, workflow.id)"
+                :workflow-name="workflow.label"
                 :metric="metric"
                 :width="400"
                 :start-date="startDate"

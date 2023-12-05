@@ -15,7 +15,8 @@ const props = defineProps<{
   runs: EvaluationRun[],
   metric: keyof EvaluationResultsDocumentWide,
   startDate: Date,
-  endDate: Date
+  endDate: Date,
+  workflowName: string
 }>()
 
 const data = ref<TimelineChartDataPoint[]>([])
@@ -82,6 +83,7 @@ function tooltipContent(d: TimelineChartDataPoint) {
       }
     }"
   >
+    <h3 class="font-semibold">{{ workflowName }}</h3>
     <BaseTimelineDetailedChart
       :data="data"
       :max-y="maxY"
