@@ -46,5 +46,6 @@
   "wer": "WER",
   "pages_per_minute": "Pages per minute",
   "cpu_standard_deviation": "CPU Standard Deviation",
-  "date": "Date"
+  "date": "Date",
+  "ground_truth": "Ground Truth"
 }

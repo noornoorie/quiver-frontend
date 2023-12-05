@@ -52,5 +52,6 @@
   "wer": "WER",
   "pages_per_minute": "Seiten pro Minute",
   "cpu_standard_deviation": "CPU Standardabweichung",
-  "date": "Datum"
+  "date": "Datum",
+  "ground_truth": "Ground Truth"
 }
