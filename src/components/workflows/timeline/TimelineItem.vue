@@ -55,8 +55,8 @@ function hideParametersOverlay() {
     }"
   >
     <template v-slot:header>
-      <div class="flex w-full px-4">
-        <h2 class="w-1/2 text-xl font-bold flex-shrink-0">{{ gt.label }}</h2>
+      <div class="flex w-full px-4 pb-2">
+        <h2 class="w-1/2 text-xl font-bold flex-shrink-0 truncate" :title="gt.label">{{ gt.label }}</h2>
         <div class="w-1/2 flex justify-end">
           <div class="flex overflow-x-auto">
             <MetricAverageChart

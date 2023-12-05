@@ -88,10 +88,9 @@ function render([data, startDate, endDate, maxY]) {
 
   // Append y-axis title on the left
   svg.append("text")
-      .attr("text-anchor", "end")
       .attr("transform", "rotate(-90)")
       .attr("y", marginLeft - 30)
-      .attr("x", marginTop - 50)
+      .attr("x", -(height / 2 + marginTop) )
       .text(props.yAxisTitle ?? '')
       .attr('fill', colors.gray['400'])
 
@@ -207,7 +206,7 @@ watch([() => props.data, () => props.startDate, () => props.endDate, () => props
 
 <style lang="scss" scoped>
 
-:deep(.svg-container) {
+.svg-container:deep(svg) {
   .releases-group {
     .tag-name {
       font-size: 10px;
