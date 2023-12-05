@@ -70,9 +70,9 @@
   </template>
   <template v-else>
     <div class="flex mb-6">
-      <p class="text-amber-600 flex-grow-0 p-4 bg-amber-100 rounded-md"><span class="font-semibold">Disclaimer:</span> This is an experimental view.</p>
+      <p class="text-amber-600 flex-grow-0 px-4 py-2 bg-amber-100 rounded-md text-sm"><span class="font-semibold">Disclaimer:</span> This is an experimental view.</p>
     </div>
-    <div class="flex mb-3">
+    <div class="flex mb-6">
       <SelectButton v-model="selectedOption" :options="options" optionLabel="name"></SelectButton>
       <Filters class="ml-auto"/>
     </div>

@@ -9,6 +9,7 @@ import { Icon } from '@iconify/vue'
 import { onMounted, ref } from "vue"
 import { OverlayPanelDropdownStyles } from "@/helpers/pt"
 import workflowsStore from "@/store/workflows-store"
+import HomeView from "@/views/HomeView.vue"
 
 const props = defineProps<{
   gt: GroundTruth,
@@ -75,31 +76,40 @@ function hideParametersOverlay() {
     <template v-slot:default>
       <div class="flex border-t border-gray-300 py-4 px-4">
         <table class="table-fixed w-full">
-          <tr v-for="workflow in workflows" :key="workflow.id">
+          <thead>
+            <tr class="">
+              <th class="text-left pb-4">{{ $t('workflows') }}</th>
+              <th class="text-left pb-4">{{ $t('processors') }}</th>
+              <th class="text-right pr-[314px] pb-4">{{ $t('timeline') }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="workflow in workflows" :key="workflow.id">
             <td class="font-semibold pe-2">{{ workflow.label }}</td>
             <td class="p-1 overflow-x-auto">
               <span
-                v-for="step in workflow.steps"
-                :key="step.id"
-                class="p-1 cursor-pointer"
-                @mouseenter="showParametersOverlay(step, $event)"
-                @mouseleave="hideParametersOverlay()"
+                  v-for="step in workflow.steps"
+                  :key="step.id"
+                  class="p-1 cursor-pointer"
+                  @mouseenter="showParametersOverlay(step, $event)"
+                  @mouseleave="hideParametersOverlay()"
               >
               {{ getStepAcronym(step.id) }}
             </span>
             </td>
             <td class="overflow-x-auto">
               <MetricChart
-                :runs="workflowsStore.getRuns(gt.id, workflow.id)"
-                :workflow-name="workflow.label"
-                :metric="metric"
-                :width="400"
-                :start-date="startDate"
-                :end-date="endDate"
-                class="flex justify-end"
+                  :runs="workflowsStore.getRuns(gt.id, workflow.id)"
+                  :workflow-name="workflow.label"
+                  :metric="metric"
+                  :width="400"
+                  :start-date="startDate"
+                  :end-date="endDate"
+                  class="flex justify-end"
               />
             </td>
           </tr>
+          </tbody>
         </table>
       </div>
     </template>

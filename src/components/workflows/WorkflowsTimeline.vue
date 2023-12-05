@@ -44,7 +44,7 @@ watch(selectedMetric,
         unstyled
       />
     </div>
-    <div class="flex flex-col space-y-4">
+    <div class="flex flex-col space-y-6">
       <template v-if="gtList.length > 0">
         <TimelineItem v-for="gt in gtList" :key="gt.id" :gt="gt" :metric="selectedMetricValue" />
       </template>
