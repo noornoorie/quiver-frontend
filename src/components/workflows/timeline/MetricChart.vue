@@ -67,6 +67,7 @@ function tooltipContent(d: TimelineChartDataPoint) {
     <BaseTimelineDetailedChart
       :data="data"
       :max-y="maxY"
+      :y-axis-title="$t(metric)"
       :start-date="startDate"
       :end-date="endDate"
       :tooltip-content="tooltipContent"

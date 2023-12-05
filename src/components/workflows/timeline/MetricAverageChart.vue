@@ -73,23 +73,24 @@ function tooltipContent(d: TimelineChartDataPoint) {
       :tooltip-content="tooltipContent"
       :width="400"
     />
-  </div>  <OverlayPanel
-      ref="op"
-      :pt="{
+  </div>
+  <OverlayPanel
+    ref="op"
+    :pt="{
       root: {
-        class: 'z-[9999] bg-white border rounded-md shadow-md p-6'
+        class: 'z-[9999] bg-white border rounded-md shadow-md'
       }
     }"
   >
     <BaseTimelineDetailedChart
-        :data="data"
-        :max-y="maxY"
-        :y-axis-title="$t(metric)"
-        :start-date="startDate"
-        :end-date="endDate"
-        :tooltip-content="tooltipContent"
-        :height="400"
-        :width="660"
+      :data="data"
+      :max-y="maxY"
+      :y-axis-title="$t(metric)"
+      :start-date="startDate"
+      :end-date="endDate"
+      :tooltip-content="tooltipContent"
+      :height="400"
+      :width="660"
     />
   </OverlayPanel>
 </template>

@@ -69,7 +69,7 @@ function render([data, startDate, endDate, maxY]) {
   svg.append("g")
       .classed('x-axis-group', true)
       .attr("transform", `translate(0,${height - marginBottom})`)
-      .call(d3.axisBottom(x).ticks(6).tickSize(4).tickFormat(d3.utcFormat("%d.%m.%Y")))
+      .call(d3.axisBottom(x).ticks(6).tickPadding(8).tickSize(5).tickFormat(d3.utcFormat("%d.%m.%Y")))
 
   svg.select('.x-axis-group .domain').attr('stroke', colors.gray['400'])
   svg.selectAll('.x-axis-group .tick text').attr('fill', colors.gray['400'])
@@ -78,8 +78,15 @@ function render([data, startDate, endDate, maxY]) {
   svg.append("g")
       .classed('y-axis-group', true)
       .attr("transform", `translate(${marginLeft},0)`)
-      .call(d3.axisLeft(y).ticks(6).tickSize(0).tickPadding(5))
+      .call(d3
+        .axisLeft(y)
+        .ticks(6)
+        .tickSize(0)
+        .tickPadding(5)
+        .tickSizeInner(-_width.value + marginLeft + marginRight)
+      )
 
+  // Append y-axis title on the left
   svg.append("text")
       .attr("text-anchor", "end")
       .attr("transform", "rotate(-90)")
@@ -152,7 +159,7 @@ function render([data, startDate, endDate, maxY]) {
       .attr('stroke-dasharray', 4)
       .attr("d", d3.line()([[xPos, y(0)], [xPos, y(maxY)]]))
 
-    const group = releaseGroup.append('g')
+    const group = releaseGroup.append('g').attr('transform', 'translate(-79 0)')
 
     group
       .append('rect')
@@ -168,7 +175,7 @@ function render([data, startDate, endDate, maxY]) {
       .attr("y", y(maxY))
       .attr("x", xPos)
       .attr('dy', 12)
-      .attr('dx', 5)
+      .attr('dx', 8)
       .text(release.tag_name)
       .attr('stroke', 'none')
       .attr('fill', colors.gray['600'])
@@ -195,57 +202,73 @@ watch([() => props.data, () => props.startDate, () => props.endDate, () => props
 </script>
 
 <template>
-  <div ref="container"></div>
+  <div class="svg-container" ref="container"></div>
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
 
-.releases-group {
-  .tag-name {
-    font-size: 10px;
-  }
-}
-
-.path-group {
-  path {
-    fill: none;
-    stroke: var(--color--neutral-text);
+:deep(.svg-container) {
+  .releases-group {
+    .tag-name {
+      font-size: 10px;
+    }
   }
 
-  circle {
-    fill: var(--color--neutral-text);
-  }
-
-  &.up {
+  .path-group {
     path {
-      stroke: var(--color--positive-text);
+      fill: none;
+      stroke: var(--color--neutral-text);
     }
 
     circle {
-      fill: var(--color--positive-text);
-    }
-  }
-
-  &.down {
-    path {
-      stroke: var(--color--negative-text);
+      fill: var(--color--neutral-text);
     }
 
-    circle {
-      fill: var(--color--negative-text);
-    }
-  }
-}
+    &.up {
+      path {
+        stroke: var(--color--positive-text);
+      }
 
-.y-axis-group {
-  .tick {
-    &:first-of-type {
-      text {
-        transform: translateY(-3px);
+      circle {
+        fill: var(--color--positive-text);
       }
     }
+
+    &.down {
+      path {
+        stroke: var(--color--negative-text);
+      }
+
+      circle {
+        fill: var(--color--negative-text);
+      }
+    }
+  }
+
+  .y-axis-group {
+    .tick {
+      &:first-of-type {
+        text {
+          transform: translateY(-3px);
+        }
+
+        line {
+          stroke: none;
+        }
+      }
+      text {
+        @apply text-[11px];
+      }
+
+      line {
+        stroke: theme('colors.gray.200');
+      }
+    }
+  }
+
+  .x-axis-group {
     text {
-      @apply text-[9px];
+      @apply text-[11px];
     }
   }
 }
