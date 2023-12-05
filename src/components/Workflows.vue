@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
   import { onMounted, ref, watch } from "vue"
   import api from '@/helpers/api'
   import { useRouter, useRoute } from "vue-router"
@@ -10,6 +10,7 @@
   import WorkflowsTimeline from "@/components/workflows/WorkflowsTimeline.vue"
   import filtersStore from "@/store/filters-store"
   import workflowsStore from "@/store/workflows-store"
+  import type { ReleaseInfo } from "@/types";
 
   const { t } = useI18n()
 
@@ -51,9 +52,16 @@
     workflowsStore.gt = await api.getGroundTruth()
     workflowsStore.workflows = await api.getWorkflows()
 
-    loading.value = false
+    const releasesObj = workflowsStore.runs.reduce((acc, cur) => {
+      acc[cur.metadata.release_info.tag_name] = cur.metadata.release_info
+      return acc
+    }, {})
+
+    workflowsStore.releases = Object.keys(releasesObj).map(key => <ReleaseInfo>releasesObj[key])
 
     setEvalColors(workflowsStore.runs)
+
+    loading.value = false
   })
 </script>
 <template>

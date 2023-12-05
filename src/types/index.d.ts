@@ -15,11 +15,6 @@ export interface Workspace {
   label: string
 }
 
-export interface ReleaseInfo {
-  id: string,
-  tage_name: string
-}
-
 export interface WorkflowStep {
   id: string,
   params: WorkflowStepParams
@@ -86,5 +81,11 @@ export interface TimelineChartDataPoint {
 export interface FilterOption {
   value: string,
   label: string
+}
+
+export interface ReleaseInfo {
+  id: number,
+  published_at: string,
+  tag_name: string
 }
 

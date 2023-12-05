@@ -1,5 +1,5 @@
 import { reactive } from "vue"
-import type { EvaluationRun, GroundTruth, Workflow } from "@/types"
+import type { EvaluationRun, GroundTruth, ReleaseInfo, Workflow } from "@/types"
 import { mapGtId } from "@/helpers/utils"
 
 function normalizeDate(dateString: string): string {
@@ -10,6 +10,7 @@ export default reactive<{
   gt: GroundTruth[],
   workflows: Workflow[],
   runs: EvaluationRun[],
+  releases: ReleaseInfo[],
   getRuns: (gtId: string, workflowId?: string) => EvaluationRun[]
   getLatestRuns: () => EvaluationRun[],
   getGtById: (id: string) => GroundTruth | null
@@ -18,6 +19,7 @@ export default reactive<{
   gt: [],
   workflows: [],
   runs: [],
+  releases: [],
   getRuns(gtId: string, workflowId?: string) {
     return this.runs
       .filter(

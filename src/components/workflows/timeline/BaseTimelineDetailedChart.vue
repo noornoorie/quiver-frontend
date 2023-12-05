@@ -4,6 +4,7 @@ import { ref, watch, computed, onMounted } from "vue"
 import type { TimelineChartDataPoint } from "@/types"
 import { createTooltip, setEventListeners } from "@/helpers/d3/d3-tooltip"
 import colors from 'tailwindcss/colors'
+import workflowsStore from "@/store/workflows-store"
 
 
 interface Props {
@@ -43,7 +44,7 @@ function isUp(data: TimelineChartDataPoint[], higherIsUp = true) {
   else return -1
 }
 
-function render([data, startDate, endDate]) {
+function render([data, startDate, endDate, maxY]) {
   if (!data || !startDate || !endDate) return
 
   if (data.length === 0) return
@@ -55,7 +56,7 @@ function render([data, startDate, endDate]) {
 
 // Declare the y (vertical position) scale.
   const y = d3.scaleLinear()
-      .domain([0, _maxY.value])
+      .domain([0, maxY])
       .range([height - marginBottom, marginTop])
 
 // Create the SVG container.
@@ -136,6 +137,48 @@ function render([data, startDate, endDate]) {
 
   setEventListeners(svg.selectAll('.chart-point'), tooltip, { useData: props.tooltipContent })
 
+  const releasesGroup = svg
+      .append('g')
+      .classed('releases-group', true)
+
+  workflowsStore.releases.forEach(release => {
+    const xPos = x(new Date(release.published_at))
+
+    const releaseGroup = releasesGroup.append('g')
+
+    releaseGroup
+      .append("path")
+      .attr("stroke-width", 1.5)
+      .attr('stroke-dasharray', 4)
+      .attr("d", d3.line()([[xPos, y(0)], [xPos, y(maxY)]]))
+
+    const group = releaseGroup.append('g')
+
+    group
+      .append('rect')
+      .attr("x", xPos)
+      .attr("y", y(maxY))
+      .attr('width', 80)
+      .attr('height', 18)
+      .style("fill", 'white')
+
+    group
+      .append("text")
+      .classed('tag-name', true)
+      .attr("y", y(maxY))
+      .attr("x", xPos)
+      .attr('dy', 12)
+      .attr('dx', 5)
+      .text(release.tag_name)
+      .attr('stroke', 'none')
+      .attr('fill', colors.gray['600'])
+      .style('cursor', 'pointer')
+
+    releaseGroup.on('mouseenter', function(e) {
+      this.parentElement.appendChild(this)
+    })
+  })
+
   // Append the SVG element.
   if (!container.value) return
   container.value.replaceChildren()
@@ -143,10 +186,10 @@ function render([data, startDate, endDate]) {
 }
 
 onMounted(() => {
-  render([props.data, props.startDate, props.endDate])
+  render([props.data, props.startDate, props.endDate, props.maxY])
 })
 
-watch([() => props.data, () => props.startDate, () => props.endDate], render)
+watch([() => props.data, () => props.startDate, () => props.endDate, () => props.maxY], render)
 
 
 </script>
@@ -157,6 +200,11 @@ watch([() => props.data, () => props.startDate, () => props.endDate], render)
 
 <style lang="scss">
 
+.releases-group {
+  .tag-name {
+    font-size: 10px;
+  }
+}
 
 .path-group {
   path {

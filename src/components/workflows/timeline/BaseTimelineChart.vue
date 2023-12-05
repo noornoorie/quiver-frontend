@@ -4,6 +4,7 @@ import { ref, watch, computed, onMounted } from "vue"
 import type { TimelineChartDataPoint } from "@/types"
 import { createTooltip, setEventListeners } from "@/helpers/d3/d3-tooltip"
 import colors from 'tailwindcss/colors'
+import workflowsStore from "@/store/workflows-store"
 
 
 interface Props {
@@ -39,6 +40,10 @@ function isUp(data: TimelineChartDataPoint[], higherIsUp = true) {
   if (diff === 0) return 0
   else if (diff > 0) return 1
   else return -1
+}
+
+function renderReleases() {
+
 }
 
 function render([data, startDate, endDate, maxY]) {
@@ -129,6 +134,21 @@ function render([data, startDate, endDate, maxY]) {
 
   setEventListeners(svg.selectAll('.chart-point'), tooltip, { useData: props.tooltipContent })
 
+
+  const releasesGroup = svg
+    .append('g')
+    .classed('releases-group', true)
+
+  workflowsStore.releases.forEach(release => {
+    const xPos = x(new Date(release.published_at))
+
+    releasesGroup
+      .append("path")
+      .attr("stroke-width", 1.5)
+      .attr('stroke-dasharray', 4)
+      .attr("d", d3.line()([[xPos, y(0)], [xPos, y(maxY)]]))
+  })
+
   // Append the SVG element.
   container.value.append(svg.node())
 }
@@ -145,6 +165,11 @@ watch([() => props.data, () => props.startDate, () => props.endDate, () => props
 </template>
 
 <style lang="scss">
+
+.releases-group {
+  fill: none;
+  stroke: theme('colors.gray.400');
+}
 
 .path-group {
   path {
