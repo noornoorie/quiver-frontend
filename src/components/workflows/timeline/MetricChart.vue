@@ -61,7 +61,7 @@ function tooltipContent(d: TimelineChartDataPoint) {
     ref="op"
     :pt="{
       root: {
-        class: 'z-[9999] bg-white border rounded-md shadow-md'
+        class: 'z-[1111] bg-white border rounded-md shadow-md p-5'
       }
     }"
   >

@@ -123,16 +123,18 @@ function hideParametersOverlay() {
   >
     <div class="flex flex-col pt-2">
       <h2 class="font-bold px-2 pb-2 mb-2 border-b border-gray-300">{{ selectedStep?.id }}</h2>
-      <table v-if="selectedStep" class="text-sm border-collapse">
-        <tr class="">
-          <th class="p-1 pl-2 font-semibold">Parameter</th>
-          <th class="p-1 pr-2 font-semibold">Value</th>
-        </tr>
-        <tr v-for="step in Object.keys(selectedStep.params)" :key="step">
-          <td class="p-1 pl-2 border-collapse border border-l-0 border-b-0 border-gray-300">{{ step }}</td>
-          <td class="p-1 pr-2 border-collapse border border-r-0 border-b-0 border-gray-300">{{ selectedStep.params[step] }}</td>
-        </tr>
-      </table>
+      <div class="overflow-y-auto max-h-[400px] w-full">
+        <table v-if="selectedStep" class="text-sm border-collapse">
+          <tr class="">
+            <th class="p-1 pl-2 font-semibold">Parameter</th>
+            <th class="p-1 pr-2 font-semibold">Value</th>
+          </tr>
+          <tr v-for="step in Object.keys(selectedStep.params)" :key="step">
+            <td class="p-1 pl-2 border-collapse border border-l-0 border-b-0 border-gray-300">{{ step }}</td>
+            <td class="p-1 pr-2 border-collapse border border-r-0 border-b-0 border-gray-300">{{ selectedStep.params[step] }}</td>
+          </tr>
+        </table>
+      </div>
     </div>
   </OverlayPanel>
 </template>
