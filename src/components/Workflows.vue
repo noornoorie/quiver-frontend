@@ -52,6 +52,12 @@
     workflowsStore.gt = await api.getGroundTruth()
     workflowsStore.workflows = await api.getWorkflows()
 
+    workflowsStore.runs.forEach(run => {
+      const gtId = mapGtId(run.metadata.gt_workspace.id)
+
+      if (!workflowsStore.gt.find(gt => gt.id === gtId)) console.log(gtId)
+    })
+
     const releasesObj = workflowsStore.runs.reduce((acc, cur) => {
       acc[cur.metadata.release_info.tag_name] = cur.metadata.release_info
       return acc

@@ -4,14 +4,14 @@ import Dropdown from 'primevue/dropdown'
 import {computed, onMounted, ref, watch} from "vue"
 import {EvaluationMetrics, getMaxValueByMetric} from '@/helpers/metrics'
 import { useI18n } from "vue-i18n"
-import type {DropdownOption, EvaluationResultsDocumentWide, Workflow} from "@/types"
+import type { DropdownOption, EvaluationResultsDocumentWide, Workflow, GroundTruth } from "@/types"
 import { DropdownPassThroughStyles } from '@/helpers/pt'
 import workflowsStore from '@/store/workflows-store'
 import filtersStore from '@/store/filters-store'
 import timelineStore from "@/store/timeline-store"
 
 const { t } = useI18n()
-const gtList = computed(() => workflowsStore.gt.filter(({ id }) => filtersStore.gt.findIndex(({ value }) => value === id) > -1))
+const gtList = computed<GroundTruth[]>(() => workflowsStore.gt.filter(({ id }) => filtersStore.gt.findIndex(({ value }) => value === id) > -1))
 const workflows = ref<Workflow[]>([])
 const selectedMetric = ref<DropdownOption | null>(null)
 const metrics = computed<DropdownOption[]>(() => Object.keys(EvaluationMetrics).map(key => ({ value: EvaluationMetrics[key], label: t(EvaluationMetrics[key]) })))

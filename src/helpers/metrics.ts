@@ -31,13 +31,21 @@ function getMaxValueByMetric(metric: keyof EvaluationResultsDocumentWide, runs: 
   return Math.max(...values)
 }
 
-function extendMaxValue(value: number): number {
-  return Math.floor(value + value * 0.2)
+function isHigherPositive(metric: keyof EvaluationResultsDocumentWide): boolean {
+  if (metric === EvaluationMetrics.CER_MEAN) return false
+  if (metric === EvaluationMetrics.CER_MEDIAN) return false
+  if (metric === EvaluationMetrics.CER_STANDARD_DEVIATION) return false
+  if (metric === EvaluationMetrics.WER) return false
+  if (metric === EvaluationMetrics.WALL_TIME) return false
+  if (metric === EvaluationMetrics.PAGES_PER_MINUTE) return true
+  if (metric === EvaluationMetrics.CPU_TIME) return false
+
+  return false
 }
 
 export {
   EvaluationMetrics,
   getMaxValueByMetric,
   getDefaultMaxValueOfMetric,
-  extendMaxValue
+  isHigherPositive
 }

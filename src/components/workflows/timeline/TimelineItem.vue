@@ -3,13 +3,12 @@ import Panel from "primevue/panel"
 import OverlayPanel from 'primevue/overlaypanel'
 import StepsAcronyms from '@/helpers/workflow-steps-acronyms'
 import MetricChart from "@/components/workflows/timeline/MetricChart.vue"
-import type { EvaluationResultsDocumentWide, EvaluationRun, GroundTruth, Workflow, WorkflowStep } from "@/types"
+import type { EvaluationResultsDocumentWide, GroundTruth, Workflow, WorkflowStep } from "@/types"
 import MetricAverageChart from "@/components/workflows/timeline/MetricAverageChart.vue"
 import { Icon } from '@iconify/vue'
 import { onMounted, ref } from "vue"
 import { OverlayPanelDropdownStyles } from "@/helpers/pt"
 import workflowsStore from "@/store/workflows-store"
-import HomeView from "@/views/HomeView.vue"
 
 const props = defineProps<{
   gt: GroundTruth,
@@ -99,13 +98,13 @@ function hideParametersOverlay() {
             </td>
             <td class="overflow-x-auto">
               <MetricChart
-                  :runs="workflowsStore.getRuns(gt.id, workflow.id)"
-                  :workflow-name="workflow.label"
-                  :metric="metric"
-                  :width="400"
-                  :start-date="startDate"
-                  :end-date="endDate"
-                  class="flex justify-end"
+                :runs="workflowsStore.getRuns(gt.id, workflow.id)"
+                :workflow-name="workflow.label"
+                :metric="metric"
+                :width="400"
+                :start-date="startDate"
+                :end-date="endDate"
+                class="flex justify-end"
               />
             </td>
           </tr>

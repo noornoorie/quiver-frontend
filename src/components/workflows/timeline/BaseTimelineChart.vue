@@ -14,7 +14,8 @@ interface Props {
   startDate: Date,
   endDate: Date,
   height?: number,
-  tooltipContent: (d: TimelineChartDataPoint) => string
+  tooltipContent: (d: TimelineChartDataPoint) => string,
+  higherIsPositive?: boolean
 }
 
 const props = defineProps<Props>()
@@ -28,22 +29,18 @@ const _width = computed(() => props.width ?? 300)
 
 const container = ref<HTMLDivElement>()
 
-function isUp(data: TimelineChartDataPoint[], higherIsUp = true) {
+function isUp(data: TimelineChartDataPoint[], higherIsPositive = true) {
 
   if (data.length === 0) return 0
 
   const last = data[data.length - 1].value
   const secondLast = data.length > 1 ? data[data.length - 2].value : last
 
-  const diff = higherIsUp ? last - secondLast : secondLast - last
+  const diff = higherIsPositive ? last - secondLast : secondLast - last
 
   if (diff === 0) return 0
   else if (diff > 0) return 1
   else return -1
-}
-
-function renderReleases() {
-
 }
 
 function render([data, startDate, endDate, maxY]) {
@@ -90,13 +87,13 @@ function render([data, startDate, endDate, maxY]) {
   svg.selectAll('.y-axis-group .tick text').attr('fill', colors.gray['400'])
 
 
-  const trend = isUp(data, false)
+  const trend = isUp(data, props.higherIsPositive)
 
   const pathGroup = svg
       .append('g')
       .classed('path-group', true)
-      .classed('up', trend === 1)
-      .classed('down', trend === -1)
+      .classed('trend-positive', trend === 1)
+      .classed('trend-negative', trend === -1)
 
   pathGroup.append("path")
       .datum(data)
@@ -181,7 +178,7 @@ watch([() => props.data, () => props.startDate, () => props.endDate, () => props
     fill: var(--color--neutral-text);
   }
 
-  &.up {
+  &.trend-positive {
     path {
       stroke: var(--color--positive-text);
     }
@@ -191,7 +188,7 @@ watch([() => props.data, () => props.startDate, () => props.endDate, () => props
     }
   }
 
-  &.down {
+  &.trend-negative {
     path {
       stroke: var(--color--negative-text);
     }
