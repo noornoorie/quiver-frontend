@@ -52,5 +52,8 @@
   "cer_standard_deviation": "CER Standard Deviation",
   "positive": "positive",
   "neutral": "neutral",
-  "negative": "negative"
+  "negative": "negative",
+  "better": "better",
+  "equal": "equal",
+  "worse": "worse"
 }

@@ -8,9 +8,9 @@ const props = withDefaults(defineProps<{
 
 <template>
   <div class="flex space-x-3 text-sm text-gray-600" :class="{ 'text-colors': showTextColors }">
-    <div class="flex items-center positive"><i class="w-3 h-3 mr-1"></i><span>{{ $t('positive') }}</span></div>
-    <div class="flex items-center neutral"><i class="w-3 h-3 mr-1"></i><span>{{ $t('neutral') }}</span></div>
-    <div class="flex items-center negative"><i class="w-3 h-3 mr-1"></i><span>{{ $t('negative') }}</span></div>
+    <div class="flex items-center positive"><i class="w-3 h-3 mr-1"></i><span>{{ $t('better') }}</span></div>
+    <div class="flex items-center neutral"><i class="w-3 h-3 mr-1"></i><span>{{ $t('equal') }}</span></div>
+    <div class="flex items-center negative"><i class="w-3 h-3 mr-1"></i><span>{{ $t('worse') }}</span></div>
   </div>
 </template>
 

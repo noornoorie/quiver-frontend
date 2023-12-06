@@ -58,5 +58,8 @@
   "cer_standard_deviation": "CER Standardabweichung",
   "positive": "positiv",
   "neutral": "neutral",
-  "negative": "negativ"
+  "negative": "negativ",
+  "better": "besser",
+  "equal": "gleich",
+  "worse": "schlechter"
 }
