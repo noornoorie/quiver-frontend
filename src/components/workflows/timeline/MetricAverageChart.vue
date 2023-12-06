@@ -90,6 +90,7 @@ function tooltipContent(d: TimelineChartDataPoint) {
       :tooltip-content="tooltipContent"
       :height="400"
       :width="660"
+      :higher-is-positive="isHigherPositive(metric)"
     />
   </OverlayPanel>
 </template>
