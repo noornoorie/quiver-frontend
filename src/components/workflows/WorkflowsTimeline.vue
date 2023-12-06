@@ -9,6 +9,7 @@ import { DropdownPassThroughStyles } from '@/helpers/pt'
 import workflowsStore from '@/store/workflows-store'
 import filtersStore from '@/store/filters-store'
 import timelineStore from "@/store/timeline-store"
+import TrendLegend from "@/components/workflows/TrendLegend.vue";
 
 const { t } = useI18n()
 const gtList = computed<GroundTruth[]>(() => workflowsStore.gt.filter(({ id }) => filtersStore.gt.findIndex(({ value }) => value === id) > -1))
@@ -44,6 +45,7 @@ watch(selectedMetric,
         unstyled
       />
     </div>
+    <TrendLegend class="ml-auto mb-4"/>
     <div class="flex flex-col space-y-6">
       <template v-if="gtList.length > 0">
         <TimelineItem v-for="gt in gtList" :key="gt.id" :gt="gt" :metric="selectedMetricValue" />

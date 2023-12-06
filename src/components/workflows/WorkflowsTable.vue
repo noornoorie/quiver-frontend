@@ -7,6 +7,7 @@ import Dropdown from 'primevue/dropdown'
 import workflowsStore from "@/store/workflows-store"
 import api from "@/helpers/api"
 import filtersStore from "@/store/filters-store"
+import TrendLegend from "@/components/workflows/TrendLegend.vue"
 
 const { t } = useI18n()
 
@@ -118,11 +119,12 @@ const groupByDocuments = () => {
     Loading...
   </template>
   <template v-else>
-    <div class="flex mb-4" v-if="evals.length > 0">
-      <div class="flex items-center ml-auto">
+    <div class="flex flex-col" v-if="evals.length > 0">
+      <div class="flex items-center mb-4 ml-auto">
         <p class="mr-2">{{ $t('group_by') }}:</p>
         <Dropdown v-model="sortBy" :options="sortOptions" optionLabel="label" placeholder="Choose something.." class="" />
       </div>
+      <TrendLegend :show-text-colors="false" class="ml-auto mb-4"/>
     </div>
     <table v-if="evals.length > 0" class="w-full border border-collapse rounded text-sm">
       <thead>

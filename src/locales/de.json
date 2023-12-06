@@ -55,5 +55,8 @@
   "date": "Datum",
   "ground_truth": "Ground Truth",
   "average": "Durchschnitt",
-  "cer_standard_deviation": "CER Standardabweichung"
+  "cer_standard_deviation": "CER Standardabweichung",
+  "positive": "positiv",
+  "neutral": "neutral",
+  "negative": "negativ"
 }
