@@ -6,7 +6,7 @@ import MetricChart from "@/components/workflows/timeline/MetricChart.vue"
 import type { EvaluationResultsDocumentWide, GroundTruth, Workflow, WorkflowStep } from "@/types"
 import MetricAverageChart from "@/components/workflows/timeline/MetricAverageChart.vue"
 import { Icon } from '@iconify/vue'
-import { onMounted, ref } from "vue"
+import { onMounted, nextTick, ref } from "vue"
 import { OverlayPanelDropdownStyles } from "@/helpers/pt"
 import workflowsStore from "@/store/workflows-store"
 
@@ -16,6 +16,7 @@ const props = defineProps<{
 }>()
 
 const op = ref<OverlayPanel>()
+const isOpVisible = ref(false)
 const selectedStep = ref<WorkflowStep | null>(null)
 const startDate = ref<Date>(new Date('2023-10-01'))
 const endDate = ref<Date>(new Date())
@@ -36,6 +37,19 @@ function showParametersOverlay(step: WorkflowStep, event: Event) {
 
 function hideParametersOverlay() {
   op.value?.hide()
+}
+
+function toggleParameterOverlay(step: WorkflowStep, event: Event) {
+  if (isOpVisible.value) {
+    hideParametersOverlay()
+    if (selectedStep.value !== step) {
+      nextTick(() => {
+        showParametersOverlay(step, event)
+      })
+    }
+  } else {
+    showParametersOverlay(step, event)
+  }
 }
 
 </script>
@@ -90,8 +104,7 @@ function hideParametersOverlay() {
                   v-for="step in workflow.steps"
                   :key="step.id"
                   class="p-1 cursor-pointer"
-                  @mouseenter="showParametersOverlay(step, $event)"
-                  @mouseleave="hideParametersOverlay()"
+                  @click="toggleParameterOverlay(step, $event)"
               >
               {{ getStepAcronym(step.id) }}
             </span>
@@ -119,6 +132,8 @@ function hideParametersOverlay() {
   <OverlayPanel
     ref="op"
     :pt="OverlayPanelDropdownStyles"
+    @show="isOpVisible = true"
+    @hide="isOpVisible = false"
   >
     <div class="flex flex-col pt-2">
       <h2 class="font-bold px-2 pb-2 mb-2 border-b border-gray-300">{{ selectedStep?.id }}</h2>
