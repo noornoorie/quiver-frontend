@@ -154,5 +154,7 @@ function toggleParameterOverlay(step: WorkflowStep, event: Event) {
 </template>
 
 <style scoped lang="scss">
-
+span:hover {
+  color: var(--highlight-text-color);
+}
 </style>
