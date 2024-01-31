@@ -6,7 +6,7 @@ import { metricChartTooltipContent } from "@/helpers/metric-chart-tooltip-conten
 import OverlayPanel from 'primevue/overlaypanel'
 import BaseTimelineDetailedChart from "@/components/workflows/timeline/BaseTimelineDetailedChart.vue"
 import timelineStore from "@/store/timeline-store"
-import {isHigherPositive} from "@/helpers/metrics";
+import { isHigherPositive } from "@/helpers/metrics"
 
 const props = defineProps<{
   runs: EvaluationRun[],
