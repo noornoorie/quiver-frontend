@@ -1,5 +1,5 @@
 import { ref } from 'vue'
-import type { EvaluationResultsDocumentWide, EvaluationRun } from "@/types"
+import type { EvaluationResultsDocumentWide, EvaluationRun, Workflow, WorkflowStep } from "@/types"
 
 const utils = ref({})
 
@@ -72,9 +72,19 @@ const mapGtId = (id: string) => {
   return arr[arr.length - 1].split('.')[0]
 }
 
+const deduplicateStepIds = (workflows: Workflow[]) => {
+  return Array.from(workflows.reduce((acc, cur) => {
+    cur.steps.forEach(({ id }) => {
+      acc.add(id)
+    })
+    return acc
+  }, new Set<string>()))
+}
+
 export {
   getEvalColor,
   setEvalColors,
   createReadableMetricValue,
-  mapGtId
+  mapGtId,
+  deduplicateStepIds,
 }

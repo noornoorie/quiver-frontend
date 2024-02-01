@@ -4,10 +4,13 @@ import workflowsStore from "@/store/workflows-store"
 import { computed, onMounted } from "vue"
 import MultiSelect from "primevue/multiselect"
 import type { FilterOption } from "@/types"
+
 const gtOptions = computed(() => workflowsStore.gt.map(({ id, label }) => ({ value: id, label })))
+const workflowOptions = computed(() => workflowsStore.workflows.map(({ id, label }) => ({value: id, label})))
 
 onMounted(() => {
   filtersStore.gt = gtOptions.value
+  filtersStore.workflow =  workflowOptions.value
 })
 </script>
 
