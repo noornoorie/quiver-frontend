@@ -5,8 +5,10 @@ export default reactive<{
   gt: FilterOption[],
   metric: FilterOption[],
   workflow: FilterOption[],
+  dateRange: FilterOption[],
 }>({
   gt: [],
   metric: [],
   workflow: [],
+  dateRange: [],
 })

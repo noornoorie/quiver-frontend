@@ -19,6 +19,9 @@ const selectedMetric = ref<DropdownOption | null>(null)
 const metrics = computed<DropdownOption[]>(() => Object.keys(EvaluationMetrics).map(key => ({ value: EvaluationMetrics[key], label: t(EvaluationMetrics[key]) })))
 const selectedMetricValue = computed<keyof EvaluationResultsDocumentWide>(() => <keyof EvaluationResultsDocumentWide>selectedMetric.value?.value || EvaluationMetrics.CER_MEAN)
 
+const dateRangeOptions = computed<DropdownOption[]>(() => filtersStore.dateRange)
+const selectedDateRange = ref<DropdownOption | null>()
+
 const workflowOptions = computed<DropdownOption[]>(() => filtersStore.workflow)
 const selectedWorkflow = ref<DropdownOption | null>(null)
 
@@ -26,12 +29,19 @@ const workflowStepOptions = ref<DropdownOption[]>([])
 const selectedWorkflowStep = ref<DropdownOption | null>(null)
 
 const gtList = computed<GroundTruth[]>(() => {
-  return workflowsStore.gt.filter(({ id }) => {
+  return workflowsStore.gt.filter(({ id, metadata }) => {
     let flag = filtersStore.gt.findIndex(({ value }) => value === id) > -1
-    if (selectedWorkflow.value) {
+    if (flag && selectedDateRange.value) {
+      const splitDateRange = selectedDateRange.value.value.split('-')
+      const from = splitDateRange[0]
+      const to = splitDateRange[1]
+
+      flag = flag && (metadata.time.notBefore === from && metadata.time.notAfter === to)
+    }
+    if (flag && selectedWorkflow.value) {
       flag = flag && workflowsStore.getRuns(id, selectedWorkflow.value.value).length > 0
     }
-    if (selectedWorkflowStep.value) {
+    if (flag && selectedWorkflowStep.value) {
       flag = flag && workflowsStore.getRuns(id).findIndex(({ metadata }) => {
         return metadata.workflow_steps.findIndex(({ id }) => id === selectedWorkflowStep.value?.value) > -1
       }) > -1
@@ -87,13 +97,23 @@ watch(
     </div>
     <div class="flex w-full mb-4">
       <Dropdown
+        v-model="selectedDateRange"
+        :options="dateRangeOptions"
+        :pt="DropdownPassThroughStyles"
+        optionLabel="label"
+        :placeholder="t('Filter by date range')"
+        showClear
+        class="ml-auto md:w-14rem"
+        unstyled
+      />
+      <Dropdown
         v-model="selectedWorkflow"
         :options="workflowOptions"
         :pt="DropdownPassThroughStyles"
         optionLabel="label"
         :placeholder="t('Filter by workflow')"
         showClear
-        class="ml-auto md:w-14rem"
+        class="ml-4 md:w-14rem"
         unstyled
       />
       <Dropdown

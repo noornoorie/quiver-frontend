@@ -1,6 +1,45 @@
 export interface GroundTruth {
   id: string,
-  label: string
+  label: string,
+  metadata: GroundTruthMetadata
+}
+
+export interface GroundTruthMetadata {
+  authors: {
+    name: string,
+    surname: string,
+    roles: string[]
+  }[],
+  description: string,
+  format: string,
+  gtTyp: string,
+  hands: {
+    count: string,
+    level: string
+  },
+  labelling: string[],
+  language: string[],
+  license: {
+    name: string,
+    url: string
+  }[],
+  'project-name': string,
+  'project-website': string,
+  schema: string,
+  script: string[],
+  'script-type': string,
+  sources: {
+    reference: string,
+    link: string
+  }[],
+  time: {
+    notBefore: string,
+    notAfter: string
+  },
+  title: string,
+  'transcription-guidelines': string,
+  url: string,
+  volume: any,
 }
 
 export interface Workflow {
