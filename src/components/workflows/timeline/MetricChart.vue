@@ -6,6 +6,7 @@ import { metricChartTooltipContent } from "@/helpers/metric-chart-tooltip-conten
 import OverlayPanel from 'primevue/overlaypanel'
 import BaseTimelineDetailedChart from "@/components/workflows/timeline/BaseTimelineDetailedChart.vue"
 import timelineStore from "@/store/timeline-store"
+import { isHigherPositive } from "@/helpers/metrics"
 
 const props = defineProps<{
   runs: EvaluationRun[],
@@ -55,6 +56,7 @@ function tooltipContent(d: TimelineChartDataPoint) {
       :end-date="endDate"
       :tooltip-content="tooltipContent"
       :width="400"
+      :higher-is-positive="isHigherPositive(metric)"
     />
   </div>
   <OverlayPanel
@@ -75,6 +77,7 @@ function tooltipContent(d: TimelineChartDataPoint) {
       :tooltip-content="tooltipContent"
       :height="400"
       :width="660"
+      :higher-is-positive="isHigherPositive(metric)"
     />
   </OverlayPanel>
 </template>
