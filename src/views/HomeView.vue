@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import { ref } from "vue"
+import { computed, ref } from "vue"
 import { useI18n } from "vue-i18n"
 import TabMenu from 'primevue/tabmenu'
-import { useRouter } from "vue-router"
+import { useRoute, useRouter } from "vue-router"
 
 const { t } = useI18n()
+const route = useRoute()
 const router = useRouter()
 
 const items = ref([
@@ -25,14 +26,21 @@ const items = ref([
   }
 ])
 
-function onTabChange({ index }) {
-  router.push(items.value[index].to)
-}
+const activeRouteIndex = computed({
+  get() {
+    const path = route.path === '/' ? '/workflows' : route.path
+    return items.value.findIndex(({ to }) => to === path)
+  },
+  set(index) {
+    router.push(items.value[index].to)
+  }
+})
+
 </script>
 <template>
   <main>
     <div class="container mx-auto">
-      <TabMenu :model="items" @tab-change="onTabChange" />
+      <TabMenu v-model:activeIndex="activeRouteIndex" :model="items" />
       <div class="content-container pt-6">
         <RouterView/>
       </div>
