@@ -15,6 +15,7 @@ const props = defineProps<{
   metric: keyof EvaluationResultsDocumentWide,
   selectedWorkflowId?: string,
   selectedWorkflowStepId?: string,
+  selectedWorkflowStepIds: string[],
 }>()
 
 const op = ref<OverlayPanel>()
@@ -33,7 +34,11 @@ function getStepAcronym(stepId) {
 }
 
 function showWorkflowStep(stepId: string) {
-  return props.selectedWorkflowStepId ? stepId === props.selectedWorkflowStepId : true
+  if (props.selectedWorkflowStepIds.length > 0) {
+    return props.selectedWorkflowStepIds.findIndex(id => id === stepId) > -1
+  } else {
+    return true
+  }
 }
 
 function showParametersOverlay(step: WorkflowStep, event: Event) {

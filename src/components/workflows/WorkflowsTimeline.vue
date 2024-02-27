@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import TimelineItem from "@/components/workflows/timeline/TimelineItem.vue"
 import Dropdown from 'primevue/dropdown'
+import MultiSelect from 'primevue/multiselect'
 import {computed, onMounted, ref, watch} from "vue"
 import {EvaluationMetrics, getMaxValueByMetric} from '@/helpers/metrics'
 import { useI18n } from "vue-i18n"
@@ -26,7 +27,7 @@ const workflowOptions = computed<DropdownOption[]>(() => filtersStore.workflow)
 const selectedWorkflow = ref<DropdownOption | null>(null)
 
 const workflowStepOptions = ref<DropdownOption[]>([])
-const selectedWorkflowStep = ref<DropdownOption | null>(null)
+const selectedWorkflowSteps = ref<DropdownOption[]>([])
 
 const gtList = computed<GroundTruth[]>(() => {
   return workflowsStore.gt.filter(({ id, metadata }) => {
@@ -41,10 +42,15 @@ const gtList = computed<GroundTruth[]>(() => {
     if (flag && selectedWorkflow.value) {
       flag = flag && workflowsStore.getRuns(id, selectedWorkflow.value.value).length > 0
     }
-    if (flag && selectedWorkflowStep.value) {
-      flag = flag && workflowsStore.getRuns(id).findIndex(({ metadata }) => {
-        return metadata.workflow_steps.findIndex(({ id }) => id === selectedWorkflowStep.value?.value) > -1
-      }) > -1
+    if (flag && selectedWorkflowSteps.value.length > 0) {
+      selectedWorkflowSteps.value.forEach(({ value }) => {
+        if (!flag) {
+          return
+        }
+        flag = flag && workflowsStore.getRuns(id).findIndex(({ metadata }) => {
+          return metadata.workflow_steps.findIndex(({ id }) => id === value) > -1
+        }) > -1
+      })
     }
     return flag
   })
@@ -66,7 +72,7 @@ watch(selectedMetric,
 watch(
   selectedWorkflow,
   (selected) => {
-    selectedWorkflowStep.value = null
+    selectedWorkflowSteps.value = []
     if (!selected) {
       workflowStepOptions.value = deduplicateStepIds(workflowsStore.workflows).map(id => ({ value: id, label: t(id) }))
       return
@@ -116,15 +122,14 @@ watch(
         class="ml-4 md:w-14rem"
         unstyled
       />
-      <Dropdown
-        v-model="selectedWorkflowStep"
+      <MultiSelect
+        v-model="selectedWorkflowSteps"
+        filter
+        :max-selected-labels="1"
         :options="workflowStepOptions"
-        :pt="DropdownPassThroughStyles"
         optionLabel="label"
         :placeholder="t('Filter by processor')"
-        showClear
         class="ml-4 md:w-14rem"
-        unstyled
       />
     </div>
     <TrendLegend class="ml-auto mb-4"/>
@@ -136,7 +141,7 @@ watch(
           :gt="gt"
           :metric="selectedMetricValue"
           :selected-workflow-id="selectedWorkflow?.value"
-          :selected-workflow-step-id="selectedWorkflowStep?.value"
+          :selected-workflow-step-ids="selectedWorkflowSteps.map((item) => item.value)"
         />
       </template>
       <template v-else>
