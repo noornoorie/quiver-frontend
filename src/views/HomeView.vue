@@ -28,8 +28,7 @@ const items = ref([
 
 const activeRouteIndex = computed({
   get() {
-    const path = route.path === '/' ? '/workflows' : route.path
-    return items.value.findIndex(({ to }) => to === path)
+    return items.value.findIndex(({ to }) => to === route.path)
   },
   set(index) {
     router.push(items.value[index].to)
