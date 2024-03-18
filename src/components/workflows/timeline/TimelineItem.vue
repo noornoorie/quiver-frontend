@@ -24,9 +24,19 @@ const selectedStep = ref<WorkflowStep | null>(null)
 const startDate = ref<Date>(new Date('2023-10-01'))
 const endDate = ref<Date>(new Date())
 const workflows = computed(() => {
-  return props.selectedWorkflowId
-    ? workflowsStore.workflows.filter((item) => item.id === props.selectedWorkflowId)
-    : workflowsStore.workflows
+  if (props.selectedWorkflowId) {
+    return workflowsStore.workflows.filter((item) => item.id === props.selectedWorkflowId)
+  } else {
+    if (props.selectedWorkflowStepIds.length > 0) {
+      return workflowsStore.workflows.filter(({ steps }) => {
+        return props.selectedWorkflowStepIds.findIndex((id) => {
+          return steps.findIndex((step) => step.id === id) > -1
+        }) > -1
+      })
+    } else {
+      return workflowsStore.workflows
+    }
+  }
 })
 
 function getStepAcronym(stepId) {
