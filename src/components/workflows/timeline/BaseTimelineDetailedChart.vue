@@ -24,7 +24,7 @@ const props = defineProps<Props>()
 const height = props.height || 60
 const marginTop = 10
 const marginRight = 10
-const marginBottom = 30
+const marginBottom = 50
 const marginLeft = 40
 const _width = computed(() => props.width ?? 300)
 
@@ -70,6 +70,11 @@ function render([data, startDate, endDate, maxY]) {
       .classed('x-axis-group', true)
       .attr("transform", `translate(0,${height - marginBottom})`)
       .call(d3.axisBottom(x).ticks(6).tickPadding(8).tickSize(5).tickFormat(d3.utcFormat("%d.%m.%Y")))
+      .selectAll("text")
+      .style("text-anchor", "end")
+      .attr("dx", "-0.9em")
+      .attr("dy", "-0.2em")
+      .attr("transform", "rotate(-60)")
 
   svg.select('.x-axis-group .domain').attr('stroke', colors.gray['400'])
   svg.selectAll('.x-axis-group .tick text').attr('fill', colors.gray['400'])
