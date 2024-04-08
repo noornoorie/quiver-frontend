@@ -55,5 +55,11 @@
   "negative": "negative",
   "better": "better",
   "equal": "equal",
-  "worse": "worse"
+  "worse": "worse",
+  "year_asc": "Year Oldest",
+  "year_desc": "Year Newest",
+  "label_asc": "Label (a-z)",
+  "label_desc": "Label (z-a)",
+  "metric_asc": "Selected Metric (ascending)",
+  "metric_desc": "Selected Metric (descending)",
 }
