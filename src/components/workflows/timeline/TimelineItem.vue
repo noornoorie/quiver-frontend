@@ -137,7 +137,7 @@ function toggleParameterOverlay(step: WorkflowStep, event: Event) {
   >
     <div class="flex flex-col pt-2">
       <h2 class="font-bold px-2 pb-2 mb-2 border-b border-gray-300">{{ selectedStep?.id }}</h2>
-      <div class="overflow-y-auto max-h-[400px] w-full">
+      <div class="overflow-y-scroll max-h-[400px] w-full">
         <table v-if="selectedStep" class="text-sm border-collapse">
           <tr class="">
             <th class="p-1 pl-2 font-semibold">Parameter</th>
