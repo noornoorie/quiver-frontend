@@ -11,10 +11,11 @@ const router = createRouter({
       path: '/',
       name: 'home',
       component: HomeView,
+      redirect: '/workflows',
       children: [
         { path: 'projects', name: 'projects', component: Projects },
         { path: 'processors', name: 'processors', component: Processors },
-        { path: 'workflows', alias: '/', name: 'workflows', component: Workflows },
+        { path: 'workflows', name: 'workflows', component: Workflows },
       ],
     },
   ]
