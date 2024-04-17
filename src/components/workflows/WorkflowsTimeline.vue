@@ -29,6 +29,14 @@ const selectedWorkflow = ref<DropdownOption | null>(null)
 const workflowStepOptions = ref<DropdownOption[]>([])
 const selectedWorkflowSteps = ref<DropdownOption[]>([])
 
+const workflowStepDropdownChanged = ref(false)
+const workflowStepDropdownLabel = computed(() => {
+  if (!workflowStepDropdownChanged.value && workflowStepOptions.value.length === selectedWorkflowSteps.value.length) {
+    return t('Filter by processor')
+  }
+  return null
+})
+
 const gtList = computed<GroundTruth[]>(() => {
   return workflowsStore.gt.filter(({ id, metadata }) => {
     let flag = filtersStore.gt.findIndex(({ value }) => value === id) > -1
@@ -75,6 +83,7 @@ watch(
     selectedWorkflowSteps.value = []
     if (!selected) {
       workflowStepOptions.value = deduplicateStepIds(workflowsStore.workflows).map(id => ({ value: id, label: t(id) }))
+      selectedWorkflowSteps.value = workflowStepOptions.value
       return
     }
     const workflow = workflowsStore.workflows.find((item) => item.id === selected.value)
@@ -83,6 +92,7 @@ watch(
       return
     }
     workflowStepOptions.value = workflow.steps.map(({ id }) => ({ value: id, label: t(id) }))
+    selectedWorkflowSteps.value = workflowStepOptions.value
   },
   { immediate: true }
 )
@@ -129,6 +139,8 @@ watch(
         :options="workflowStepOptions"
         optionLabel="label"
         :placeholder="t('Filter by processor')"
+        :selected-items-label="workflowStepDropdownLabel"
+        @change="workflowStepDropdownChanged = true"
         class="ml-4 md:w-14rem"
       />
     </div>

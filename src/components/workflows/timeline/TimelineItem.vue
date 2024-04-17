@@ -27,15 +27,11 @@ const workflows = computed(() => {
   if (props.selectedWorkflowId) {
     return workflowsStore.workflows.filter((item) => item.id === props.selectedWorkflowId)
   } else {
-    if (props.selectedWorkflowStepIds.length > 0) {
-      return workflowsStore.workflows.filter(({ steps }) => {
-        return props.selectedWorkflowStepIds.findIndex((id) => {
-          return steps.findIndex((step) => step.id === id) > -1
-        }) > -1
-      })
-    } else {
-      return workflowsStore.workflows
-    }
+    return workflowsStore.workflows.filter(({ steps }) => {
+      return props.selectedWorkflowStepIds.findIndex((id) => {
+        return steps.findIndex((step) => step.id === id) > -1
+      }) > -1
+    })
   }
 })
 
@@ -47,7 +43,7 @@ function showWorkflowStep(stepId: string) {
   if (props.selectedWorkflowStepIds.length > 0) {
     return props.selectedWorkflowStepIds.findIndex(id => id === stepId) > -1
   } else {
-    return true
+    return false
   }
 }
 
