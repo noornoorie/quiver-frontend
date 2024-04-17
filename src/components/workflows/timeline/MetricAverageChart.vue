@@ -1,20 +1,24 @@
 <script setup lang="ts">
 import {computed, onMounted, ref, watch} from "vue"
-import BaseTimelineChart from "@/components/workflows/timeline/BaseTimelineChart.vue"
+import { useI18n } from 'vue-i18n'
+import OverlayPanel from "primevue/overlaypanel"
 import type {EvaluationResultsDocumentWide, EvaluationRun, TimelineChartDataPoint} from "@/types"
-import { metricChartTooltipContent } from "@/helpers/metric-chart-tooltip-content";
-import OverlayPanel from "primevue/overlaypanel";
-import BaseTimelineDetailedChart from "@/components/workflows/timeline/BaseTimelineDetailedChart.vue";
-import timelineStore from "@/store/timeline-store";
-import {isHigherPositive} from "@/helpers/metrics";
+import { metricChartTooltipContent } from "@/helpers/metric-chart-tooltip-content"
+import BaseTimelineChart from "@/components/workflows/timeline/BaseTimelineChart.vue"
+import BaseTimelineDetailedChart from "@/components/workflows/timeline/BaseTimelineDetailedChart.vue"
+import timelineStore from "@/store/timeline-store"
+import { getUnitOfMetric, isHigherPositive } from "@/helpers/metrics"
 
 const props = defineProps<{
   runs: EvaluationRun[],
   metric: keyof EvaluationResultsDocumentWide,
   startDate: Date,
   endDate: Date,
-  workflowName: string
+  workflowName: string,
+  gtName: string
 }>()
+
+const { t } = useI18n()
 
 const data = ref<TimelineChartDataPoint[]>([])
 const maxY = computed(() => timelineStore.maxValues[props.metric] ?? 0)
@@ -80,11 +84,12 @@ function tooltipContent(d: TimelineChartDataPoint) {
       }
     }"
   >
-    <h3 class="font-semibold">{{ workflowName }}</h3>
+    <h3 class="font-semibold" style="width: 660px; margin-left: 40px">{{ gtName }}</h3>
     <BaseTimelineDetailedChart
       :data="data"
       :max-y="maxY"
-      :y-axis-title="$t(metric)"
+      :y-axis-title="`${t(metric)} (${t(getUnitOfMetric(metric))})`"
+      :workflow="workflowName"
       :start-date="startDate"
       :end-date="endDate"
       :tooltip-content="tooltipContent"
