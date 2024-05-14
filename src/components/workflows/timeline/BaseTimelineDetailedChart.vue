@@ -17,6 +17,7 @@ interface Props {
   tooltipContent: (d: TimelineChartDataPoint) => string,
   yAxisTitle?: string,
   workflow?: string,
+  label?: string,
   higherIsPositive?: boolean
 }
 
@@ -232,6 +233,7 @@ watch([() => props.data, () => props.startDate, () => props.endDate, () => props
 </script>
 
 <template>
+  <h3> {{ label }}</h3>
   <div class="svg-container" ref="container"></div>
 </template>
 

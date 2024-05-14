@@ -84,12 +84,12 @@ function tooltipContent(d: TimelineChartDataPoint) {
       }
     }"
   >
-    <h3 class="font-semibold" style="width: 660px; margin-left: 40px">{{ gtName }}</h3>
     <BaseTimelineDetailedChart
       :data="data"
       :max-y="maxY"
       :y-axis-title="`${t(metric)} (${t(getUnitOfMetric(metric))})`"
       :workflow="workflowName"
+      :label="gtName"
       :start-date="startDate"
       :end-date="endDate"
       :tooltip-content="tooltipContent"
