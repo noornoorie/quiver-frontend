@@ -22,6 +22,18 @@ function getDefaultMaxValueOfMetric(metric: string): number {
   else return 1
 }
 
+function getUnitOfMetric(metric: string): string {
+  if (metric === EvaluationMetrics.CER_MEAN) return 'percentage'
+  if (metric === EvaluationMetrics.CER_MEDIAN) return 'percentage'
+  if (metric === EvaluationMetrics.CER_STANDARD_DEVIATION) return 'percentage'
+  if (metric === EvaluationMetrics.WER) return 'percentage'
+  if (metric === EvaluationMetrics.WALL_TIME) return 'seconds'
+  if (metric === EvaluationMetrics.PAGES_PER_MINUTE) return 'pages'
+  if (metric === EvaluationMetrics.CPU_TIME) return 'seconds'
+
+  else return ''
+}
+
 function getMaxValueByMetric(metric: keyof EvaluationResultsDocumentWide, runs: EvaluationRun[] = []): number {
   const values = runs.map((run) => {
     const value = run.evaluation_results.document_wide[metric]
@@ -45,6 +57,7 @@ function isHigherPositive(metric: keyof EvaluationResultsDocumentWide): boolean 
 
 export {
   EvaluationMetrics,
+  getUnitOfMetric,
   getMaxValueByMetric,
   getDefaultMaxValueOfMetric,
   isHigherPositive

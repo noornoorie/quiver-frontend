@@ -75,6 +75,7 @@ function toggleParameterOverlay(step: WorkflowStep, event: Event) {
           <div class="flex overflow-x-auto">
             <MetricAverageChart
               :workflow-name="$t('average')"
+              :gt-name="gt.label"
               :runs="workflowsStore.getRuns(gt.id)"
               :metric="metric"
               class=""
@@ -112,6 +113,7 @@ function toggleParameterOverlay(step: WorkflowStep, event: Event) {
             <td class="overflow-x-auto">
               <MetricChart
                 :runs="workflowsStore.getRuns(gt.id, workflow.id)"
+                :gt-name="gt.label"
                 :workflow-name="workflow.label"
                 :metric="metric"
                 :width="400"

@@ -55,5 +55,8 @@
   "negative": "negative",
   "better": "better",
   "equal": "equal",
-  "worse": "worse"
+  "worse": "worse",
+  "percentage": "percentage",
+  "pages": "pages",
+  "seconds": "seconds"
 }
