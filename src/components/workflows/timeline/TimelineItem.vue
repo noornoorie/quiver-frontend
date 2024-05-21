@@ -6,15 +6,13 @@ import MetricChart from "@/components/workflows/timeline/MetricChart.vue"
 import type { EvaluationResultsDocumentWide, GroundTruth, Workflow, WorkflowStep } from "@/types"
 import MetricAverageChart from "@/components/workflows/timeline/MetricAverageChart.vue"
 import { Icon } from '@iconify/vue'
-import { computed, nextTick, ref } from "vue"
+import { onMounted, nextTick, ref } from "vue"
 import { OverlayPanelDropdownStyles } from "@/helpers/pt"
 import workflowsStore from "@/store/workflows-store"
 
 const props = defineProps<{
   gt: GroundTruth,
   metric: keyof EvaluationResultsDocumentWide,
-  selectedWorkflowId?: string,
-  selectedWorkflowStepId?: string,
   selectedWorkflowStepIds: string[],
 }>()
 
@@ -23,28 +21,33 @@ const isOpVisible = ref(false)
 const selectedStep = ref<WorkflowStep | null>(null)
 const startDate = ref<Date>(new Date('2023-10-01'))
 const endDate = ref<Date>(new Date())
-const workflows = computed(() => {
-  if (props.selectedWorkflowId) {
-    return workflowsStore.workflows.filter((item) => item.id === props.selectedWorkflowId)
-  } else {
-    return workflowsStore.workflows.filter(({ steps }) => {
-      return props.selectedWorkflowStepIds.findIndex((id) => {
-        return steps.findIndex((step) => step.id === id) > -1
-      }) > -1
-    })
-  }
+const workflows = ref<Workflow[]>([])
+
+onMounted(() => {
+  workflows.value = workflowsStore.workflows
 })
 
 function getStepAcronym(stepId) {
   return StepsAcronyms[stepId]
 }
 
-function showWorkflowStep(stepId: string) {
+function highlightWorkflowStep(stepId: string) {
   if (props.selectedWorkflowStepIds.length > 0) {
     return props.selectedWorkflowStepIds.findIndex(id => id === stepId) > -1
   } else {
     return false
   }
+}
+
+function showWorkflow(id: string) {
+  const wf = workflows.value.find((item) => item.id === id)
+  return wf && wf.steps.length > 0
+    ? wf.steps.findIndex((step) => (
+      props.selectedWorkflowStepIds.findIndex((id) => (
+        step.id === id
+      )) > -1
+    )) > -1
+    : false
 }
 
 function showParametersOverlay(step: WorkflowStep, event: Event) {
@@ -116,31 +119,32 @@ function toggleParameterOverlay(step: WorkflowStep, event: Event) {
             </thead>
             <tbody>
               <tr v-for="workflow in workflows" :key="workflow.id">
-              <td class="font-semibold pe-2">{{ workflow.label }}</td>
-              <td class="p-1 overflow-x-auto">
-                <template v-for="step in workflow.steps">
-                  <span
-                      v-if="showWorkflowStep(step.id)"
-                      :key="step.id"
-                      class="p-1 cursor-pointer"
-                      @click="toggleParameterOverlay(step, $event)"
-                  >
-                    {{ getStepAcronym(step.id) }}
-                  </span>
+                <template v-if="showWorkflow(workflow.id)">
+                  <td class="font-semibold pe-2">{{ workflow.label }}</td>
+                  <td class="p-1 overflow-x-auto">
+                    <span
+                        v-for="step in workflow.steps"
+                        :key="step.id"
+                        class="p-1 cursor-pointer"
+                        :class="{ highlighted: highlightWorkflowStep(step.id) }"
+                        @click="toggleParameterOverlay(step, $event)"
+                    >
+                      {{ getStepAcronym(step.id) }}
+                    </span>
+                  </td>
+                  <td class="overflow-x-auto">
+                    <MetricChart
+                      :runs="workflowsStore.getRuns(gt.id, workflow.id)"
+                      :workflow-name="workflow.label"
+                      :metric="metric"
+                      :width="400"
+                      :start-date="startDate"
+                      :end-date="endDate"
+                      class="flex justify-end"
+                    />
+                  </td>
                 </template>
-              </td>
-              <td class="overflow-x-auto">
-                <MetricChart
-                  :runs="workflowsStore.getRuns(gt.id, workflow.id)"
-                  :workflow-name="workflow.label"
-                  :metric="metric"
-                  :width="400"
-                  :start-date="startDate"
-                  :end-date="endDate"
-                  class="flex justify-end"
-                />
-              </td>
-            </tr>
+              </tr>
             </tbody>
           </table>
         </div>
@@ -176,6 +180,11 @@ function toggleParameterOverlay(step: WorkflowStep, event: Event) {
 
 <style scoped lang="scss">
 span:hover {
+  border: 1px solid var(--highlight-text-color);
+  background-color: var(--highlight-bg);
+}
+
+.highlighted {
   color: var(--highlight-text-color);
 }
 </style>

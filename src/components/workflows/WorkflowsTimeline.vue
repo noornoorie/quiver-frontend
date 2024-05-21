@@ -67,6 +67,8 @@ const gtList = computed<GroundTruth[]>(() => {
 onMounted(async () => {
   selectedMetric.value = metrics.value[0]
   workflows.value = workflowsStore.workflows
+  workflowStepOptions.value = deduplicateStepIds(workflowsStore.workflows).map(id => ({ value: id, label: t(id) }))
+  selectedWorkflowSteps.value = workflowStepOptions.value
 })
 
 watch(selectedMetric,
@@ -75,26 +77,6 @@ watch(selectedMetric,
     getMaxValueByMetric(selectedMetricValue.value, workflowsStore.runs)
   ),
     { immediate: true }
-)
-
-watch(
-  selectedWorkflow,
-  (selected) => {
-    selectedWorkflowSteps.value = []
-    if (!selected) {
-      workflowStepOptions.value = deduplicateStepIds(workflowsStore.workflows).map(id => ({ value: id, label: t(id) }))
-      selectedWorkflowSteps.value = workflowStepOptions.value
-      return
-    }
-    const workflow = workflowsStore.workflows.find((item) => item.id === selected.value)
-    if (!workflow) {
-      console.error("Invalid state")
-      return
-    }
-    workflowStepOptions.value = workflow.steps.map(({ id }) => ({ value: id, label: t(id) }))
-    selectedWorkflowSteps.value = workflowStepOptions.value
-  },
-  { immediate: true }
 )
 </script>
 
@@ -152,7 +134,6 @@ watch(
           :key="gt.id"
           :gt="gt"
           :metric="selectedMetricValue"
-          :selected-workflow-id="selectedWorkflow?.value"
           :selected-workflow-step-ids="selectedWorkflowSteps.map((item) => item.value)"
         />
       </template>
